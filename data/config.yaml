@@ -50,6 +50,8 @@ security:
   memory_db: "data/memory.db"
 
 # Payment and activation (PRO).
+# PRO includes IoT/exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP,
+# TR-069, RTSP and other embedded-service ports) via `iotscan <target>`.
 payment:
   price_usdt: 35
   currency: "USDT (TON)"

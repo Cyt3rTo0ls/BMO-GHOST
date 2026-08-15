@@ -35,6 +35,11 @@ cloud and no data leaves your machine:
 - Plan your hardware before long engagements. If the engine is offline, the
   tool keeps working (tools, memory, vault, reports) without conversational
   analysis.
+- Hardware note: the author's own machine does NOT run the assistant engine
+  model. This project is aimed at users whose hardware CAN run a local model
+  (a desktop/workstation with a capable CPU/GPU and enough RAM). The rest of
+  the platform runs on any Kali/Parrot box; only the conversational engine
+  needs the heavier hardware.
 
 ---
 
@@ -51,7 +56,30 @@ explicitly contracted to assess.
 
 ---
 
+## SCREENSHOTS
+
+Main dashboard (terminal view):
+
+![HackerBrain OS dashboard](images/dashboard.png)
+
+Dashboard in Spanish (`#es`):
+
+![HackerBrain OS dashboard ES](images/dashboard_es.png)
+
+PRO features view, visible from the free tier (sidebar -> PRO, or `#pro`):
+
+![HackerBrain OS PRO features](images/pro_features.png)
+
+PRO features view in Spanish:
+
+![HackerBrain OS PRO features ES](images/pro_features_es.png)
+
+---
+
 ## FEATURES
+
+The free version shows the full PRO capability list in the interface
+(sidebar -> PRO). Free users can always see what PRO unlocks.
 
 ### FREE (open source)
 
@@ -92,6 +120,7 @@ explicitly contracted to assess.
 | LAN multi-user collaboration | Yes |
 | Playbook marketplace | Yes |
 | All Kali Linux / Parrot OS tools | Yes |
+| IoT / exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Yes |
 
 ---
 
@@ -141,12 +170,13 @@ significant CPU/RAM.
 
 Full step-by-step guides: [TUTORIAL.md](TUTORIAL.md) (English) and
 [TUTORIAL_ES.md](TUTORIAL_ES.md) (Espanol). The interface includes a
-language selector (EN/ES) in the status bar.
+language selector (EN/ES) in the status bar, and the free tier can browse
+all PRO capabilities from the sidebar (PRO view).
 
 The terminal prompt (`>`) accepts both commands and questions.
 
 - Type a tool command directly: `nmap -sV -T4 192.168.1.0/24`
-- Use the scan helpers: `scan <target>`, `vulnscan <target>`, `recon <target>`
+- Use the scan helpers: `scan <target>`, `vulnscan <target>`, `iotscan <target>`, `recon <target>`
 - Ask questions in plain language (English or Spanish): the assistant engine
   analyzes previous output and suggests the next step.
 - Set a working target: `target 10.10.10.1`
@@ -225,8 +255,11 @@ hackerbrain-os/
 │   └── assets/ (style.css, app.js, terminal.js)
 ├── data/
 │   └── config.yaml        # engine, limits, payment, security config
+├── images/                # interface screenshots (EN/ES)
 ├── plugins/               # Python plugins (PRO)
-└── playbooks/             # playbook definitions
+├── playbooks/             # playbook definitions
+├── TUTORIAL.md            # installation and usage guide (English)
+└── TUTORIAL_ES.md         # guia de instalacion y uso (Espanol)
 ```
 
 ---

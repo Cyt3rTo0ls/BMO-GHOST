@@ -37,6 +37,12 @@ assistant engine, and using the main features.
 - Enough free RAM/disk for the assistant engine model you intend to load
 - Internet only for the initial `pip install`; the application itself runs offline
 
+Hardware note: the conversational engine needs a machine that can actually
+run a local model (capable CPU/GPU and enough RAM). The author's own machine
+does not run it; this project targets users whose hardware can. All other
+features (tools, memory, vault, reports) run on any Kali/Parrot box even
+without the engine.
+
 Check your Python version:
 
 ```bash
@@ -186,7 +192,8 @@ Instead of typing raw tool commands, you can use the built-in helpers:
 5. Enter it in the PRO activation modal (top bar button).
 
 PRO unlocks: unlimited engine usage, encrypted vault, report generation,
-persistent memory, unlimited projects, plugins, webhooks, snapshots, and more.
+persistent memory, unlimited projects, plugins, webhooks, snapshots,
+IoT/exposed-services scanning, and more.
 
 ## 10. Troubleshooting
 

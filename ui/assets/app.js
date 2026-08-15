@@ -25,6 +25,7 @@ Local only. WARNING: authorized security testing only.
       nav_vault: 'VAULT',
       nav_reports: 'REPORTS',
       nav_memory: 'MEMORY',
+      nav_pro: 'PRO',
       term_placeholder: 'type a command or question...',
       term_quick: 'QUICK:',
       quick_status: 'status',
@@ -91,7 +92,46 @@ Local only. WARNING: authorized security testing only.
       msg_mitigate: '[MITIGATE] apply vendor patch, harden config, restrict exposure.',
       msg_details: '[DETAILS] stored in local memory. See MEMORY panel and reports.',
       msg_target: 'Target set to ',
-      mem_placeholder: 'note title...'
+      mem_placeholder: 'note title...',
+      pro_view_title: 'PRO FEATURES',
+      pro_view_note: 'The free version keeps working: 20 engine queries/day, 50 memory entries, 2 projects, basic recon, dark interface and session timeline. PRO adds the capabilities below.',
+      pro_col_free: 'FREE',
+      pro_col_pro: 'PRO',
+      pro_free_features: [
+        '20 assistant engine queries per day',
+        '50 memory entries (wiped at session end)',
+        '2 simultaneous active projects',
+        'Basic reconnaissance tools',
+        'Full dark interface',
+        'Conversational terminal',
+        'Current-session timeline',
+        'No report export',
+        '1 hour of continuous session'
+      ],
+      pro_pro_features: [
+        'Unlimited assistant engine',
+        'Autonomous agent (asks before executing attacks)',
+        'Encrypted credential vault (AES-256)',
+        'Professional reports (PDF, DOCX, HTML, Markdown)',
+        'Persistent memory between sessions',
+        'Unlimited projects',
+        'Exportable timeline with forensic timestamps',
+        'Severity auto-tagging',
+        'Semantic memory search',
+        'Session snapshots',
+        'Mitigation suggestions per vulnerability',
+        'Teacher mode (step-by-step)',
+        'Local REST API for automation',
+        'Slack / Discord / Telegram webhooks',
+        'Python plugin system',
+        'Automated scan scheduler',
+        'Custom PoC integration',
+        'IoT / exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP)',
+        'Gamification (achievements and badges)',
+        'LAN multi-user collaboration',
+        'Playbook marketplace',
+        'All Kali Linux / Parrot OS tools'
+      ]
     },
     es: {
       st_project: 'PROYECTO: default',
@@ -106,6 +146,7 @@ Local only. WARNING: authorized security testing only.
       nav_vault: 'VAULT',
       nav_reports: 'INFORMES',
       nav_memory: 'MEMORIA',
+      nav_pro: 'PRO',
       term_placeholder: 'escribe un comando o una pregunta...',
       term_quick: 'RAPIDO:',
       quick_status: 'estado',
@@ -172,7 +213,46 @@ Local only. WARNING: authorized security testing only.
       msg_mitigate: '[MITIGAR] aplica el parche del proveedor, refuerza la configuracion, restringe la exposicion.',
       msg_details: '[DETALLES] almacenado en la memoria local. Ver panel MEMORIA e informes.',
       msg_target: 'Objetivo fijado: ',
-      mem_placeholder: 'titulo de la nota...'
+      mem_placeholder: 'titulo de la nota...',
+      pro_view_title: 'FUNCIONES PRO',
+      pro_view_note: 'La version gratuita sigue funcionando: 20 consultas al engine por dia, 50 entradas de memoria, 2 proyectos, reconocimiento basico, interfaz oscura completa y linea de tiempo de sesion. PRO anade las capacidades de abajo.',
+      pro_col_free: 'FREE',
+      pro_col_pro: 'PRO',
+      pro_free_features: [
+        '20 consultas al assistant engine por dia',
+        '50 entradas de memoria (se borran al cerrar sesion)',
+        '2 proyectos activos simultaneos',
+        'Herramientas de reconocimiento basico',
+        'Interfaz oscura completa',
+        'Terminal conversacional',
+        'Linea de tiempo de sesion actual',
+        'Sin exportacion de informes',
+        '1 hora de sesion continua'
+      ],
+      pro_pro_features: [
+        'Assistant engine ilimitado',
+        'Agente autonomo (pregunta antes de ejecutar ataques)',
+        'Vault de credenciales cifrado (AES-256)',
+        'Informes profesionales (PDF, DOCX, HTML, Markdown)',
+        'Memoria persistente entre sesiones',
+        'Proyectos ilimitados',
+        'Linea de tiempo exportable con marcas forenses',
+        'Auto-etiquetado por severidad',
+        'Busqueda semantica en memoria',
+        'Snapshots de sesion',
+        'Sugerencia de mitigacion por vulnerabilidad',
+        'Modo Teacher (explicaciones paso a paso)',
+        'API REST local para automatizacion',
+        'Webhooks a Slack / Discord / Telegram',
+        'Sistema de plugins en Python',
+        'Scheduler de escaneos automaticos',
+        'Integracion de PoCs personalizados',
+        'Escaneo de IoT / servicios expuestos (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP)',
+        'Gamificacion (logros y badges tecnicos)',
+        'Colaboracion multiusuario en red local',
+        'Marketplace de playbooks',
+        'Acceso a TODAS las herramientas de Kali Linux / Parrot OS'
+      ]
     }
   };
 
@@ -205,7 +285,18 @@ Local only. WARNING: authorized security testing only.
       t('pro_info2') + '@Cyt3rTo0ls' + t('pro_info3');
     document.documentElement.lang = lang;
     HBTerminal.setLang(lang);
+    renderProView();
     loadStatus();
+  }
+
+  function renderProView() {
+    $('pro-view-note').textContent = t('pro_view_note');
+    $('pro-free-list').innerHTML = t('pro_free_features').map(function (f) {
+      return '<li>' + f + '</li>';
+    }).join('');
+    $('pro-pro-list').innerHTML = t('pro_pro_features').map(function (f) {
+      return '<li>' + f + '</li>';
+    }).join('');
   }
 
   function setLang(next) {
@@ -491,6 +582,7 @@ Local only. WARNING: authorized security testing only.
         if (b.dataset.view === 'vulns') loadVulns();
         if (b.dataset.view === 'memory') loadMemory();
         if (b.dataset.view === 'vault') loadVaultEntries(false);
+        if (b.dataset.view === 'pro') renderProView();
       });
     });
 
@@ -498,6 +590,7 @@ Local only. WARNING: authorized security testing only.
     $('btn-close-modal').addEventListener('click', closeModal);
     $('btn-activate').addEventListener('click', activate);
     $('btn-goto-pro').addEventListener('click', openModal);
+    $('btn-pro-view-activate').addEventListener('click', openModal);
     document.querySelectorAll('[data-goto-pro]').forEach(function (b) {
       b.addEventListener('click', openModal);
     });
@@ -547,10 +640,25 @@ Local only. WARNING: authorized security testing only.
   // ---------------- init ----------------
   function init() {
     HBTerminal.printBanner();
+
+    // URL hints: #en / #es force the interface language, #pro opens the
+    // PRO features view on load (useful for direct links and screenshots).
+    const hash = (location.hash || '').toLowerCase();
+    if (hash.indexOf('es') !== -1) lang = 'es';
+    if (hash.indexOf('en') !== -1) lang = 'en';
+
     setLang(lang); // apply stored language (sets banner text, labels, status)
     wireEvents();
     setSessionTimer();
     connectWS();
+
+    if (hash.indexOf('pro') !== -1) {
+      document.querySelectorAll('.nav-btn').forEach(function (x) { x.classList.remove('active'); });
+      document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+      document.querySelector('.nav-btn[data-view="pro"]').classList.add('active');
+      $('view-pro').classList.add('active');
+      renderProView();
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);

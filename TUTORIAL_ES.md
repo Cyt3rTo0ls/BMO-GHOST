@@ -38,6 +38,12 @@ local y usar las funciones principales.
 - Suficiente RAM/disco libre para el modelo del assistant engine que quieras cargar
 - Internet solo para el `pip install` inicial; la aplicacion en si funciona offline
 
+Nota de hardware: el motor conversacional necesita una maquina que pueda
+ejecutar un modelo local (CPU/GPU capaz y suficiente RAM). La maquina del
+autor no lo ejecuta; este proyecto apunta a usuarios cuyo hardware si puede.
+El resto de funciones (herramientas, memoria, vault, informes) corren en
+cualquier equipo Kali/Parrot aunque no haya engine.
+
 Comprueba tu version de Python:
 
 ```bash
@@ -191,7 +197,7 @@ En lugar de escribir comandos crudos, puedes usar los ayudantes integrados:
 
 PRO desbloquea: uso ilimitado del assistant engine, vault cifrado, generacion
 de informes, memoria persistente, proyectos ilimitados, plugins, webhooks,
-snapshots y mas.
+snapshots, escaneo de IoT/servicios expuestos y mas.
 
 ## 10. Solucion de problemas
 

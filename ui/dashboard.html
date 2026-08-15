@@ -33,6 +33,7 @@
       <button class="nav-btn" data-view="vault" data-i18n="nav_vault">VAULT</button>
       <button class="nav-btn" data-view="reports" data-i18n="nav_reports">REPORTS</button>
       <button class="nav-btn" data-view="memory" data-i18n="nav_memory">MEMORY</button>
+      <button class="nav-btn" data-view="pro" data-i18n="nav_pro">PRO</button>
       <div class="nav-foot">
         <span class="dim small">Cyt3rTo0ls</span>
         <span class="dim small">AGPL-3.0</span>
@@ -130,6 +131,25 @@
           <button id="btn-generate-report" class="ghost" data-i18n="reports_generate">GENERATE</button>
           <div class="progress hidden"><div id="progress-bar"></div></div>
           <div id="report-result" class="dim small"></div>
+        </div>
+      </section>
+
+      <!-- PRO VIEW (visible to free users) -->
+      <section id="view-pro" class="view">
+        <div class="view-head"><h2 data-i18n="pro_view_title">PRO FEATURES</h2></div>
+        <p class="dim small" id="pro-view-note"></p>
+        <div class="pro-compare">
+          <div class="pro-col free-col">
+            <h3 data-i18n="pro_col_free">FREE</h3>
+            <ul id="pro-free-list"></ul>
+          </div>
+          <div class="pro-col pro-col2">
+            <h3 data-i18n="pro_col_pro">PRO</h3>
+            <ul id="pro-pro-list"></ul>
+          </div>
+        </div>
+        <div class="row">
+          <button id="btn-pro-view-activate" class="ghost" data-i18n="vault_goto_pro">ACTIVATE PRO</button>
         </div>
       </section>
 
