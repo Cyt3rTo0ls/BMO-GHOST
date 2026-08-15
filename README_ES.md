@@ -93,6 +93,10 @@ Vista de vulnerabilidades con filtros por severidad:
 
 ![HackerBrain OS vulnerabilities](images/vulns.png)
 
+Vista de memoria con estadisticas y entidades guardadas:
+
+![HackerBrain OS memory](images/memory.png)
+
 ---
 
 ## CARACTERISTICAS

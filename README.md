@@ -88,6 +88,10 @@ Vulnerabilities view with severity filters:
 
 ![HackerBrain OS vulnerabilities](images/vulns.png)
 
+Memory view with stats and stored entities:
+
+![HackerBrain OS memory](images/memory.png)
+
 ---
 
 ## FEATURES
