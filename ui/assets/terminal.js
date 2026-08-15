@@ -81,6 +81,11 @@ WARNING: authorized security testing only.
 
   function renderResult(res) {
     if (!res) return;
+    if (res.verbose && Array.isArray(res.verbose)) {
+      res.verbose.forEach(function (v) {
+        print(v, 'out-verbose');
+      });
+    }
     if (res.error) print(res.error, 'out-err');
     if (res.output) {
       String(res.output).split('\n').forEach(function (l) {

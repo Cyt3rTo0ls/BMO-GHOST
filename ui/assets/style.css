@@ -112,6 +112,7 @@ body {
 .out-err { color: var(--red); }
 .out-info { color: var(--dim); }
 .out-warn { color: var(--orange); }
+.out-verbose { color: var(--dim); font-style: italic; }
 .blink { animation: blink 1s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 

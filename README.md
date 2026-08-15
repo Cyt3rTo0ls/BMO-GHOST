@@ -15,7 +15,17 @@ assistant engine that analyzes output and proposes the next step.
 
 Author: **Cyt3rTo0ls** - License: **AGPL-3.0**
 
-**Tutorials:** [English](TUTORIAL.md) | [Espanol](TUTORIAL_ES.md)
+---
+
+## README LANGUAGE / IDIOMA
+
+This repository is documented in two languages.
+Este repositorio esta documentado en dos idiomas.
+
+| English | Espanol |
+| --- | --- |
+| [README (English)](README.md) | [README (Espanol)](README_ES.md) |
+| [TUTORIAL (English)](TUTORIAL.md) | [TUTORIAL (Espanol)](TUTORIAL_ES.md) |
 
 ---
 
@@ -170,8 +180,9 @@ significant CPU/RAM.
 
 Full step-by-step guides: [TUTORIAL.md](TUTORIAL.md) (English) and
 [TUTORIAL_ES.md](TUTORIAL_ES.md) (Espanol). The interface includes a
-language selector (EN/ES) in the status bar, and the free tier can browse
-all PRO capabilities from the sidebar (PRO view).
+language selector (EN/ES) in the status bar, a verbose mode toggle that
+shows how long the assistant engine is thinking for each step, and the
+free tier can browse all PRO capabilities from the sidebar (PRO view).
 
 The terminal prompt (`>`) accepts both commands and questions.
 

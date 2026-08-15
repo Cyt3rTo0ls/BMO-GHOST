@@ -257,6 +257,13 @@ Local only. WARNING: authorized security testing only.
   };
 
   const STORAGE_KEY = 'hb_lang';
+  const VERBOSE_KEY = 'hb_verbose';
+  let verboseEnabled = true;
+  try {
+    const v = localStorage.getItem(VERBOSE_KEY);
+    if (v === '0' || v === 'false') verboseEnabled = false;
+  } catch (e) { /* private mode */ }
+
   let lang = 'en';
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -304,6 +311,13 @@ Local only. WARNING: authorized security testing only.
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* ignore */ }
     $('btn-lang').textContent = lang === 'en' ? 'EN' : 'ES';
     applyLang();
+  }
+
+  function setVerbose(on) {
+    verboseEnabled = !!on;
+    try { localStorage.setItem(VERBOSE_KEY, verboseEnabled ? '1' : '0'); } catch (e) { /* ignore */ }
+    $('btn-verbose').textContent = verboseEnabled ? (lang === 'es' ? 'VERB: ON' : 'VERBOSE: ON') : (lang === 'es' ? 'VERB: OFF' : 'VERBOSE: OFF');
+    $('btn-verbose').classList.toggle('on', verboseEnabled);
   }
 
   // ---------------- state ----------------
@@ -357,6 +371,11 @@ Local only. WARNING: authorized security testing only.
         loadTimeline();
       } else if (data.type === 'result') {
         HBTerminal.renderResult(data);
+      } else if (data.type === 'status') {
+        // verbose progress event from the server (engine thinking...)
+        if (verboseEnabled) {
+          HBTerminal.print(data.message || '', 'out-verbose');
+        }
       } else if (data.type === 'timeline') {
         renderTimeline(data.events || []);
       } else if (data.type === 'tools') {
@@ -566,6 +585,10 @@ Local only. WARNING: authorized security testing only.
       setLang(HBTerminal.getLang() === 'en' ? 'es' : 'en');
     });
 
+    $('btn-verbose').addEventListener('click', function () {
+      setVerbose(!verboseEnabled);
+    });
+
     document.querySelectorAll('.qbtn').forEach(function (b) {
       b.addEventListener('click', function () {
         $('term-input').value = b.dataset.cmd;
@@ -648,6 +671,7 @@ Local only. WARNING: authorized security testing only.
     if (hash.indexOf('en') !== -1) lang = 'en';
 
     setLang(lang); // apply stored language (sets banner text, labels, status)
+    setVerbose(verboseEnabled);
     wireEvents();
     setSessionTimer();
     connectWS();

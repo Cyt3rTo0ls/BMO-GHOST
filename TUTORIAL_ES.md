@@ -1,5 +1,7 @@
 # HackerBrain OS - Tutorial de instalacion y uso (Espanol)
 
+**Idioma / Language:** [Espanol](TUTORIAL_ES.md) | [English](TUTORIAL.md)
+
 Esta guia explica como instalar HackerBrain OS, conectar el assistant engine
 local y usar las funciones principales.
 
@@ -153,6 +155,10 @@ Comandos:
   La salida se recorta para la pantalla pero se captura completa para la sesion.
 - Los comandos destructivos de alto riesgo (por ejemplo `rm -rf /`) estan
   bloqueados por un filtro de seguridad.
+- Activa o desactiva el modo verbose: `verbose on` / `verbose off` (o el boton
+  VERBOSE de la barra de estado). Cuando esta activo, la terminal muestra
+  cuanto tarda el assistant engine en pensar en cada paso (por ejemplo
+  `[engine thought for 12.4s]`) y cuanto tardo cada comando en ejecutarse.
 
 Preguntas (en ingles o espanol):
 
@@ -249,3 +255,4 @@ snapshots, escaneo de IoT/servicios expuestos y mas.
 ---
 
 Version en ingles: [TUTORIAL.md](TUTORIAL.md)
+README en espanol: [README_ES.md](README_ES.md)
