@@ -33,3 +33,8 @@ nohup.out
 *_scan.gnmap
 *_scan.xml
 ferox_*.txt
+
+# Tech fingerprint artifacts
+tech_fingerprint.txt
+nuclei_*.json
+
