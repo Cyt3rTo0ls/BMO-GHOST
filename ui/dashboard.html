@@ -13,25 +13,26 @@
   <header id="statusbar">
     <span class="brand">HACKERBRAIN<span class="accent">OS</span></span>
     <span class="sep">|</span>
-    <span id="status-project">PROJECT: default</span>
+    <span id="status-project" data-i18n="st_project">PROJECT: default</span>
     <span class="sep">|</span>
-    <span id="status-time">SESSION: 00:00</span>
+    <span id="status-time" data-i18n="st_session">SESSION: 00:00</span>
     <span class="sep">|</span>
     <span id="status-ver">v1.0.0 LOCAL</span>
     <span class="spacer"></span>
-    <span id="status-engine" class="pill dim">engine: checking</span>
-    <button id="btn-pro" class="pill pro" title="Activate PRO">FREE</button>
+    <span id="status-engine" class="pill dim" data-i18n="st_engine_check">engine: checking</span>
+    <button id="btn-lang" class="pill" title="Switch language">EN/ES</button>
+    <button id="btn-pro" class="pill pro" title="Activate PRO" data-i18n="st_free">FREE</button>
   </header>
 
   <div id="layout">
 
     <!-- sidebar -->
     <nav id="sidebar">
-      <button class="nav-btn active" data-view="terminal">TERMINAL</button>
-      <button class="nav-btn" data-view="vulns">VULNERABILITIES</button>
-      <button class="nav-btn" data-view="vault">VAULT</button>
-      <button class="nav-btn" data-view="reports">REPORTS</button>
-      <button class="nav-btn" data-view="memory">MEMORY</button>
+      <button class="nav-btn active" data-view="terminal" data-i18n="nav_terminal">TERMINAL</button>
+      <button class="nav-btn" data-view="vulns" data-i18n="nav_vulns">VULNERABILITIES</button>
+      <button class="nav-btn" data-view="vault" data-i18n="nav_vault">VAULT</button>
+      <button class="nav-btn" data-view="reports" data-i18n="nav_reports">REPORTS</button>
+      <button class="nav-btn" data-view="memory" data-i18n="nav_memory">MEMORY</button>
       <div class="nav-foot">
         <span class="dim small">Cyt3rTo0ls</span>
         <span class="dim small">AGPL-3.0</span>
@@ -47,23 +48,23 @@
           <div id="term-output"></div>
           <div class="term-line">
             <span class="prompt">&gt;</span>
-            <input id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="type a command or question...">
+            <input id="term-input" type="text" autocomplete="off" spellcheck="false" data-i18n-ph="term_placeholder">
           </div>
         </div>
         <div class="quick-actions">
-          <span class="dim small">QUICK:</span>
-          <button class="qbtn" data-cmd="status">status</button>
-          <button class="qbtn" data-cmd="nmap -sV -T4 127.0.0.1">nmap loopback</button>
-          <button class="qbtn" data-cmd="searchsploit --list">searchsploit list</button>
-          <button class="qbtn" data-cmd="whoami">whoami</button>
+          <span class="dim small" data-i18n="term_quick">QUICK:</span>
+          <button class="qbtn" data-cmd="status" data-i18n="quick_status">status</button>
+          <button class="qbtn" data-cmd="nmap -sV -T4 127.0.0.1" data-i18n="quick_nmap">nmap loopback</button>
+          <button class="qbtn" data-cmd="searchsploit --list" data-i18n="quick_searchsploit">searchsploit list</button>
+          <button class="qbtn" data-cmd="whoami" data-i18n="quick_whoami">whoami</button>
         </div>
       </section>
 
       <!-- VULNS VIEW -->
       <section id="view-vulns" class="view">
         <div class="view-head">
-          <h2>VULNERABILITIES</h2>
-          <button id="btn-refresh-vulns" class="ghost">REFRESH</button>
+          <h2 data-i18n="vulns_title">VULNERABILITIES</h2>
+          <button id="btn-refresh-vulns" class="ghost" data-i18n="vulns_refresh">REFRESH</button>
         </div>
         <div id="vuln-list" class="cards"></div>
       </section>
@@ -71,26 +72,26 @@
       <!-- VAULT VIEW (PRO) -->
       <section id="view-vault" class="view">
         <div class="view-head">
-          <h2>CREDENTIAL VAULT</h2>
-          <button id="btn-vault-reveal" class="ghost">REVEAL</button>
+          <h2 data-i18n="vault_title">CREDENTIAL VAULT</h2>
+          <button id="btn-vault-reveal" class="ghost" data-i18n="vault_reveal">REVEAL</button>
         </div>
         <div id="vault-lock" class="lockbox">
-          <p>Vault requires PRO activation.</p>
-          <button id="btn-goto-pro" class="ghost">ACTIVATE PRO</button>
+          <p data-i18n="vault_locked">Vault requires PRO activation.</p>
+          <button id="btn-goto-pro" class="ghost" data-i18n="vault_goto_pro">ACTIVATE PRO</button>
         </div>
         <div id="vault-body" class="hidden">
           <div class="row">
-            <input id="vault-pw" type="password" placeholder="master password">
-            <button id="btn-vault-unlock" class="ghost">UNLOCK</button>
+            <input id="vault-pw" type="password" data-i18n-ph="vault_master_pw">
+            <button id="btn-vault-unlock" class="ghost" data-i18n="vault_unlock">UNLOCK</button>
           </div>
           <div class="row">
-            <input id="vault-service" placeholder="service">
-            <input id="vault-user" placeholder="username">
-            <input id="vault-pass" type="password" placeholder="password">
-            <button id="btn-vault-store" class="ghost">STORE</button>
+            <input id="vault-service" data-i18n-ph="vault_service">
+            <input id="vault-user" data-i18n-ph="vault_user">
+            <input id="vault-pass" type="password" data-i18n-ph="vault_pass">
+            <button id="btn-vault-store" class="ghost" data-i18n="vault_store">STORE</button>
           </div>
           <table id="vault-table">
-            <thead><tr><th>ID</th><th>SERVICE</th><th>USERNAME</th><th>PASSWORD</th></tr></thead>
+            <thead><tr><th data-i18n="vault_col_id">ID</th><th data-i18n="vault_col_service">SERVICE</th><th data-i18n="vault_col_user">USERNAME</th><th data-i18n="vault_col_pass">PASSWORD</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -98,21 +99,21 @@
 
       <!-- REPORTS VIEW (PRO) -->
       <section id="view-reports" class="view">
-        <div class="view-head"><h2>REPORT GENERATOR</h2></div>
+        <div class="view-head"><h2 data-i18n="reports_title">REPORT GENERATOR</h2></div>
         <div id="reports-lock" class="lockbox">
-          <p>Report generation requires PRO activation.</p>
-          <button class="ghost" data-goto-pro>ACTIVATE PRO</button>
+          <p data-i18n="reports_locked">Report generation requires PRO activation.</p>
+          <button class="ghost" data-goto-pro data-i18n="reports_goto_pro">ACTIVATE PRO</button>
         </div>
         <div id="reports-body" class="hidden">
-          <label>Template
+          <label data-i18n="reports_template">Template
             <select id="rep-template">
-              <option value="executive">Executive</option>
-              <option value="technical" selected>Technical</option>
-              <option value="pci-dss">PCI-DSS</option>
-              <option value="hipaa">HIPAA</option>
+              <option value="executive" data-i18n="reports_tpl_exec">Executive</option>
+              <option value="technical" selected data-i18n="reports_tpl_tech">Technical</option>
+              <option value="pci-dss" data-i18n="reports_tpl_pci">PCI-DSS</option>
+              <option value="hipaa" data-i18n="reports_tpl_hipaa">HIPAA</option>
             </select>
           </label>
-          <label>Format
+          <label data-i18n="reports_format">Format
             <select id="rep-format">
               <option value="pdf">PDF</option>
               <option value="docx">DOCX</option>
@@ -121,12 +122,12 @@
             </select>
           </label>
           <div class="checks">
-            <label><input type="checkbox" id="rep-scope" checked> scope</label>
-            <label><input type="checkbox" id="rep-findings" checked> findings</label>
-            <label><input type="checkbox" id="rep-recs" checked> recommendations</label>
-            <label><input type="checkbox" id="rep-risk" checked> risk overview</label>
+            <label><input type="checkbox" id="rep-scope" checked data-i18n="reports_sec_scope"> scope</label>
+            <label><input type="checkbox" id="rep-findings" checked data-i18n="reports_sec_findings"> findings</label>
+            <label><input type="checkbox" id="rep-recs" checked data-i18n="reports_sec_recs"> recommendations</label>
+            <label><input type="checkbox" id="rep-risk" checked data-i18n="reports_sec_risk"> risk overview</label>
           </div>
-          <button id="btn-generate-report" class="ghost">GENERATE</button>
+          <button id="btn-generate-report" class="ghost" data-i18n="reports_generate">GENERATE</button>
           <div class="progress hidden"><div id="progress-bar"></div></div>
           <div id="report-result" class="dim small"></div>
         </div>
@@ -134,18 +135,18 @@
 
       <!-- MEMORY VIEW -->
       <section id="view-memory" class="view">
-        <div class="view-head"><h2>MEMORY</h2><button id="btn-refresh-mem" class="ghost">REFRESH</button></div>
+        <div class="view-head"><h2 data-i18n="memory_title">MEMORY</h2><button id="btn-refresh-mem" class="ghost" data-i18n="memory_refresh">REFRESH</button></div>
         <div class="mem-grid">
           <div class="mem-panel">
-            <h3>HOSTS</h3>
+            <h3 data-i18n="memory_hosts">HOSTS</h3>
             <ul id="mem-hosts"></ul>
           </div>
           <div class="mem-panel">
-            <h3>CREDENTIALS</h3>
+            <h3 data-i18n="memory_creds">CREDENTIALS</h3>
             <ul id="mem-creds"></ul>
           </div>
           <div class="mem-panel">
-            <h3>NOTES</h3>
+            <h3 data-i18n="memory_notes">NOTES</h3>
             <ul id="mem-notes"></ul>
           </div>
         </div>
@@ -155,7 +156,7 @@
 
     <!-- right timeline panel -->
     <aside id="timeline-panel">
-      <div class="view-head"><h3>TIMELINE</h3></div>
+      <div class="view-head"><h3 data-i18n="timeline_title">TIMELINE</h3></div>
       <div id="timeline-list"></div>
     </aside>
 
@@ -165,17 +166,12 @@
 <!-- PRO activation modal -->
 <div id="pro-modal" class="modal hidden">
   <div class="modal-box">
-    <h2>PRO ACTIVATION</h2>
-    <p class="dim small">
-      Price: 35 USDT (one-time, permanent).<br>
-      Wallet (TON): <span class="accent">UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9</span><br>
-      Contact: <span class="accent">@Cyt3rTo0ls</span> on Telegram.<br>
-      Steps: pay, contact, send screenshot, receive 6-digit key, enter below.
-    </p>
-    <input id="pro-key" type="text" maxlength="6" placeholder="6-digit key" autocomplete="off">
+    <h2 data-i18n="pro_title">PRO ACTIVATION</h2>
+    <p class="dim small" id="pro-info"></p>
+    <input id="pro-key" type="text" maxlength="6" data-i18n-ph="pro_key_ph" autocomplete="off">
     <div class="row">
-      <button id="btn-activate" class="ghost">ACTIVATE</button>
-      <button id="btn-close-modal" class="ghost">CLOSE</button>
+      <button id="btn-activate" class="ghost" data-i18n="pro_activate">ACTIVATE</button>
+      <button id="btn-close-modal" class="ghost" data-i18n="pro_close">CLOSE</button>
     </div>
     <p id="pro-result" class="dim small"></p>
   </div>

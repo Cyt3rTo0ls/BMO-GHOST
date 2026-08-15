@@ -1,7 +1,8 @@
 /*
 HackerBrain OS - terminal.js
 Terminal emulator: command history, output formatting, syntax highlighting.
-Local only. WARNING: authorized security testing only.
+Supports EN/ES interface language. Local only.
+WARNING: authorized security testing only.
 */
 
 (function () {
@@ -12,13 +13,41 @@ Local only. WARNING: authorized security testing only.
 
   const history = [];
   let historyIndex = -1;
+  let lang = 'en';
 
-  const banner = [
-    'HACKERBRAIN OS - LOCAL PENTESTING COMMAND CENTER',
-    'local session | authorized testing only | offline engine',
-    'type "help" for commands, or ask a question in plain text',
-    ''
-  ];
+  const STR = {
+    en: {
+      banner: [
+        'HACKERBRAIN OS - LOCAL PENTESTING COMMAND CENTER',
+        'local session | authorized testing only | offline engine',
+        'type "help" for commands, or ask a question in plain text',
+        ''
+      ],
+      analysis: '--- engine analysis ---',
+      nonZero: '(command returned non-zero)',
+      noOutput: '(no output)',
+      engineOffline: '[assistant engine offline] Engine not reachable on localhost.',
+      seconds: 's'
+    },
+    es: {
+      banner: [
+        'HACKERBRAIN OS - CENTRO LOCAL DE PENTESTING',
+        'sesion local | solo pruebas autorizadas | engine offline',
+        'escribe "help" para comandos, o haz una pregunta en texto plano',
+        ''
+      ],
+      analysis: '--- analisis del engine ---',
+      nonZero: '(el comando devolvio codigo distinto de cero)',
+      noOutput: '(sin salida)',
+      engineOffline: '[assistant engine offline] Engine no accesible en localhost.',
+      seconds: 's'
+    }
+  };
+
+  function str(key) {
+    const d = STR[lang] || STR.en;
+    return d[key] !== undefined ? d[key] : STR.en[key];
+  }
 
   function esc(text) {
     const div = document.createElement('div');
@@ -46,6 +75,10 @@ Local only. WARNING: authorized security testing only.
     outEl.scrollTop = outEl.scrollHeight;
   }
 
+  function clear() {
+    outEl.innerHTML = '';
+  }
+
   function renderResult(res) {
     if (!res) return;
     if (res.error) print(res.error, 'out-err');
@@ -53,17 +86,19 @@ Local only. WARNING: authorized security testing only.
       String(res.output).split('\n').forEach(function (l) {
         print(l, 'out-info');
       });
+    } else if (res.ok) {
+      print(str('noOutput'), 'out-info');
     }
     if (res.analysis) {
-      print('--- engine analysis ---', 'out-ok');
+      print(str('analysis'), 'out-ok');
       print(res.analysis, 'out-ok');
     }
-    if (res.ok === false && !res.error) print('(command returned non-zero)', 'out-warn');
-    print('[' + (res.duration || '0.00') + 's]', 'out-info');
+    if (res.ok === false && !res.error) print(str('nonZero'), 'out-warn');
+    print('[' + (res.duration || '0.00') + str('seconds') + ']', 'out-info');
   }
 
   function printBanner() {
-    banner.forEach(function (l) { print(l, 'out-cmd'); });
+    str('banner').forEach(function (l) { print(l, 'out-cmd'); });
   }
 
   function submit(cb) {
@@ -97,11 +132,25 @@ Local only. WARNING: authorized security testing only.
     }
   }
 
+  // Switch language and re-print the banner (output history is kept).
+  function setLang(next) {
+    lang = next === 'es' ? 'es' : 'en';
+    clear();
+    printBanner();
+  }
+
+  function getLang() {
+    return lang;
+  }
+
   window.HBTerminal = {
     print: print,
     printBanner: printBanner,
     renderResult: renderResult,
     submit: submit,
-    onKey: onKey
+    onKey: onKey,
+    setLang: setLang,
+    getLang: getLang,
+    str: str
   };
 })();

@@ -15,6 +15,8 @@ assistant engine that analyzes output and proposes the next step.
 
 Author: **Cyt3rTo0ls** - License: **AGPL-3.0**
 
+**Tutorials:** [English](TUTORIAL.md) | [Espanol](TUTORIAL_ES.md)
+
 ---
 
 ## IMPORTANT: LOCAL APPLICATION - RESOURCE CONSUMPTION
@@ -136,6 +138,10 @@ significant CPU/RAM.
 ---
 
 ## USAGE
+
+Full step-by-step guides: [TUTORIAL.md](TUTORIAL.md) (English) and
+[TUTORIAL_ES.md](TUTORIAL_ES.md) (Espanol). The interface includes a
+language selector (EN/ES) in the status bar.
 
 The terminal prompt (`>`) accepts both commands and questions.
 
