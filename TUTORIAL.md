@@ -278,6 +278,15 @@ Every scan reports an **estimated duration** up front (verbose line
 `[estimated duration: ~X min]`), so you know how long a step will take,
 including how rate limits stretch the time.
 
+### Minimum censorship
+
+HackerBrain OS does not censor professional tooling: iptables/ufw, dd, mkfs
+and all exploit/post-exploitation tools run freely. Only commands that would
+destroy the local host itself are blocked. The engine marks a step as
+high-risk only for truly irreversible actions, so routine sqlmap/hydra/
+exploit steps don't trigger confirmations. To disable the confirmation gate
+totally (persistent): `aggressive on` / `aggressive off`.
+
 ## 9b. OSINT (open-source intelligence)
 
 HackerBrain OS ships a full OSINT module (`osint <target>` auto-routes the

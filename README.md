@@ -250,6 +250,28 @@ never executed without explicit confirmation**: the agent proposes the
 command and waits for your `yes` / `no` before running it. This matches the
 PRO autonomous-agent behavior described in the features table.
 
+### Minimum censorship / aggressive mode
+
+The tool is designed for professional, authorized engagements and does not
+second-guess the operator: firewall changes (iptables/ufw), disk imaging
+(dd), lab formatting (mkfs) and all standard exploit/post-exploitation
+tooling run freely. Only commands that would destroy the local host itself
+(`rm -rf /`, writing to raw block devices) are blocked. The engine is
+instructed to mark a command as high-risk only when it is truly
+irreversible, so routine sqlmap/hydra/exploit steps do not trigger the
+confirmation gate.
+
+If you want zero confirmation prompts during autonomous mode, enable
+aggressive mode (persistent across restarts):
+
+```
+> aggressive on
+> aggressive off
+```
+
+When ON, the confirmation gate is skipped and you take full responsibility
+for every command the engine runs.
+
 Memory panel tracks hosts, credentials, vulnerabilities and notes. The
 timeline panel records every event with timestamps.
 

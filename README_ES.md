@@ -258,6 +258,28 @@ etc.) nunca se ejecutan sin confirmacion explicita**: el agente propone el
 comando y espera tu `si` / `no` antes de ejecutarlo. Esto coincide con el
 comportamiento del agente autonomo PRO descrito en la tabla de caracteristicas.
 
+### Minima censura / modo agresivo
+
+La herramienta esta pensada para trabajo profesional y autorizado y no
+cuestiona al operador: cambios de firewall (iptables/ufw), imagen de discos
+(dd), formateo en laboratorios (mkfs) y todo el toolset estandar de
+explotacion/post-explotacion se ejecuta libremente. Solo se bloquean los
+comandos que destruirian el propio host local (`rm -rf /`, escritura a
+dispositivos de bloque). El engine tiene instrucciones de marcar como
+alto riesgo solo lo realmente irreversible, asi los pasos rutinarios de
+sqlmap/hydra/explotacion no disparan el gate de confirmacion.
+
+Si quieres cero prompts de confirmacion durante el modo autonomo, activa el
+modo agresivo (persistente entre reinicios):
+
+```
+> aggressive on
+> aggressive off
+```
+
+Cuando esta ON, el gate de confirmacion se omite y tu asumes toda la
+responsabilidad de cada comando que ejecute el engine.
+
 El panel de memoria registra hosts, credenciales, vulnerabilidades y notas. El
 panel de linea de tiempo registra cada evento con marca de tiempo.
 

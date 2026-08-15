@@ -282,6 +282,16 @@ Cada escaneo informa una **duracion estimada** por adelantado (linea verbose
 `[estimated duration: ~X min]`), para que sepas cuanto tardara cada paso,
 incluyendo como el rate limit alarga el tiempo.
 
+### Minima censura
+
+HackerBrain OS no censura el toolset profesional: iptables/ufw, dd, mkfs y
+todas las herramientas de explotacion/post-explotacion se ejecutan libremente.
+Solo se bloquean los comandos que destruirian el propio host local. El engine
+marca un paso como alto riesgo solo para acciones realmente irreversibles, asi
+los pasos rutinarios de sqlmap/hydra/explotacion no disparan confirmaciones.
+Para desactivar el gate de confirmacion por completo (persistente):
+`aggressive on` / `aggressive off`.
+
 ## 9b. OSINT (inteligencia de fuentes abiertas)
 
 HackerBrain OS incluye un modulo OSINT completo (`osint <objetivo>`
