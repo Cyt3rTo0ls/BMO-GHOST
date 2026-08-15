@@ -273,7 +273,6 @@ Playbooks (reusable scan sequences, YAML/JSON) go in `playbooks/`.
 ```
 hackerbrain-os/
 ├── app.py                 # FastAPI application (UI, WebSocket, REST, key middleware)
-├── generate_key.py        # owner-only key minting tool
 ├── key_validator.py       # public key validation entry point
 ├── bot_handler.py         # Telegram support bot
 ├── install.sh             # installer

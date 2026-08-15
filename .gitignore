@@ -7,6 +7,10 @@ data/keys.log
 data/snapshots/
 data/.keep
 
+# Owner-only key generator (lives outside the repo in ~/hackerbrain-keys)
+generate_key.py
+key_mint*/
+
 # Python
 __pycache__/
 *.py[cod]

@@ -282,7 +282,6 @@ Los playbooks (secuencias de escaneo reutilizables, YAML/JSON) van en
 ```
 hackerbrain-os/
 ├── app.py                 # Aplicacion FastAPI (UI, WebSocket, REST, middleware de key)
-├── generate_key.py        # herramienta de generacion de keys (solo dueno)
 ├── key_validator.py       # punto de entrada publico de validacion de key
 ├── bot_handler.py         # bot de soporte de Telegram
 ├── install.sh             # instalador

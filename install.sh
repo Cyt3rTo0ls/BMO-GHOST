@@ -193,7 +193,7 @@ PYEOF
 
 # --- permissions ---------------------------------------------------------
 info "Setting file permissions..."
-chmod 755 "$ROOT_DIR/install.sh" "$ROOT_DIR/app.py" "$ROOT_DIR/generate_key.py" 2>/dev/null || true
+chmod 755 "$ROOT_DIR/install.sh" "$ROOT_DIR/app.py" 2>/dev/null || true
 chmod 644 "$ROOT_DIR/requirements.txt" "$ROOT_DIR/README.md" 2>/dev/null || true
 
 # --- done ----------------------------------------------------------------
