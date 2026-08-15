@@ -245,6 +245,39 @@ PRO unlocks: unlimited engine usage, encrypted vault, report generation,
 persistent memory, unlimited projects, plugins, webhooks, snapshots,
 IoT/exposed-services scanning, and more.
 
+### PRO activation is PERMANENT and single-use
+
+- The key is **bound to this machine**: once activated, PRO stays active
+  across restarts and sessions. You never re-enter the key.
+- Keys are **single-use**: the first machine that activates a key consumes
+  it, so the same key cannot be sold twice. If a key is shared/stolen, the
+  seller can revoke it globally and it stops working everywhere.
+
+### PRO training (teach the assistant)
+
+PRO users can teach the assistant their preferences. Entries are stored
+locally and injected into the engine context on every turn:
+
+```
+train preference: always use -sV service detection
+train target: 10.0.0.5 is the production box
+> training            # list entries
+```
+
+Or via the UI (PRO section). This is lightweight context injection -
+no model weights are modified, everything stays local.
+
+### Extra recon commands
+
+```
+dns example.com                 # A/AAAA/MX/NS/TXT/SOA/CNAME enumeration
+dnsspoof example.com            # DNS spoofing/cache-poisoning test (authorized labs)
+```
+
+Every scan reports an **estimated duration** up front (verbose line
+`[estimated duration: ~X min]`), so you know how long a step will take,
+including how rate limits stretch the time.
+
 ## 10. Troubleshooting
 
 | Symptom | Cause / fix |

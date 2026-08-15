@@ -248,6 +248,40 @@ PRO desbloquea: uso ilimitado del assistant engine, vault cifrado, generacion
 de informes, memoria persistente, proyectos ilimitados, plugins, webhooks,
 snapshots, escaneo de IoT/servicios expuestos y mas.
 
+### La activacion PRO es PERMANENTE y de un solo uso
+
+- La key queda **ligada a esta maquina**: una vez activada, PRO sigue activo
+  entre reinicios y sesiones. Nunca vuelves a introducir la key.
+- Las keys son de **un solo uso**: la primera maquina que activa una key la
+  consume, asi que la misma key no puede venderse dos veces. Si una key se
+  comparte o roba, el vendedor puede revocarla globalmente y deja de
+  funcionar en todos lados.
+
+### Entrenamiento PRO (enseña al asistente)
+
+Los usuarios PRO pueden enseñar al asistente sus preferencias. Las entradas
+se guardan localmente y se inyectan en el contexto del engine en cada turno:
+
+```
+train preference: usa siempre deteccion de servicios -sV
+train target: 10.0.0.5 es la maquina de produccion
+> training            # lista las entradas
+```
+
+O desde la UI (seccion PRO). Es una inyeccion ligera de contexto - no se
+modifican pesos del modelo, todo permanece local.
+
+### Comandos extra de reconocimiento
+
+```
+dns example.com                 # enumeracion A/AAAA/MX/NS/TXT/SOA/CNAME
+dnsspoof example.com            # prueba de DNS spoofing/envenenamiento (labs autorizados)
+```
+
+Cada escaneo informa una **duracion estimada** por adelantado (linea verbose
+`[estimated duration: ~X min]`), para que sepas cuanto tardara cada paso,
+incluyendo como el rate limit alarga el tiempo.
+
 ## 10. Solucion de problemas
 
 | Sintoma | Causa / solucion |

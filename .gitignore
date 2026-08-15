@@ -4,6 +4,10 @@ data/*.db-*
 data/.vault.key
 data/.memory_key
 data/keys.log
+data/issued_keys.txt
+data/revoked_keys.txt
+data/licenses.json
+data/training.json
 data/snapshots/
 data/.keep
 
