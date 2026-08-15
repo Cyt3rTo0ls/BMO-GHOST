@@ -81,7 +81,7 @@ pip install -r requirements.txt
 ## 3. Arrancar la aplicacion
 
 ```bash
-./install.sh run     # arranca en http://127.0.0.1:8000
+./install.sh run     # arranca en http://127.0.0.1:8080
 ./install.sh stop    # la detiene
 ```
 
@@ -89,10 +89,10 @@ O manualmente:
 
 ```bash
 source .venv/bin/activate
-uvicorn app:app --host 127.0.0.1 --port 8000
+uvicorn app:app --host 127.0.0.1 --port 8080
 ```
 
-Abre el navegador en `http://127.0.0.1:8000`.
+Abre el navegador en `http://127.0.0.1:8080`.
 
 La barra de estado superior muestra:
 

@@ -162,10 +162,10 @@ permissions and checks for a local assistant engine.
 
 ```bash
 source .venv/bin/activate
-uvicorn app:app --host 127.0.0.1 --port 8000
+uvicorn app:app --host 127.0.0.1 --port 8080
 ```
 
-Open `http://127.0.0.1:8000` in your browser.
+Open `http://127.0.0.1:8080` in your browser.
 
 ### Configure the local assistant engine
 

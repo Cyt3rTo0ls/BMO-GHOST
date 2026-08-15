@@ -6,16 +6,16 @@ app:
   version: "1.0.0"
   author: "Cyt3rTo0ls"
   host: "127.0.0.1"
-  port: 8000
+  port: 8080
   license: "AGPL-3.0"
 
 # Local assistant engine connection.
 # HackerBrain OS runs 100% local: the engine endpoint below must point to a
 # local chat-completions API server running on the same machine.
 engine:
-  url: "http://127.0.0.1:8080"
+  url: "http://127.0.0.1:8010"
   # Alternative ports probed automatically if the main URL is unreachable.
-  fallback_ports: [8010, 8011, 11434]
+  fallback_ports: [8011, 11434]
   timeout: 60
   max_tokens: 1024
   temperature: 0.2

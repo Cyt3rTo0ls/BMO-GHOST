@@ -32,9 +32,9 @@ if [ "$CMD" = "run" ]; then
         echo "[ERROR] Not installed yet. Run ./install.sh first." >&2
         exit 1
     fi
-    echo "[INFO] Starting HackerBrain OS on http://127.0.0.1:8000"
+    echo "[INFO] Starting HackerBrain OS on http://127.0.0.1:8080"
     cd "$ROOT_DIR"
-    exec "$VENV_DIR/bin/python" -m uvicorn app:app --host 127.0.0.1 --port 8000
+    exec "$VENV_DIR/bin/python" -m uvicorn app:app --host 127.0.0.1 --port 8080
 fi
 
 if [ "$CMD" = "stop" ]; then
@@ -202,7 +202,7 @@ cat <<'DONE'
 [OK] Installation complete.
      Start the application with:  ./install.sh run
      Stop it with:                ./install.sh stop
-     Open:                        http://127.0.0.1:8000
+     Open:                        http://127.0.0.1:8080
 
      Note: HackerBrain OS is LOCAL. The assistant engine runs on this
      machine and consumes significant CPU/RAM/disk resources.

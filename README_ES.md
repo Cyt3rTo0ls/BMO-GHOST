@@ -168,10 +168,10 @@ permisos de archivos y comprueba si hay un assistant engine local.
 
 ```bash
 source .venv/bin/activate
-uvicorn app:app --host 127.0.0.1 --port 8000
+uvicorn app:app --host 127.0.0.1 --port 8080
 ```
 
-Abre `http://127.0.0.1:8000` en tu navegador.
+Abre `http://127.0.0.1:8080` en tu navegador.
 
 ### Configurar el assistant engine local
 
