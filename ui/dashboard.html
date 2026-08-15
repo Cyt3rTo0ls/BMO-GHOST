@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/vis-network@9.1.9/styles/vis-network.min.css">
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
 <div id="app">
@@ -63,6 +65,10 @@
       <button class="nav-btn" data-view="iotmap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 2a15 15 0 010 20 15 15 0 010-20z"/><circle cx="12" cy="12" r="3"/></svg>
         <span class="txt" data-i18n="nav_iotmap">IoT MAP</span>
+      </button>
+      <button class="nav-btn" data-view="osintgraph">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="7" r="3"/><circle cx="9" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.5 7.5l6 1M10 15l5-6M18 10v5"/></svg>
+        <span class="txt" data-i18n="nav_osintgraph">OSINT GRAPH</span>
       </button>
       <div class="nav-foot">
         <span class="dim small">Cyt3rTo0ls</span>
@@ -264,6 +270,59 @@
           </div>
 
           <div id="iotmap-detail" class="panel-box hidden"></div>
+        </div>
+      </section>
+
+      <!-- OSINT GRAPH VIEW (PRO) -->
+      <section id="view-osintgraph" class="view">
+        <div class="view-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="7" r="3"/><circle cx="9" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.5 7.5l6 1M10 15l5-6M18 10v5"/></svg>
+            <span data-i18n="osintgraph_title">OSINT RELATIONSHIP GRAPH</span>
+          </h2>
+        </div>
+
+        <div id="osintgraph-lock" class="lockbox">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          <p data-i18n="osintgraph_locked">The OSINT relationship graph requires PRO activation.</p>
+          <button class="ghost" data-goto-pro data-i18n="osintgraph_goto_pro">ACTIVATE PRO</button>
+        </div>
+
+        <div id="osintgraph-body" class="hidden">
+          <div class="panel-box">
+            <div class="row">
+              <input id="osintgraph-seed" type="text" style="flex:1" placeholder="alice@example.com / example.com / 8.8.8.8 / username / +34 600..." data-i18n-ph="osintgraph_seed_ph">
+              <select id="osintgraph-depth" title="Depth">
+                <option value="1">depth 1</option>
+                <option value="2" selected>depth 2</option>
+              </select>
+              <button id="btn-osintgraph-build" class="ghost"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span data-i18n="osintgraph_build">BUILD GRAPH</span></button>
+            </div>
+            <div id="osintgraph-meta" class="dim small"></div>
+          </div>
+
+          <div class="panel-box">
+            <div id="osintgraph-canvas" style="height:520px;border-radius:10px;overflow:hidden"></div>
+            <div class="osintgraph-legend" id="osintgraph-legend"></div>
+          </div>
+
+          <!-- FaceCheck ID panel -->
+          <div class="panel-box" style="margin-top:14px">
+            <div class="view-head" style="padding:0 0 8px">
+              <h3 class="dim small">FaceCheck ID <span class="accent">(reverse face search)</span></h3>
+            </div>
+            <div class="iotmap-key">
+              <label class="dim small" data-i18n="facecheck_key">FaceCheck ID API key:</label>
+              <input id="facecheck-key" type="password" style="flex:1" placeholder="your FaceCheck ID API key" data-i18n-ph="facecheck_key_ph">
+              <button id="btn-facecheck-savekey" class="ghost small"><span data-i18n="facecheck_savekey">SAVE KEY</span></button>
+            </div>
+            <div class="row" style="margin-top:10px">
+              <input id="facecheck-image" type="text" style="flex:1" placeholder="https://.../photo.jpg  or  /local/path.jpg" data-i18n-ph="facecheck_image_ph">
+              <button id="btn-facecheck-search" class="ghost"><span data-i18n="facecheck_search">SEARCH FACE</span></button>
+            </div>
+            <div id="facecheck-meta" class="dim small" style="margin-top:8px"></div>
+            <div id="facecheck-results" class="facecheck-results" style="margin-top:10px"></div>
+          </div>
         </div>
       </section>
 

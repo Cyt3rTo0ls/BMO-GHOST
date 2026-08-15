@@ -28,6 +28,17 @@ Local only. WARNING: authorized security testing only.
       nav_memory: 'MEMORY',
       nav_pro: 'PRO',
       nav_iotmap: 'IoT MAP',
+      nav_osintgraph: 'OSINT GRAPH',
+      osintgraph_title: 'OSINT RELATIONSHIP GRAPH',
+      osintgraph_locked: 'The OSINT relationship graph requires PRO activation.',
+      osintgraph_goto_pro: 'ACTIVATE PRO',
+      osintgraph_seed_ph: 'alice@example.com / example.com / 8.8.8.8 / username / +34 600...',
+      osintgraph_build: 'BUILD GRAPH',
+      facecheck_key: 'FaceCheck ID API key:',
+      facecheck_key_ph: 'your FaceCheck ID API key',
+      facecheck_savekey: 'SAVE KEY',
+      facecheck_image_ph: 'https://.../photo.jpg  or  /local/path.jpg',
+      facecheck_search: 'SEARCH FACE',
       iotmap_title: 'GLOBAL EXPOSED DEVICES / IoT',
       iotmap_locked: 'The global exposed-devices map requires PRO activation.',
       iotmap_goto_pro: 'ACTIVATE PRO',
@@ -171,6 +182,17 @@ Local only. WARNING: authorized security testing only.
       nav_memory: 'MEMORIA',
       nav_pro: 'PRO',
       nav_iotmap: 'MAPA IoT',
+      nav_osintgraph: 'GRAFO OSINT',
+      osintgraph_title: 'GRAFO DE RELACIONES OSINT',
+      osintgraph_locked: 'El grafo de relaciones OSINT requiere activacion PRO.',
+      osintgraph_goto_pro: 'ACTIVAR PRO',
+      osintgraph_seed_ph: 'alice@example.com / example.com / 8.8.8.8 / usuario / +34 600...',
+      osintgraph_build: 'CONSTRUIR GRAFO',
+      facecheck_key: 'FaceCheck ID API key:',
+      facecheck_key_ph: 'tu FaceCheck ID API key',
+      facecheck_savekey: 'GUARDAR KEY',
+      facecheck_image_ph: 'https://.../foto.jpg  o  /ruta/local.jpg',
+      facecheck_search: 'BUSCAR CARA',
       iotmap_title: 'MAPA GLOBAL DE DISPOSITIVOS EXPUESTOS / IOT',
       iotmap_locked: 'El mapa global de dispositivos expuestos requiere activacion PRO.',
       iotmap_goto_pro: 'ACTIVAR PRO',
@@ -490,6 +512,10 @@ Local only. WARNING: authorized security testing only.
           $('iotmap-lock').classList.add('hidden');
           $('iotmap-body').classList.remove('hidden');
         }
+        if (window.vis) { // vis-network loaded
+          $('osintgraph-lock').classList.add('hidden');
+          $('osintgraph-body').classList.remove('hidden');
+        }
       }
     } catch (e) { /* ignore */ }
   }
@@ -723,6 +749,7 @@ Local only. WARNING: authorized security testing only.
         if (b.dataset.view === 'vault') loadVaultEntries(false);
         if (b.dataset.view === 'pro') renderProView();
         if (b.dataset.view === 'iotmap') initIotMap();
+        if (b.dataset.view === 'osintgraph') initOsintGraph();
       });
     });
 
@@ -774,6 +801,15 @@ Local only. WARNING: authorized security testing only.
     $('btn-iotmap-savekey').addEventListener('click', saveShodanKey);
     $('iotmap-query').addEventListener('keydown', function (e) {
       if (e.key === 'Enter') iotSearch();
+    });
+    $('btn-osintgraph-build').addEventListener('click', buildOsintGraph);
+    $('osintgraph-seed').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') buildOsintGraph();
+    });
+    $('btn-facecheck-savekey').addEventListener('click', saveFaceCheckKey);
+    $('btn-facecheck-search').addEventListener('click', runFaceCheck);
+    $('facecheck-image').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') runFaceCheck();
     });
 
     document.getElementById('vuln-list').addEventListener('click', function (e) {
@@ -971,6 +1007,140 @@ Local only. WARNING: authorized security testing only.
     box.innerHTML = html;
   }
 
+  // ---------------- OSINT GRAPH (PRO) ----------------
+  let osintNetwork = null;
+  let osintGraphInitialized = false;
+
+  function initOsintGraph() {
+    if (!pro) {
+      $('osintgraph-lock').classList.remove('hidden');
+      $('osintgraph-body').classList.add('hidden');
+      return;
+    }
+    $('osintgraph-lock').classList.add('hidden');
+    $('osintgraph-body').classList.remove('hidden');
+    if (osintGraphInitialized) return;
+    osintGraphInitialized = true;
+    if (!window.vis) {
+      $('osintgraph-meta').textContent = 'vis-network failed to load (offline?). The graph needs internet to load the library.';
+      return;
+    }
+    renderGraphLegend();
+    checkFaceCheckStatus();
+  }
+
+  function renderGraphLegend() {
+    const legend = [
+      ['seed', '#00e5c7'], ['person', '#ff5d8f'], ['email', '#ff8c42'], ['domain', '#4cc9f0'],
+      ['subdomain', '#4895ef'], ['ip', '#b388ff'], ['username', '#ffd166'], ['phone', '#f15bb5'],
+      ['org', '#06d6a0'], ['social', '#9b5de5'], ['breach', '#ef233c'], ['meta', '#adb5bd']
+    ];
+    $('osintgraph-legend').innerHTML = legend.map(function (l) {
+      return '<span><i style="background:' + l[1] + '"></i>' + l[0] + '</span>';
+    }).join('');
+  }
+
+  async function buildOsintGraph() {
+    const seed = $('osintgraph-seed').value.trim();
+    if (!seed) { toast('Enter a seed entity', 'err'); return; }
+    const depth = parseInt($('osintgraph-depth').value || '2', 10);
+    $('osintgraph-meta').textContent = 'building graph for "' + seed + '"... (this runs OSINT lookups, can take ~30-60s)';
+    const r = await api('/api/osint/graph', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, seed: seed, depth: depth })
+    });
+    if (!r.ok) {
+      $('osintgraph-meta').textContent = r.error || 'graph failed';
+      toast(r.error || 'graph failed', 'err');
+      return;
+    }
+    $('osintgraph-meta').textContent = "'" + r.seed + "' (" + r.seed_type + ') -> ' + r.nodes.length + ' entities, ' + r.edges.length + ' relationships';
+    renderOsintGraph(r.nodes, r.edges);
+  }
+
+  function renderOsintGraph(nodes, edges) {
+    const container = $('osintgraph-canvas');
+    const visNodes = (nodes || []).map(function (n) {
+      return {
+        id: n.id,
+        label: n.label.length > 28 ? n.label.slice(0, 27) + '...' : n.label,
+        color: { background: n.color, border: '#0a0f1a', highlight: { background: n.color, border: '#ffffff' } },
+        font: { color: '#0a0f1a', face: 'monospace', size: 12 },
+        shape: 'dot',
+        size: 14
+      };
+    });
+    const visEdges = (edges || []).map(function (e) {
+      return { from: e.from, to: e.to, label: e.label, arrows: 'to', color: { color: '#3d4a63', highlight: '#00e5c7' }, font: { color: '#8ea0bd', size: 10, face: 'monospace' } };
+    });
+    const data = { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) };
+    const options = {
+      physics: { enabled: true, stabilization: { iterations: 200 } },
+      interaction: { hover: true, tooltipDelay: 120, navigationButtons: true, keyboard: true },
+      nodes: { borderWidth: 2 },
+      edges: { smooth: { type: 'continuous' } }
+    };
+    osintNetwork = new vis.Network(container, data, options);
+    osintNetwork.on('doubleClick', function () {
+      osintNetwork.fit({ animation: true });
+    });
+  }
+
+  // ---------------- FaceCheck ID (PRO) ----------------
+  async function checkFaceCheckStatus() {
+    try {
+      const r = await api('/api/facecheck/status?session_id=' + (sessionId || ''));
+      $('facecheck-meta').textContent = r.key_configured
+        ? 'FaceCheck ID key configured. Paste an image URL or local path and search.'
+        : 'No FaceCheck ID key yet. Add it above to enable reverse face search (stored only on this machine).';
+    } catch (e) { /* ignore */ }
+  }
+
+  async function saveFaceCheckKey() {
+    const key = $('facecheck-key').value.trim();
+    if (!key) { toast('Enter a FaceCheck ID API key', 'err'); return; }
+    const r = await api('/api/facecheck/key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, key: key })
+    });
+    if (r.ok) { toast('FaceCheck ID key saved locally', 'ok'); } else { toast(r.error || 'failed', 'err'); }
+    checkFaceCheckStatus();
+  }
+
+  async function runFaceCheck() {
+    const img = $('facecheck-image').value.trim();
+    if (!img) { toast('Enter an image URL or local path', 'err'); return; }
+    $('facecheck-meta').textContent = 'searching face... (can take ~30-60s on FaceCheck side)';
+    $('facecheck-results').innerHTML = '<div class="dim small">searching...</div>';
+    const r = await api('/api/facecheck/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, image_url: img })
+    });
+    if (!r.ok) {
+      $('facecheck-meta').textContent = r.error || 'search failed';
+      $('facecheck-results').innerHTML = '';
+      toast(r.error || 'search failed', 'err');
+      return;
+    }
+    const matches = r.matches || [];
+    $('facecheck-meta').textContent = r.total + ' match(es) found' + (r.status ? ' (' + r.status + ')' : '');
+    if (!matches.length) {
+      $('facecheck-results').innerHTML = '<div class="dim small">No public matches found for this face.</div>';
+      return;
+    }
+    $('facecheck-results').innerHTML = matches.map(function (m) {
+      const url = m.url || '';
+      return '<div class="facecheck-hit">' +
+        '<div class="url">' + (url ? '<a href="' + url + '" target="_blank" rel="noopener">' + url + '</a>' : 'no url') + '</div>' +
+        (m.source ? '<div class="src">' + m.source + '</div>' : '') +
+        (m.score ? '<div class="score">score: ' + m.score + '</div>' : '') +
+        '</div>';
+    }).join('');
+  }
+
   // ---------------- init ----------------
   function init() {
     HBTerminal.printBanner();
@@ -998,6 +1168,7 @@ Local only. WARNING: authorized security testing only.
         if (view === 'memory') loadMemory();
         if (view === 'vault') loadVaultEntries(false);
         if (view === 'iotmap') initIotMap();
+        if (view === 'osintgraph') initOsintGraph();
       }
     });
   }

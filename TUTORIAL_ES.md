@@ -271,6 +271,38 @@ train target: 10.0.0.5 es la maquina de produccion
 O desde la UI (seccion PRO). Es una inyeccion ligera de contexto - no se
 modifican pesos del modelo, todo permanece local.
 
+### Grafo de relaciones OSINT (PRO, estilo Maltego)
+
+PRO incluye una pestana **OSINT GRAPH** que construye un grafo de relaciones
+ordenado y con colores (como Maltego) desde cualquier entidad semilla.
+Escribe un email, dominio, IP, usuario o telefono y el grafo se expande:
+
+```
+alice@example.com   -> parte local + dominio + estado de brechas + dorks
+example.com         -> registrador/org + subdominios + emails + IPs (-> geo)
+8.8.8.8             -> org duena + geo + reverse DNS
+torvalds            -> perfiles sociales (GitHub, X, Reddit, Telegram...) + dorks
+```
+
+Los tipos de nodo tienen colores (email, dominio, subdominio, IP, usuario,
+telefono, org, social, brecha, meta) con leyenda, las aristas llevan la
+etiqueta del tipo de relacion, y el grafo tiene zoom / arrastre. Tambien
+desde el terminal: `graph example.com` (anade `depth 3` para expandir mas).
+
+### Busqueda inversa de caras (PRO, FaceCheck ID)
+
+En la misma pestana OSINT GRAPH hay un panel **FaceCheck ID**: pega tu
+propia FaceCheck ID API key (se guarda local, modo 600) y busca cualquier
+cara por URL de imagen o ruta local para encontrar donde aparece en linea:
+
+```
+facecheck https://example.com/foto.jpg
+facecheck /home/usuario/foto.jpg
+```
+
+Los resultados muestran el sitio de origen, la puntuacion y la URL (abre en
+una pestana nueva). La key nunca se sube a ningun sitio.
+
 ### Mapa IoT global (PRO, Shodan)
 
 PRO incluye un mapa mundial interactivo de dispositivos expuestos. Abre la

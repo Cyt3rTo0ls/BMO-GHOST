@@ -146,6 +146,8 @@ desbloquea PRO.
 | Todas las herramientas de Kali Linux / Parrot OS | Si |
 | Escaneo de IoT / servicios expuestos (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Si |
 | Mapa IoT global con Shodan (tu propia key, mapa mundial interactivo) | Si |
+| Grafo de relaciones OSINT (estilo Maltego, entidades ordenadas) | Si |
+| Busqueda inversa de caras (FaceCheck ID, tu propia key) | Si |
 
 ---
 

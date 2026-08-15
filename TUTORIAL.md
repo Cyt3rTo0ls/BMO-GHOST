@@ -267,6 +267,38 @@ train target: 10.0.0.5 is the production box
 Or via the UI (PRO section). This is lightweight context injection -
 no model weights are modified, everything stays local.
 
+### OSINT relationship graph (PRO, Maltego-style)
+
+PRO includes an **OSINT GRAPH** tab that builds an ordered, color-coded
+relationship graph (like Maltego) from any seed entity. Type an email,
+domain, IP, username or phone and the graph expands:
+
+```
+alice@example.com   -> local-part + domain + breach status + dorks
+example.com         -> registrar/org + subdomains + emails + IPs (-> geo)
+8.8.8.8             -> owner org + geo + reverse DNS
+torvalds            -> social profiles (GitHub, X, Reddit, Telegram...) + dorks
+```
+
+Node types are color-coded (email, domain, subdomain, IP, username, phone,
+org, social, breach, meta) with a legend, edges are labeled with the
+relationship type, and the graph is zoomable / draggable. Also from the
+terminal: `graph example.com` (add `depth 3` for deeper expansion).
+
+### Reverse face search (PRO, FaceCheck ID)
+
+In the same OSINT GRAPH tab there is a **FaceCheck ID** panel: paste your
+own FaceCheck ID API key (stored locally, mode 600) and search any face by
+image URL or local path to find where it appears online:
+
+```
+facecheck https://example.com/photo.jpg
+facecheck /home/user/photo.jpg
+```
+
+Matches show source site, score and the URL (open in a new tab). The key
+is never uploaded anywhere.
+
 ### Global IoT map (PRO, Shodan)
 
 PRO includes an interactive world map of exposed devices. Open the **IoT MAP**

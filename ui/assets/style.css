@@ -425,3 +425,15 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
 #iotmap-map .leaflet-popup-content b { color: #00E5C7; }
 #iotmap-detail { margin-top: 14px; }
 #iotmap-detail pre { white-space: pre-wrap; font-size: 11px; color: var(--fg-dim); }
+
+/* ============ OSINT GRAPH (PRO) ============ */
+#osintgraph-canvas { background: #070b12; border: 1px solid var(--border); }
+#osintgraph-canvas .vis-network:focus { outline: none; }
+.osintgraph-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.osintgraph-legend span { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--fg-dim); font-family: var(--mono); }
+.osintgraph-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.facecheck-results { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
+.facecheck-hit { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: var(--bg); }
+.facecheck-hit .url { color: var(--accent, #00E5C7); font-size: 12px; font-family: var(--mono); word-break: break-all; }
+.facecheck-hit .src { color: var(--orange); font-size: 11px; margin-top: 2px; }
+.facecheck-hit .score { color: var(--green); font-size: 11px; margin-top: 2px; }

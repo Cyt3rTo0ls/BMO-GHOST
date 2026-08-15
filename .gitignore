@@ -47,3 +47,4 @@ nuclei_*.json
 sherlock_*.txt
 *.txt
 data/shodan.key
+data/facecheck.key

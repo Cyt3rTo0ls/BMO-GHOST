@@ -140,6 +140,8 @@ The free version shows the full PRO capability list in the interface
 | All Kali Linux / Parrot OS tools | Yes |
 | IoT / exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Yes |
 | Global IoT map with Shodan (your own key, interactive world map) | Yes |
+| OSINT relationship graph (Maltego-style, ordered entities) | Yes |
+| Reverse face search (FaceCheck ID, your own key) | Yes |
 
 ---
 
