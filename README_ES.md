@@ -164,6 +164,23 @@ cd hackerbrain-os
 crea la estructura de carpetas, inicializa la base de datos SQLite, ajusta los
 permisos de archivos y comprueba si hay un assistant engine local.
 
+### Sitio web del proyecto
+
+Sitio oficial (informacion, capturas, tutoriales):
+**https://cyt3rto0ls.github.io/hackerbrain-os**
+
+### App de escritorio (ventana nativa, instalacion automatica)
+
+El proyecto incluye una version de escritorio en `desktop/`. Instala todo
+automaticamente (venv + dependencias) y abre la interfaz en su propia
+ventana - sin necesidad de navegador:
+
+```bash
+./desktop/run.sh
+```
+
+Ver [desktop/README.md](desktop/README.md) para detalles.
+
 ### Arrancar la aplicacion
 
 ```bash

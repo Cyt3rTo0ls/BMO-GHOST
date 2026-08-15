@@ -158,6 +158,23 @@ cd hackerbrain-os
 creates the folder structure, initializes the SQLite database, sets file
 permissions and checks for a local assistant engine.
 
+### Project website
+
+Official site (info, screenshots, tutorials):
+**https://cyt3rto0ls.github.io/hackerbrain-os**
+
+### Desktop app (native window, automatic setup)
+
+A native desktop version is included in `desktop/`. It installs everything
+automatically (venv + dependencies) and opens the interface in its own
+window - no browser needed:
+
+```bash
+./desktop/run.sh
+```
+
+See [desktop/README.md](desktop/README.md) for details.
+
 ### Start the application
 
 ```bash
