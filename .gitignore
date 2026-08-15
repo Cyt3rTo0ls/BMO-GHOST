@@ -1,0 +1,25 @@
+# Local data - never commit these
+data/*.db
+data/*.db-*
+data/.vault.key
+data/.memory_key
+data/keys.log
+data/snapshots/
+data/.keep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Reports and exports
+reports/
+exports/
+
+# OS / editor
+.DS_Store
+*.swp
+nohup.out
+*.log

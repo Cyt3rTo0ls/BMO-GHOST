@@ -1,0 +1,69 @@
+# HackerBrain OS - configuration
+# This tool is intended for authorized security testing only.
+
+app:
+  name: "HackerBrain OS"
+  version: "1.0.0"
+  author: "Cyt3rTo0ls"
+  host: "127.0.0.1"
+  port: 8000
+  license: "AGPL-3.0"
+
+# Local assistant engine connection.
+# HackerBrain OS runs 100% local: the engine endpoint below must point to a
+# local chat-completions API server running on the same machine.
+engine:
+  url: "http://127.0.0.1:8080"
+  # Alternative ports probed automatically if the main URL is unreachable.
+  fallback_ports: [8010, 8011, 11434]
+  timeout: 60
+  max_tokens: 1024
+  temperature: 0.2
+  # The engine runs entirely on your hardware. Expect significant CPU/RAM
+  # consumption while a model is loaded and during inference.
+  model: "local-model"
+
+# Free tier limits (per session).
+limits:
+  free:
+    daily_queries: 20
+    memory_entries: 50
+    max_projects: 2
+    session_hours: 1
+    reports: false
+    persistence: false
+  pro:
+    daily_queries: -1          # unlimited
+    memory_entries: -1         # unlimited
+    max_projects: -1           # unlimited
+    session_hours: -1          # unlimited
+    reports: true
+    persistence: true
+
+# Security.
+security:
+  vault_iterations: 600000     # PBKDF2 iterations for the vault master key
+  salt_bytes: 16
+  key_bytes: 32
+  key_file: "data/.vault.key"
+  vault_db: "data/vault.db"
+  memory_db: "data/memory.db"
+
+# Payment and activation (PRO).
+payment:
+  price_usdt: 35
+  currency: "USDT (TON)"
+  wallet_tron: "UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9"
+  telegram: "@Cyt3rTo0ls"
+  instructions:
+    - "Send 35 USDT to the TON wallet listed above."
+    - "Contact @Cyt3rTo0ls on Telegram."
+    - "Send a screenshot of the payment."
+    - "Receive a 6-digit activation key."
+    - "Enter the key in the application to unlock PRO."
+
+# Telegram bot handler (optional; requires a bot token in env TELEGRAM_BOT_TOKEN).
+telegram:
+  enabled: false
+  owner_id: ""
+  api_base: "https://api.telegram.org"
