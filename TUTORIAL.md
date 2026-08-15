@@ -161,6 +161,20 @@ The assistant engine analyzes the previous output and answers, or proposes
 the next step. If it proposes a command, review it and run it manually.
 The autonomous agent always asks before executing anything high-risk.
 
+Natural-language scanning (executed locally, not text-only):
+
+```text
+> escanea solo los dispositivos conectados a mi red
+> scan my network for live hosts
+> escanea los puertos de 192.168.1.50
+```
+
+Scan requests are detected in English and Spanish. If you say "mi red" /
+"my network" without an explicit target, HackerBrain OS reads your routing
+table, detects the local subnet (the interface behind the default route)
+and runs a real host discovery (or port scan) against it. Live hosts are
+stored in memory with their MAC vendor when available.
+
 ## 7. Scan helpers
 
 Instead of typing raw tool commands, you can use the built-in helpers:

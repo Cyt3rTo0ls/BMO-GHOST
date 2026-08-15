@@ -165,6 +165,20 @@ El assistant engine analiza la salida anterior y responde, o propone el
 siguiente paso. Si propone un comando, revisalo y ejecutalo manualmente.
 El agente autonomo siempre pregunta antes de ejecutar algo de alto riesgo.
 
+Escaneo en lenguaje natural (se ejecuta de verdad, no solo texto):
+
+```text
+> escanea solo los dispositivos conectados a mi red
+> scan my network for live hosts
+> escanea los puertos de 192.168.1.50
+```
+
+Las peticiones de escaneo se detectan en espanol e ingles. Si dices "mi red"
+sin objetivo explicito, HackerBrain OS lee tu tabla de rutas, detecta la
+subred local (la interfaz de la ruta por defecto) y ejecuta un descubrimiento
+de hosts real (o escaneo de puertos) contra ella. Los hosts vivos se guardan
+en memoria con su fabricante MAC cuando esta disponible.
+
 ## 7. Ayudantes de escaneo
 
 En lugar de escribir comandos crudos, puedes usar los ayudantes integrados:
