@@ -80,6 +80,13 @@ pip install -r requirements.txt
 ## 3. Start the application
 
 ```bash
+./install.sh run     # start on http://127.0.0.1:8000
+./install.sh stop    # stop it
+```
+
+Or manually:
+
+```bash
 source .venv/bin/activate
 uvicorn app:app --host 127.0.0.1 --port 8000
 ```

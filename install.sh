@@ -21,6 +21,28 @@ DATA_DIR="$ROOT_DIR/data"
 UI_DIR="$ROOT_DIR/ui"
 CORE_DIR="$ROOT_DIR/core"
 
+# --- commands -------------------------------------------------------------
+# ./install.sh run   -> start the application
+# ./install.sh stop  -> stop the application
+CMD="${1:-install}"
+
+# --- run / stop shortcuts (before the banner, so stop stays clean) --------
+if [ "$CMD" = "run" ]; then
+    if [ ! -x "$VENV_DIR/bin/uvicorn" ]; then
+        echo "[ERROR] Not installed yet. Run ./install.sh first." >&2
+        exit 1
+    fi
+    echo "[INFO] Starting HackerBrain OS on http://127.0.0.1:8000"
+    cd "$ROOT_DIR"
+    exec "$VENV_DIR/bin/python" -m uvicorn app:app --host 127.0.0.1 --port 8000
+fi
+
+if [ "$CMD" = "stop" ]; then
+    pkill -f 'uvicorn app:app' 2>/dev/null || true
+    echo "[OK] HackerBrain OS stopped."
+    exit 0
+fi
+
 # --- helpers -------------------------------------------------------------
 fail() {
     echo "[ERROR] $*" >&2
@@ -74,7 +96,8 @@ python -m pip install -r "$ROOT_DIR/requirements.txt" || fail "Dependency instal
 
 # --- folder structure ----------------------------------------------------
 info "Creating folder structure..."
-mkdir -p "$DATA_DIR" "$UI_DIR/assets" "$CORE_DIR" plugins playbooks reports exports
+mkdir -p "$DATA_DIR" "$UI_DIR/assets" "$CORE_DIR" \
+    "$ROOT_DIR/plugins" "$ROOT_DIR/playbooks" "$ROOT_DIR/reports" "$ROOT_DIR/exports"
 touch "$DATA_DIR/.keep"
 
 # --- assistant engine check ----------------------------------------------
@@ -177,9 +200,9 @@ chmod 644 "$ROOT_DIR/requirements.txt" "$ROOT_DIR/README.md" 2>/dev/null || true
 cat <<'DONE'
 
 [OK] Installation complete.
-     Run the application with:  ./install.sh run
-     or manually:               source .venv/bin/activate && uvicorn app:app --host 127.0.0.1 --port 8000
-     Open:                      http://127.0.0.1:8000
+     Start the application with:  ./install.sh run
+     Stop it with:                ./install.sh stop
+     Open:                        http://127.0.0.1:8000
 
      Note: HackerBrain OS is LOCAL. The assistant engine runs on this
      machine and consumes significant CPU/RAM/disk resources.
