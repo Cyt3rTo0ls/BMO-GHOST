@@ -179,6 +179,28 @@ subred local (la interfaz de la ruta por defecto) y ejecuta un descubrimiento
 de hosts real (o escaneo de puertos) contra ella. Los hosts vivos se guardan
 en memoria con su fabricante MAC cuando esta disponible.
 
+### Modo autonomo de pentesting / bug bounty
+
+HackerBrain OS no se limita a escaneos. Pide una tarea en lenguaje natural
+(espanol o ingles) y el agente la ejecuta localmente, paso a paso:
+
+```text
+> enumerar subdominios de example.com
+> fuzzear directorios en example.com
+> buscar vulnerabilidades en 10.10.10.1
+> haz reconocimiento a 10.10.10.1
+> analiza los headers de https://example.com
+> busca credenciales por defecto en 10.10.10.1
+```
+
+En cada paso el engine local elige la herramienta y el comando exacto, el
+agente lo ejecuta, el engine analiza la salida y decide el siguiente paso
+(hasta 3 pasos por peticion). Las acciones de alto riesgo (explotacion,
+fuerza bruta, ataques de credenciales, MITM) estan protegidas: el agente
+muestra el comando propuesto y pide confirmacion explicita antes de
+ejecutarlo. Responde `si`/`yes` para ejecutarlo o `no` para cancelarlo.
+Esto mantiene la herramienta segura para pruebas autorizadas.
+
 ## 7. Ayudantes de escaneo
 
 En lugar de escribir comandos crudos, puedes usar los ayudantes integrados:

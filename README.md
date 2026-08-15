@@ -182,6 +182,26 @@ The terminal prompt (`>`) accepts both commands and questions.
 - Set a working target: `target 10.10.10.1`
 - `status` shows engine connectivity, quotas and detected tools.
 
+### Autonomous pentest / bug-bounty mode
+
+Ask for an engagement in plain language and the agent plans and executes it
+locally, step by step:
+
+```text
+> enumerate subdomains of example.com
+> fuzz directories on example.com
+> scan for vulnerabilities on 10.10.10.1
+> haz reconocimiento a 10.10.10.1
+> analiza los headers de https://example.com
+```
+
+For each step the engine chooses the tool and command, the agent executes it
+locally, the engine analyzes the output and decides the next step (up to 3
+steps per request). **High-risk actions (exploitation, brute force, etc.) are
+never executed without explicit confirmation**: the agent proposes the
+command and waits for your `yes` / `no` before running it. This matches the
+PRO autonomous-agent behavior described in the features table.
+
 Memory panel tracks hosts, credentials, vulnerabilities and notes. The
 timeline panel records every event with timestamps.
 

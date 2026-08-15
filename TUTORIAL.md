@@ -175,6 +175,29 @@ table, detects the local subnet (the interface behind the default route)
 and runs a real host discovery (or port scan) against it. Live hosts are
 stored in memory with their MAC vendor when available.
 
+### Autonomous pentest / bug-bounty mode
+
+HackerBrain OS is not limited to scans. Ask for an engagement in plain
+language (English or Spanish) and the agent executes it locally, step by
+step:
+
+```text
+> enumerate subdomains of example.com
+> fuzz directories on example.com
+> scan for vulnerabilities on 10.10.10.1
+> haz reconocimiento a 10.10.10.1
+> analiza los headers de https://example.com
+> busca credenciales por defecto en 10.10.10.1
+```
+
+For every step the local engine selects the tool and the exact command, the
+agent runs it, the engine analyzes the output and decides the next step (up
+to 3 steps per request). High-risk actions (exploitation, brute force,
+credential attacks, MITM) are gated: the agent shows the proposed command
+and asks for explicit confirmation before executing it. Reply `yes`/`si` to
+run it or `no` to cancel. This keeps the tool safe for authorized
+engagements only.
+
 ## 7. Scan helpers
 
 Instead of typing raw tool commands, you can use the built-in helpers:
