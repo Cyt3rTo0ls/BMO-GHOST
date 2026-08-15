@@ -271,6 +271,32 @@ train target: 10.0.0.5 es la maquina de produccion
 O desde la UI (seccion PRO). Es una inyeccion ligera de contexto - no se
 modifican pesos del modelo, todo permanece local.
 
+### Mapa IoT global (PRO, Shodan)
+
+PRO incluye un mapa mundial interactivo de dispositivos expuestos. Abre la
+pestana **IoT MAP** en el sidebar, pega **tu propia Shodan API key** (la capa
+gratuita funciona) y busca con sintaxis de consulta de Shodan:
+
+```
+cameras
+routers
+port:3389 country:BR
+product:"Hikvision"
+"default password"
+```
+
+Cada resultado es un marcador en un mapa mundial con zoom. Haz clic en un
+host para ver el detalle completo: organizacion duena, ISP, ASN,
+ciudad/pais, puertos abiertos, banners de servicios y CVEs conocidos. La
+misma busqueda funciona desde el terminal:
+
+```
+shodan cameras port:554
+```
+
+La key se guarda localmente (`data/shodan.key`, modo 600) y se valida
+contra la API de Shodan al guardarla; nunca se sube a ningun sitio.
+
 ### Comandos extra de reconocimiento
 
 ```

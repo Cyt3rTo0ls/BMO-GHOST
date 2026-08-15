@@ -27,6 +27,19 @@ Local only. WARNING: authorized security testing only.
       nav_reports: 'REPORTS',
       nav_memory: 'MEMORY',
       nav_pro: 'PRO',
+      nav_iotmap: 'IoT MAP',
+      iotmap_title: 'GLOBAL EXPOSED DEVICES / IoT',
+      iotmap_locked: 'The global exposed-devices map requires PRO activation.',
+      iotmap_goto_pro: 'ACTIVATE PRO',
+      iotmap_query_ph: 'cameras OR routers OR port:3389',
+      iotmap_search: 'SEARCH',
+      iotmap_key: 'Shodan API key:',
+      iotmap_key_ph: 'your Shodan API key',
+      iotmap_savekey: 'SAVE KEY',
+      iotmap_hosts: 'HOSTS',
+      iotmap_nokey: 'Add your Shodan API key above to start. (Stored only on your machine, never uploaded.)',
+      iotmap_searching: 'Searching Shodan',
+      iotmap_noresults: 'No geolocated results to map.',
       term_placeholder: 'type a command or question...',
       term_quick: 'QUICK:',
       quick_status: 'status',
@@ -138,7 +151,8 @@ Local only. WARNING: authorized security testing only.
         'Gamification (achievements and badges)',
         'LAN multi-user collaboration',
         'Playbook marketplace',
-        'All Kali Linux / Parrot OS tools'
+        'All Kali Linux / Parrot OS tools',
+        'Global IoT map with Shodan (your key, interactive world map)'
       ]
     },
     es: {
@@ -156,6 +170,19 @@ Local only. WARNING: authorized security testing only.
       nav_reports: 'INFORMES',
       nav_memory: 'MEMORIA',
       nav_pro: 'PRO',
+      nav_iotmap: 'MAPA IoT',
+      iotmap_title: 'MAPA GLOBAL DE DISPOSITIVOS EXPUESTOS / IOT',
+      iotmap_locked: 'El mapa global de dispositivos expuestos requiere activacion PRO.',
+      iotmap_goto_pro: 'ACTIVAR PRO',
+      iotmap_query_ph: 'cameras OR routers OR port:3389',
+      iotmap_search: 'BUSCAR',
+      iotmap_key: 'Shodan API key:',
+      iotmap_key_ph: 'tu Shodan API key',
+      iotmap_savekey: 'GUARDAR KEY',
+      iotmap_hosts: 'HOSTS',
+      iotmap_nokey: 'Configura tu Shodan API key arriba para empezar. (Se guarda solo en tu maquina, nunca se sube).',
+      iotmap_searching: 'Buscando en Shodan',
+      iotmap_noresults: 'Sin resultados con coordenadas para mapear.',
       term_placeholder: 'escribe un comando o una pregunta...',
       term_quick: 'RAPIDO:',
       quick_status: 'estado',
@@ -459,6 +486,10 @@ Local only. WARNING: authorized security testing only.
         $('vault-body').classList.remove('hidden');
         $('reports-lock').classList.add('hidden');
         $('reports-body').classList.remove('hidden');
+        if (window.L) { // Leaflet loaded
+          $('iotmap-lock').classList.add('hidden');
+          $('iotmap-body').classList.remove('hidden');
+        }
       }
     } catch (e) { /* ignore */ }
   }
@@ -691,6 +722,7 @@ Local only. WARNING: authorized security testing only.
         if (b.dataset.view === 'memory') loadMemory();
         if (b.dataset.view === 'vault') loadVaultEntries(false);
         if (b.dataset.view === 'pro') renderProView();
+        if (b.dataset.view === 'iotmap') initIotMap();
       });
     });
 
@@ -738,6 +770,11 @@ Local only. WARNING: authorized security testing only.
       loadVaultEntries(false);
     });
     $('btn-generate-report').addEventListener('click', generateReport);
+    $('btn-iotmap-search').addEventListener('click', iotSearch);
+    $('btn-iotmap-savekey').addEventListener('click', saveShodanKey);
+    $('iotmap-query').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') iotSearch();
+    });
 
     document.getElementById('vuln-list').addEventListener('click', function (e) {
       const btn = e.target.closest('.card-btn');
@@ -758,6 +795,180 @@ Local only. WARNING: authorized security testing only.
         });
       }
     });
+  }
+
+  // ---------------- IoT MAP (PRO) ----------------
+  let iotMap = null;
+  let iotLayer = null;
+  let iotHosts = [];
+  let iotInitialized = false;
+
+  function initIotMap() {
+    if (!pro) {
+      $('iotmap-lock').classList.remove('hidden');
+      $('iotmap-body').classList.add('hidden');
+      return;
+    }
+    $('iotmap-lock').classList.add('hidden');
+    $('iotmap-body').classList.remove('hidden');
+    if (iotInitialized) return;
+    iotInitialized = true;
+
+    if (!window.L) {
+      $('iotmap-meta').textContent = 'Leaflet failed to load (offline?). The map needs internet access to load the tile layer.';
+      return;
+    }
+    iotMap = L.map('iotmap-map').setView([20, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(iotMap);
+    iotLayer = L.layerGroup().addTo(iotMap);
+    checkShodanStatus();
+  }
+
+  async function checkShodanStatus() {
+    try {
+      const r = await api('/api/shodan/status?session_id=' + (sessionId || ''));
+      if (!r.ok) {
+        $('iotmap-meta').textContent = r.error || '';
+        return;
+      }
+      if (r.key_configured) {
+        const plan = r.info && r.info.plan ? 'plan: ' + r.info.plan : '';
+        const credits = r.info && r.info.query_credits !== undefined ? ' | credits: ' + r.info.query_credits : '';
+        $('iotmap-meta').textContent = 'Shodan key OK ' + (plan || '') + (credits || '');
+      } else {
+        $('iotmap-meta').textContent = t('iotmap_nokey');
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  async function saveShodanKey() {
+    const key = $('iotmap-key').value.trim();
+    if (!key) { toast('Enter a Shodan API key', 'err'); return; }
+    const r = await api('/api/shodan/key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, key: key })
+    });
+    if (r.ok && r.info && r.info.ok) {
+      toast('Shodan key saved and validated (' + (r.info.plan || '') + ')', 'ok');
+    } else if (r.ok) {
+      toast('Key saved, but validation failed: ' + ((r.info && r.info.error) || ''), 'warn');
+    } else {
+      toast(r.error || 'Failed to save key', 'err');
+    }
+    checkShodanStatus();
+  }
+
+  async function iotSearch() {
+    const q = $('iotmap-query').value.trim();
+    if (!q) { toast('Enter a Shodan search query', 'err'); return; }
+    $('iotmap-meta').textContent = t('iotmap_searching') + ' ...';
+    const r = await api('/api/shodan/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, query: q, limit: 200 })
+    });
+    if (!r.ok) {
+      $('iotmap-meta').textContent = r.error || 'search failed';
+      toast(r.error || 'search failed', 'err');
+      return;
+    }
+    iotHosts = r.hosts || [];
+    $('iotmap-count').textContent = r.mapped + ' mapped / ' + r.total + ' total';
+    $('iotmap-meta').textContent =
+      "'" + r.query + "' -> " + r.total + ' results, ' + r.mapped + ' on map' +
+      (r.top_ports && r.top_ports.length ? ' | top ports: ' + r.top_ports.slice(0, 5).join(', ') : '');
+    renderIotHosts();
+    renderIotMarkers();
+  }
+
+  function renderIotHosts() {
+    const box = $('iotmap-hosts');
+    box.innerHTML = '';
+    if (!iotHosts.length) {
+      box.innerHTML = '<div class="dim small">' + t('iotmap_noresults') + '</div>';
+      return;
+    }
+    iotHosts.forEach(function (h, idx) {
+      const el = document.createElement('div');
+      el.className = 'iotmap-host';
+      el.innerHTML =
+        '<div class="ip">' + (h.ip || '?') + '</div>' +
+        '<div class="meta">' +
+        '  <span class="port">:' + (h.port || '?') + '</span>' +
+        '  <span class="org">' + ((h.org || h.product || 'unknown').slice(0, 24)) + '</span>' +
+        '  <span class="loc">' + (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') + '</span>' +
+        '</div>';
+      el.addEventListener('click', function () { showIotDetail(h); });
+      box.appendChild(el);
+    });
+  }
+
+  function renderIotMarkers() {
+    if (!iotLayer) return;
+    iotLayer.clearLayers();
+    const withGeo = iotHosts.filter(function (h) { return h.lat !== null && h.lon !== null; });
+    withGeo.forEach(function (h) {
+      const icon = L.divIcon({
+        className: '',
+        html: '<div class="iotmap-marker-dot' + (h.port === 3389 || h.port === 23 || h.port === 21 ? ' hot' : '') + '"></div>',
+        iconSize: [14, 14],
+        iconAnchor: [7, 7]
+      });
+      const marker = L.marker([h.lat, h.lon], { icon: icon });
+      marker.bindPopup(
+        '<b>' + (h.ip || '?') + ':' + (h.port || '?') + '</b><br>' +
+        (h.org || '') + '<br>' +
+        (h.product || '') + '<br>' +
+        (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') +
+        (h.hostnames && h.hostnames.length ? '<br>' + h.hostnames[0] : '')
+      );
+      marker.on('click', function () { showIotDetail(h); });
+      iotLayer.addLayer(marker);
+    });
+    if (withGeo.length) {
+      const bounds = L.latLngBounds(withGeo.map(function (h) { return [h.lat, h.lon]; }));
+      iotMap.fitBounds(bounds, { padding: [30, 30] });
+    }
+  }
+
+  async function showIotDetail(h) {
+    const box = $('iotmap-detail');
+    box.classList.remove('hidden');
+    box.innerHTML =
+      '<div class="view-head"><h3 class="dim small">' + (h.ip || '') + ' - full details</h3></div>' +
+      '<div class="dim small">loading host details...</div>';
+    const r = await api('/api/shodan/host', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, ip: h.ip })
+    });
+    if (!r.ok || !r.ports) {
+      box.innerHTML =
+        '<div class="view-head"><h3 class="dim small">' + (h.ip || '') + '</h3></div>' +
+        '<div class="dim small">' + ((r && r.error) || 'no details') + '</div>';
+      return;
+    }
+    let html =
+      '<div class="view-head"><h3 class="dim small">' + r.ip + ' - ' + (r.org || '') + '</h3></div>' +
+      '<div class="dim small">' +
+      '  <span class="iotmap-host"><span class="loc">' + (r.city || '') + (r.city && r.country ? ', ' : ' ') + (r.country || '') + '</span></span>' +
+      '  | asn: ' + (r.asn || '-') + ' | isp: ' + (r.isp || '-') + ' | os: ' + (r.os || '-') + '</div>' +
+      '<div class="dim small" style="margin-top:6px">ports: ' + (r.ports || []).join(', ') + '</div>';
+    if (r.vulns && r.vulns.length) {
+      html += '<div style="margin-top:6px"><span class="sev-badge">' + r.vulns.length + ' known vulns</span> ' + r.vulns.slice(0, 10).join(', ') + '</div>';
+    }
+    if (r.services && r.services.length) {
+      html += '<div style="margin-top:8px"><b class="dim small">services</b><pre>' +
+        r.services.map(function (s) {
+          return (s.port || '?') + '/' + (s.transport || '') + '  ' + (s.product || '') + ' ' + (s.version || '') +
+            (s.banner ? '  |  ' + s.banner.slice(0, 120) : '');
+        }).join('\n') + '</pre></div>';
+    }
+    box.innerHTML = html;
   }
 
   // ---------------- init ----------------
@@ -786,6 +997,7 @@ Local only. WARNING: authorized security testing only.
         if (view === 'vulns') loadVulns();
         if (view === 'memory') loadMemory();
         if (view === 'vault') loadVaultEntries(false);
+        if (view === 'iotmap') initIotMap();
       }
     });
   }

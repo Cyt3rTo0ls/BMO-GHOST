@@ -267,6 +267,31 @@ train target: 10.0.0.5 is the production box
 Or via the UI (PRO section). This is lightweight context injection -
 no model weights are modified, everything stays local.
 
+### Global IoT map (PRO, Shodan)
+
+PRO includes an interactive world map of exposed devices. Open the **IoT MAP**
+tab in the sidebar, paste **your own Shodan API key** (free tier works), and
+search with Shodan query syntax:
+
+```
+cameras
+routers
+port:3389 country:BR
+product:"Hikvision"
+"default password"
+```
+
+Each result is a marker on a zoomable world map. Click a host for full
+details: owner organization, ISP, ASN, city/country, open ports, service
+banners and known CVEs. The same search works from the terminal:
+
+```
+shodan cameras port:554
+```
+
+The key is stored locally (`data/shodan.key`, mode 600) and validated
+against the Shodan API on save; it is never uploaded anywhere.
+
 ### Extra recon commands
 
 ```

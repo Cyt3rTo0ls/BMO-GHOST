@@ -402,3 +402,26 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
   #timeline-panel { display: none; }
   .stats-row { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ============ IoT MAP (PRO) ============ */
+.iotmap-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; margin-top: 14px; }
+@media (max-width: 1000px) { .iotmap-grid { grid-template-columns: 1fr; } }
+.iotmap-key { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.iotmap-key input { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--fg); padding: 8px 10px; font-size: 12px; min-width: 220px; }
+.iotmap-hosts { max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.iotmap-host { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; cursor: pointer; background: var(--bg); transition: border-color .15s; }
+.iotmap-host:hover { border-color: var(--accent, #00E5C7); }
+.iotmap-host .ip { font-family: var(--mono); color: var(--accent, #00E5C7); font-size: 12.5px; }
+.iotmap-host .meta { color: var(--fg-dim); font-size: 11px; margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+.iotmap-host .port { color: var(--green); }
+.iotmap-host .org { color: var(--orange); }
+.iotmap-host .loc { color: var(--fg-dim); }
+.iotmap-marker-dot { width: 10px; height: 10px; border-radius: 50%; background: #00E5C7; border: 2px solid #04211c; box-shadow: 0 0 8px rgba(0,229,199,.8); }
+.iotmap-marker-dot.hot { background: #FF0055; box-shadow: 0 0 10px rgba(255,0,85,.9); }
+#iotmap-map { background: #0a0f1a; }
+#iotmap-map .leaflet-control-zoom a { background: #0e1626; color: #c8d6e5; border-color: #1c2a42; }
+#iotmap-map .leaflet-popup-content-wrapper, #iotmap-map .leaflet-popup-tip { background: #0e1626; color: #c8d6e5; border: 1px solid #1c2a42; }
+#iotmap-map .leaflet-popup-content { font-family: var(--mono); font-size: 11.5px; line-height: 1.5; }
+#iotmap-map .leaflet-popup-content b { color: #00E5C7; }
+#iotmap-detail { margin-top: 14px; }
+#iotmap-detail pre { white-space: pre-wrap; font-size: 11px; color: var(--fg-dim); }

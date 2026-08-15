@@ -145,6 +145,7 @@ desbloquea PRO.
 | Marketplace de playbooks | Si |
 | Todas las herramientas de Kali Linux / Parrot OS | Si |
 | Escaneo de IoT / servicios expuestos (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Si |
+| Mapa IoT global con Shodan (tu propia key, mapa mundial interactivo) | Si |
 
 ---
 

@@ -139,6 +139,7 @@ The free version shows the full PRO capability list in the interface
 | Playbook marketplace | Yes |
 | All Kali Linux / Parrot OS tools | Yes |
 | IoT / exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Yes |
+| Global IoT map with Shodan (your own key, interactive world map) | Yes |
 
 ---
 

@@ -46,3 +46,4 @@ nuclei_*.json
 # Sherlock / username OSINT artifacts
 sherlock_*.txt
 *.txt
+data/shodan.key
