@@ -18,9 +18,10 @@ WARNING: authorized security testing only.
   const STR = {
     en: {
       banner: [
-        'HACKERBRAIN OS - LOCAL PENTESTING COMMAND CENTER',
-        'local session | authorized testing only | offline engine',
-        'type "help" for commands, or ask a question in plain text',
+        'HACKERBRAIN OS v1.0.0 - LOCAL PENTESTING COMMAND CENTER',
+        'authorized testing only | offline engine | bilingual terminal',
+        'type a command, a question, or e.g. "scan my network"',
+        'commands: status | target <host> | verbose on|off | help',
         ''
       ],
       analysis: '--- engine analysis ---',
@@ -31,9 +32,10 @@ WARNING: authorized security testing only.
     },
     es: {
       banner: [
-        'HACKERBRAIN OS - CENTRO LOCAL DE PENTESTING',
-        'sesion local | solo pruebas autorizadas | engine offline',
-        'escribe "help" para comandos, o haz una pregunta en texto plano',
+        'HACKERBRAIN OS v1.0.0 - CENTRO LOCAL DE PENTESTING',
+        'solo pruebas autorizadas | engine offline | terminal bilingue',
+        'escribe un comando, una pregunta, o ej. "escanea mi red"',
+        'comandos: status | target <host> | verbose on|off | help',
         ''
       ],
       analysis: '--- analisis del engine ---',

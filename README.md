@@ -84,6 +84,10 @@ PRO features view in Spanish:
 
 ![HackerBrain OS PRO features ES](images/pro_features_es.png)
 
+Vulnerabilities view with severity filters:
+
+![HackerBrain OS vulnerabilities](images/vulns.png)
+
 ---
 
 ## FEATURES

@@ -20,6 +20,7 @@ Local only. WARNING: authorized security testing only.
       st_engine_offline: 'engine: offline (local)',
       st_free: 'FREE',
       st_pro: 'PRO',
+      nav_sections: 'NAVIGATION',
       nav_terminal: 'TERMINAL',
       nav_vulns: 'VULNERABILITIES',
       nav_vault: 'VAULT',
@@ -32,6 +33,13 @@ Local only. WARNING: authorized security testing only.
       quick_nmap: 'nmap loopback',
       quick_searchsploit: 'searchsploit list',
       quick_whoami: 'whoami',
+      vuln_empty: 'No findings recorded yet. Run a scan or an autonomous engagement to populate this panel.',
+      vuln_empty_icon: 'no data',
+      vault_unlocked: 'Vault unlocked.',
+      vault_stored: 'Credential stored.',
+      vault_wrong_pw: 'Vault locked or corrupted.',
+      report_ok: 'Report generated successfully.',
+      toast_engine_offline: 'Assistant engine offline. Running in local-only mode.',
       vulns_title: 'VULNERABILITIES',
       vulns_refresh: 'REFRESH',
       vuln_exploit: 'EXPLOIT',
@@ -141,6 +149,7 @@ Local only. WARNING: authorized security testing only.
       st_engine_offline: 'engine: offline (local)',
       st_free: 'FREE',
       st_pro: 'PRO',
+      nav_sections: 'NAVEGACION',
       nav_terminal: 'TERMINAL',
       nav_vulns: 'VULNERABILIDADES',
       nav_vault: 'VAULT',
@@ -153,6 +162,13 @@ Local only. WARNING: authorized security testing only.
       quick_nmap: 'nmap loopback',
       quick_searchsploit: 'lista searchsploit',
       quick_whoami: 'whoami',
+      vuln_empty: 'Aun no hay hallazgos registrados. Ejecuta un escaneo o un modo autonomo para poblar este panel.',
+      vuln_empty_icon: 'sin datos',
+      vault_unlocked: 'Vault desbloqueado.',
+      vault_stored: 'Credencial guardada.',
+      vault_wrong_pw: 'Vault bloqueado o corrupto.',
+      report_ok: 'Informe generado correctamente.',
+      toast_engine_offline: 'Assistant engine offline. Modo solo-local activo.',
       vulns_title: 'VULNERABILIDADES',
       vulns_refresh: 'ACTUALIZAR',
       vuln_exploit: 'EXPLOTAR',
@@ -325,6 +341,9 @@ Local only. WARNING: authorized security testing only.
   let ws = null;
   let pro = false;
   let sessionStart = Date.now();
+  let sevFilters = { CRITICAL: true, HIGH: true, MEDIUM: true, LOW: true };
+  let allVulns = [];
+  let engineOnline = false;
 
   // ---------------- utils ----------------
   function fmtDuration(ms) {
@@ -345,8 +364,37 @@ Local only. WARNING: authorized security testing only.
 
   function setSessionTimer() {
     setInterval(function () {
-      $('status-time').textContent = t('st_session') + ' ' + fmtDuration(Date.now() - sessionStart);
+      $('status-time').textContent = fmtDuration(Date.now() - sessionStart);
     }, 1000);
+  }
+
+  // ---------------- toasts ----------------
+  function toast(msg, kind) {
+    const box = $('toasts');
+    const el = document.createElement('div');
+    el.className = 'toast ' + (kind || '');
+    el.textContent = msg;
+    box.appendChild(el);
+    setTimeout(function () {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity .3s ease';
+      setTimeout(function () { el.remove(); }, 320);
+    }, 3200);
+  }
+
+  // ---------------- severity filters ----------------
+  function updateSevCounts(vulns) {
+    const counts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+    (vulns || []).forEach(function (v) {
+      const sev = String(v.severity || 'LOW').toUpperCase();
+      if (counts[sev] !== undefined) counts[sev] += 1;
+    });
+    ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].forEach(function (s) {
+      const chip = document.querySelector('.sev-chip[data-sev="' + s + '"] .n');
+      if (chip) chip.textContent = counts[s];
+    });
+    $('nav-count-vulns').textContent = (vulns || []).length;
+    return counts;
   }
 
   // ---------------- WebSocket ----------------
@@ -382,6 +430,7 @@ Local only. WARNING: authorized security testing only.
         // tools list available; not rendered by default
       } else if (data.type === 'error') {
         HBTerminal.print(data.message || t('msg_engine_offline'), 'out-err');
+        if (!data.message) toast(t('toast_engine_offline'), 'warn');
       }
     };
 
@@ -395,14 +444,16 @@ Local only. WARNING: authorized security testing only.
     try {
       const s = await api('/api/status?session_id=' + (sessionId || ''));
       pro = !!s.pro;
+      engineOnline = !!s.engine_available;
       $('btn-pro').textContent = pro ? t('st_pro') : t('st_free');
       $('btn-pro').classList.toggle('pro-on', pro);
-      $('status-engine').textContent = s.engine_available
-        ? t('st_engine_online')
-        : t('st_engine_offline');
+      const engineText = $('status-engine').querySelector('[data-i18n]');
+      if (engineText) engineText.textContent = s.engine_available ? t('st_engine_online') : t('st_engine_offline');
+      const dot = $('engine-dot');
+      if (dot) { dot.className = 'dot ' + (s.engine_available ? 'online' : 'offline'); }
       $('status-ver').textContent = 'v' + s.version + ' LOCAL';
       const q = s.quota === -1 ? 'unlimited' : (s.queries_today + '/' + s.quota);
-      $('status-project').textContent = t('st_project') + ' ' + s.project + ' | QUOTA: ' + q;
+      $('status-project').textContent = s.project + ' | ' + q;
       if (pro) {
         $('vault-lock').classList.add('hidden');
         $('vault-body').classList.remove('hidden');
@@ -412,41 +463,69 @@ Local only. WARNING: authorized security testing only.
     } catch (e) { /* ignore */ }
   }
 
+  function renderVulnCards() {
+    const list = $('vuln-list');
+    list.innerHTML = '';
+    const visible = allVulns.filter(function (v) {
+      const sev = String(v.severity || 'LOW').toUpperCase();
+      return sevFilters[sev] !== false;
+    });
+    if (!visible.length) {
+      const div = document.createElement('div');
+      div.className = 'empty-state';
+      div.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>' +
+        '<span>' + (allVulns.length ? t('vuln_none') : t('vuln_empty')) + '</span>';
+      list.appendChild(div);
+      return;
+    }
+    visible.forEach(function (v) {
+      const card = document.createElement('div');
+      const sev = String(v.severity || 'LOW').toUpperCase();
+      card.className = 'vuln-card sev-' + sev;
+      card.innerHTML =
+        '<div class="top">' +
+        '  <span class="sev-badge">' + sev + '</span>' +
+        '  <span class="cve">' + (v.cve_id || 'no-cve') + '</span>' +
+        '</div>' +
+        '<div class="hostline">' +
+        '  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="10" width="20" height="11" rx="2"/><path d="M6 10V7a6 6 0 0112 0v3"/></svg>' +
+        '  ' + (v.host || '?') + (v.port ? ':' + v.port : '') +
+        '</div>' +
+        '<div class="desc">' + (v.description || '').slice(0, 160) + '</div>' +
+        '<div class="actions">' +
+        '  <button class="card-btn danger" data-act="exploit">' + t('vuln_exploit') + '</button>' +
+        '  <button class="card-btn" data-act="details">' + t('vuln_details') + '</button>' +
+        '  <button class="card-btn" data-act="mitigate">' + t('vuln_mitigate') + '</button>' +
+        '</div>';
+      list.appendChild(card);
+    });
+  }
+
   async function loadVulns() {
     try {
       const m = await api('/api/memory?session_id=' + (sessionId || ''));
-      const list = $('vuln-list');
-      list.innerHTML = '';
-      const vulns = m.vulnerabilities || [];
-      if (!vulns.length) {
-        list.innerHTML = '<span class="dim">' + t('vuln_none') + '</span>';
-      }
-      vulns.forEach(function (v) {
-        const card = document.createElement('div');
-        card.className = 'vuln-card';
-        card.innerHTML =
-          '<span class="sev sev-' + v.severity + '">' + v.severity + '</span>' +
-          '<span class="meta">' + (v.cve_id || 'no-cve') + ' | ' + (v.host || '?') + ':' + (v.port || '-') + '</span>' +
-          '<span class="desc">' + (v.description || '').slice(0, 120) + '</span>' +
-          '<div class="row">' +
-          '  <button class="card-btn" data-act="exploit">' + t('vuln_exploit') + '</button>' +
-          '  <button class="card-btn" data-act="details">' + t('vuln_details') + '</button>' +
-          '  <button class="card-btn" data-act="mitigate">' + t('vuln_mitigate') + '</button>' +
-          '</div>';
-        list.appendChild(card);
-      });
+      allVulns = m.vulnerabilities || [];
+      updateSevCounts(allVulns);
+      renderVulnCards();
       renderMemory(m);
     } catch (e) { /* ignore */ }
   }
 
   function renderMemory(m) {
     const none = t('memory_none');
+    const stats = m.stats || {};
+    $('mem-stat-hosts').textContent = stats.hosts || (m.hosts || []).length;
+    $('mem-stat-creds').textContent = stats.credentials || (m.credentials || []).length;
+    $('mem-stat-vulns').textContent = stats.vulnerabilities || (m.vulnerabilities || []).length;
+    $('mem-stat-notes').textContent = stats.notes || (m.notes || []).length;
+
     $('mem-hosts').innerHTML = (m.hosts || []).map(function (h) {
-      return '<li>' + h.ip + (h.os ? ' [' + h.os + ']' : '') + '</li>';
+      return '<li>' + h.ip + (h.os ? ' <span class="dim">[' + h.os + ']</span>' : '') + '</li>';
     }).join('') || '<li class="dim">' + none + '</li>';
 
     $('mem-creds').innerHTML = (m.credentials || []).map(function (c) {
-      return '<li>' + c.username + '@' + (c.host || '?') + '</li>';
+      return '<li>' + c.username + '<span class="dim">@' + (c.host || '?') + '</span></li>';
     }).join('') || '<li class="dim">' + none + '</li>';
 
     $('mem-notes').innerHTML = (m.notes || []).slice(0, 10).map(function (n) {
@@ -473,11 +552,11 @@ Local only. WARNING: authorized security testing only.
     list.innerHTML = '';
     (events || []).slice().reverse().forEach(function (e) {
       const div = document.createElement('div');
-      div.className = 'tl-event';
+      div.className = 'tl-event k-' + (e.kind || 'event');
       div.innerHTML =
-        '<span class="ts">' + (e.ts || '').slice(11, 19) + '</span> ' +
-        '<span class="kind">' + (e.kind || 'event') + '</span><br>' +
-        '<span>' + (e.detail || '').slice(0, 80) + '</span>';
+        '<span class="ts">' + (e.ts || '').slice(11, 19) + ' UTC</span>' +
+        '<span class="kind">' + (e.kind || 'event').toUpperCase() + '</span>' +
+        '<span class="detail">' + (e.detail || '').slice(0, 90) + '</span>';
       list.appendChild(div);
     });
   }
@@ -512,6 +591,7 @@ Local only. WARNING: authorized security testing only.
       HBTerminal.print((r.error || t('msg_unlock_failed')).replace(/^vault locked or corrupted/, t('msg_vault_locked')), 'out-err');
       return;
     }
+    toast(t('vault_unlocked'), 'ok');
     loadVaultEntries();
   }
 
@@ -550,6 +630,8 @@ Local only. WARNING: authorized security testing only.
     $('report-result').textContent = r.ok
       ? t('reports_saved') + r.file
       : (r.error || t('reports_failed'));
+    if (r.ok) toast(t('report_ok'), 'ok');
+    else toast(r.error || t('reports_failed'), 'err');
     setTimeout(function () { bar.style.width = '0%'; }, 1500);
   }
 
@@ -567,8 +649,11 @@ Local only. WARNING: authorized security testing only.
       pro = true;
       $('btn-pro').textContent = t('st_pro');
       $('btn-pro').classList.add('pro-on');
+      toast(t('pro_activated'), 'ok');
       closeModal();
       loadStatus();
+    } else {
+      toast(t('pro_invalid'), 'err');
     }
   }
 
@@ -618,6 +703,15 @@ Local only. WARNING: authorized security testing only.
       b.addEventListener('click', openModal);
     });
 
+    document.querySelectorAll('.sev-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        const sev = chip.dataset.sev;
+        sevFilters[sev] = !sevFilters[sev];
+        chip.classList.toggle('active', sevFilters[sev]);
+        renderVulnCards();
+      });
+    });
+
     $('btn-refresh-vulns').addEventListener('click', loadVulns);
     $('btn-refresh-mem').addEventListener('click', loadMemory);
     $('btn-vault-unlock').addEventListener('click', vaultUnlock);
@@ -625,7 +719,7 @@ Local only. WARNING: authorized security testing only.
       loadVaultEntries(true);
     });
     $('btn-vault-store').addEventListener('click', async function () {
-      await api('/api/vault/store', {
+      const r = await api('/api/vault/store', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -635,6 +729,12 @@ Local only. WARNING: authorized security testing only.
           password: $('vault-pass').value
         })
       });
+      if (r.ok) {
+        toast(t('vault_stored'), 'ok');
+        $('vault-service').value = ''; $('vault-user').value = ''; $('vault-pass').value = '';
+      } else {
+        toast(r.error || t('vault_wrong_pw'), 'err');
+      }
       loadVaultEntries(false);
     });
     $('btn-generate-report').addEventListener('click', generateReport);
@@ -676,13 +776,18 @@ Local only. WARNING: authorized security testing only.
     setSessionTimer();
     connectWS();
 
-    if (hash.indexOf('pro') !== -1) {
-      document.querySelectorAll('.nav-btn').forEach(function (x) { x.classList.remove('active'); });
-      document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
-      document.querySelector('.nav-btn[data-view="pro"]').classList.add('active');
-      $('view-pro').classList.add('active');
-      renderProView();
-    }
+    ['pro', 'vulns', 'vault', 'reports', 'memory'].forEach(function (view) {
+      if (hash.indexOf(view) !== -1) {
+        document.querySelectorAll('.nav-btn').forEach(function (x) { x.classList.remove('active'); });
+        document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+        document.querySelector('.nav-btn[data-view="' + view + '"]').classList.add('active');
+        $('view-' + view).classList.add('active');
+        if (view === 'pro') renderProView();
+        if (view === 'vulns') loadVulns();
+        if (view === 'memory') loadMemory();
+        if (view === 'vault') loadVaultEntries(false);
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', init);
