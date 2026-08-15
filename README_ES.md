@@ -219,11 +219,24 @@ El prompt de la terminal (`>`) acepta tanto comandos como preguntas.
 
 - Escribe un comando de herramienta directamente: `nmap -sV -T4 192.168.1.0/24`
 - Usa los ayudantes de escaneo: `scan <objetivo>`, `vulnscan <objetivo>`, `iotscan <objetivo>`, `recon <objetivo>`
+- Usa los ayudantes OSINT: `osint <objetivo>` (auto-detecta dominio/email/usuario/IP/telefono),
+  `email <correo>`, `user <usuario>`, `subdomains <dominio>`, `whois <dominio>`, `ip <direccion>`,
+  `meta <archivo>`, `phone <numero>`, `dork <dominio>`, `breach <correo>`
 - Haz preguntas en lenguaje natural (espanol o ingles): el assistant engine
   analiza la salida anterior y sugiere el siguiente paso.
 - Fija un objetivo de trabajo: `target 10.10.10.1`
 - `status` muestra la conectividad del engine, las cuotas y las herramientas
   detectadas.
+
+### Modulo OSINT
+
+Inteligencia de fuentes abiertas sobre fuentes publicas (WHOIS, DNS,
+transparencia de certificados, checks de brechas con k-anonimato de HIBP,
+sondeo de perfiles sociales), usando el toolset OSINT de Kali/Parrot
+(theHarvester, amass, sublist3r, sherlock, phoneinfoga, exiftool...) cuando
+esta instalado y fallbacks en Python puro cuando no. Ver
+[TUTORIAL_ES.md](TUTORIAL_ES.md) seccion 9b para la lista completa de
+comandos.
 
 ### Modo autonomo de pentesting / bug bounty
 

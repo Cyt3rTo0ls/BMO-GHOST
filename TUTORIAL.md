@@ -278,6 +278,39 @@ Every scan reports an **estimated duration** up front (verbose line
 `[estimated duration: ~X min]`), so you know how long a step will take,
 including how rate limits stretch the time.
 
+## 9b. OSINT (open-source intelligence)
+
+HackerBrain OS ships a full OSINT module (`osint <target>` auto-routes the
+target type) that uses the Kali/Parrot OSINT toolset when installed and
+falls back to pure-Python implementations, so every command works on any
+box. Only public sources are queried (WHOIS, DNS, certificate-transparency
+logs, public breach APIs).
+
+```
+osint example.com               # auto: domain -> whois+dns+subdomains+emails
+osint 8.8.8.8                   # auto: IP -> whois+geo+reverse DNS
+osint alice@example.com         # auto: email -> MX + breach + dorks
+osint torvalds                  # auto: username -> social profiles
+email alice@example.com         # email intelligence (MX, breach check, dorks)
+user torvalds                   # username search across social networks
+subdomains example.com          # crt.sh + amass + sublist3r + theHarvester
+whois example.com               # registration data
+ip 8.8.8.8                      # geolocation + WHOIS + reverse DNS
+meta ./photo.jpg                # EXIF/GPS/author metadata of a local file
+phone "+34 600 000 000"         # phone OSINT (phoneinfoga if installed)
+dork example.com                # Google dorks for the target
+breach alice@example.com        # breach exposure check (HIBP)
+```
+
+Notes:
+- `subdomains`, `osint <domain>` and `user` run several sources in
+  parallel with bounded timeouts (~35-40s max), so a slow passive source
+  never blocks the command.
+- Breach checks use HIBP's k-anonymity range API (only the first 5 chars
+  of the SHA-1 hash leave the machine); the full breach API needs a key.
+- OSINT is passive and legal against authorized targets; dorks are queries
+  only - respect each platform's terms of service.
+
 ## 10. Troubleshooting
 
 | Symptom | Cause / fix |

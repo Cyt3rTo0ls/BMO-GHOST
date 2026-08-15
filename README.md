@@ -213,10 +213,22 @@ The terminal prompt (`>`) accepts both commands and questions.
 
 - Type a tool command directly: `nmap -sV -T4 192.168.1.0/24`
 - Use the scan helpers: `scan <target>`, `vulnscan <target>`, `iotscan <target>`, `recon <target>`
+- Use the OSINT helpers: `osint <target>` (auto-routes domain/email/username/IP/phone),
+  `email <addr>`, `user <username>`, `subdomains <domain>`, `whois <domain>`, `ip <addr>`,
+  `meta <file>`, `phone <number>`, `dork <domain>`, `breach <email>`
 - Ask questions in plain language (English or Spanish): the assistant engine
   analyzes previous output and suggests the next step.
 - Set a working target: `target 10.10.10.1`
 - `status` shows engine connectivity, quotas and detected tools.
+
+### OSINT module
+
+Open-source intelligence over public sources (WHOIS, DNS, certificate
+transparency, HIBP k-anonymity breach checks, social profile probing),
+using the Kali/Parrot OSINT toolset (theHarvester, amass, sublist3r,
+sherlock, phoneinfoga, exiftool...) when installed and pure-Python
+fallbacks when not. See [TUTORIAL.md](TUTORIAL.md) section 9b for the full
+command list.
 
 ### Autonomous pentest / bug-bounty mode
 

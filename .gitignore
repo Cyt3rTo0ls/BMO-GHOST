@@ -42,3 +42,7 @@ ferox_*.txt
 tech_fingerprint.txt
 nuclei_*.json
 
+
+# Sherlock / username OSINT artifacts
+sherlock_*.txt
+*.txt

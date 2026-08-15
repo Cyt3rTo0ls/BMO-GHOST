@@ -282,6 +282,41 @@ Cada escaneo informa una **duracion estimada** por adelantado (linea verbose
 `[estimated duration: ~X min]`), para que sepas cuanto tardara cada paso,
 incluyendo como el rate limit alarga el tiempo.
 
+## 9b. OSINT (inteligencia de fuentes abiertas)
+
+HackerBrain OS incluye un modulo OSINT completo (`osint <objetivo>`
+auto-detecta el tipo de objetivo) que usa el toolset OSINT de Kali/Parrot
+cuando esta instalado y cae a implementaciones en Python puro, asi que cada
+comando funciona en cualquier maquina. Solo se consultan fuentes publicas
+(WHOIS, DNS, logs de transparencia de certificados, APIs publicas de
+filtraciones).
+
+```
+osint example.com               # auto: dominio -> whois+dns+subdominios+emails
+osint 8.8.8.8                   # auto: IP -> whois+geo+reverse DNS
+osint alice@example.com         # auto: email -> MX + brechas + dorks
+osint torvalds                  # auto: usuario -> perfiles sociales
+email alice@example.com         # inteligencia de email (MX, check de brechas, dorks)
+user torvalds                   # busqueda de usuario en redes sociales
+subdomains example.com          # crt.sh + amass + sublist3r + theHarvester
+whois example.com               # datos de registro del dominio
+ip 8.8.8.8                      # geolocalizacion + WHOIS + reverse DNS
+meta ./foto.jpg                 # metadatos EXIF/GPS/autor de un archivo local
+phone "+34 600 000 000"         # OSINT de telefono (phoneinfoga si esta instalado)
+dork example.com                # Google dorks para el objetivo
+breach alice@example.com        # comprobacion de exposicion en brechas (HIBP)
+```
+
+Notas:
+- `subdomains`, `osint <dominio>` y `user` ejecutan varias fuentes en
+  paralelo con timeouts acotados (~35-40s max), asi una fuente pasiva lenta
+  nunca bloquea el comando.
+- El check de brechas usa la API de rango de HIBP con k-anonimato (solo
+  los primeros 5 caracteres del hash SHA-1 salen de la maquina); la API
+  completa de brechas necesita una key.
+- El OSINT es pasivo y legal contra objetivos autorizados; los dorks son
+  solo consultas - respeta los terminos de servicio de cada plataforma.
+
 ## 10. Solucion de problemas
 
 | Sintoma | Causa / solucion |
