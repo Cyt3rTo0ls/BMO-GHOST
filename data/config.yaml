@@ -53,12 +53,12 @@ security:
 # PRO includes IoT/exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP,
 # TR-069, RTSP and other embedded-service ports) via `iotscan <target>`.
 payment:
-  price_usdt: 35
+  price_usdt: 20
   currency: "USDT (TON)"
   wallet_tron: "UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9"
   telegram: "@Cyt3rTo0ls"
   instructions:
-    - "Send 35 USDT to the TON wallet listed above."
+    - "Send 20 USDT to the TON wallet listed above."
     - "Contact @Cyt3rTo0ls on Telegram."
     - "Send a screenshot of the payment."
     - "Receive a 6-digit activation key."

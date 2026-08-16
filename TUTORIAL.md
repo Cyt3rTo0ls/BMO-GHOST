@@ -234,7 +234,7 @@ Instead of typing raw tool commands, you can use the built-in helpers:
 
 ## 9. PRO activation
 
-1. Send **35 USDT** (one-time, permanent) to the TON wallet:
+1. Send **20 USDT** (one-time, permanent) to the TON wallet:
    `UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9`
 2. Contact **@Cyt3rTo0ls** on Telegram.
 3. Send a screenshot of the payment.
