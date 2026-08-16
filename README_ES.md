@@ -172,14 +172,20 @@ permisos de archivos y comprueba si hay un assistant engine local.
 Sitio oficial (informacion, capturas, tutoriales):
 **https://cyt3rto0ls.github.io/hackerbrain-os**
 
-### App de escritorio (ventana nativa, instalacion automatica)
+### App de escritorio (programa nativo, sin navegador, sin servidor)
 
-El proyecto incluye una version de escritorio en `desktop/`. Instala todo
-automaticamente (venv + dependencias) y abre la interfaz en su propia
-ventana - sin necesidad de navegador:
+El proyecto incluye un **programa de escritorio nativo real** en `desktop/`
+(tkinter, incluido en Python - cero dependencias extra). Usa el agente
+directamente en proceso: sin servidor web, sin webview, sin WebKit, sin
+navegador. Incluye terminal integrado, barra de estado (engine/PRO/
+herramientas), paneles de vulnerabilidades, memoria y timeline, modal de
+activacion PRO y selector EN/ES. La instalacion corre con barra de progreso
+y hay desinstalador completo:
 
 ```bash
-./desktop/run.sh
+./desktop/run.sh                 # instala (barra de progreso) + abre la app
+./desktop/run.sh --uninstall     # desinstala (conserva tus datos y licencia)
+./desktop/run.sh --web           # alternativa: interfaz web en el navegador
 ```
 
 Ver [desktop/README.md](desktop/README.md) para detalles.

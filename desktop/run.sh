@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # HackerBrain OS - Desktop launcher.
-# Installs everything automatically (venv, dependencies, pywebview) with a
-# live progress bar window, then opens the native desktop window.
-# No browser required.
+# Installs everything automatically (venv, dependencies) with a live
+# progress bar window, then opens the NATIVE desktop application
+# (a real program built with tkinter - no browser, no webview, no web
+# server). The web UI remains available with --web.
 #
 # Usage:
-#   ./desktop/run.sh                # install (with progress bar) + open app
+#   ./desktop/run.sh                # install (with progress bar) + open native app
 #   ./desktop/run.sh --install      # force reinstall (shows progress bar)
 #   ./desktop/run.sh --uninstall    # remove the app from this machine
-#   ./desktop/run.sh --debug        # open with devtools
-#   ./desktop/run.sh --port 9000
+#   ./desktop/run.sh --web          # launch the web UI in the browser instead
+#   ./desktop/run.sh --lang es      # native app in Spanish
 #
 # WARNING: intended for authorized security testing only.
 set -euo pipefail
@@ -105,25 +106,17 @@ if [ ! -x "$VENV_PY" ]; then
     exit 1
 fi
 
-# ---- verify webview runtime (Linux) ----------------------------------- #
-if [ "$(uname -s)" = "Linux" ]; then
-    if ! "$VENV_PY" -c "import gi; gi.require_version('Gtk','3.0'); import webview" >/dev/null 2>&1; then
-        echo "[WARN] WebKit2 GTK runtime missing."
-        echo "       Install it with: sudo apt install python3-gi gir1.2-webkit2-4.1"
-        echo "       (Continuing with the browser fallback in 5s...)"
-        sleep 5
-        echo "[install] Starting server..."
-        "$VENV_PY" -m uvicorn app:app --host 127.0.0.1 --port "${PORT:-8080}" \
-            --app-dir "$ROOT_DIR" >/dev/null 2>&1 &
-        sleep 3
-        echo "[install] Opening browser: http://127.0.0.1:${PORT:-8080}"
-        xdg-open "http://127.0.0.1:${PORT:-8080}" 2>/dev/null || true
-        wait
-        exit 0
-    fi
+# ---- web mode (browser) --------------------------------------------- #
+if [ "${1:-}" = "--web" ] || [ "${1:-}" = "-w" ]; then
+    echo "[web] Starting server on http://127.0.0.1:${PORT:-8080}"
+    cd "$ROOT_DIR"
+    exec "$VENV_PY" -m uvicorn app:app --host 127.0.0.1 --port "${PORT:-8080}" \
+        --app-dir "$ROOT_DIR"
 fi
 
-# ---- launch the native desktop window --------------------------------- #
-echo "[launch] Starting server and desktop window..."
+# ---- launch the NATIVE desktop application ---------------------------- #
+# A real program: tkinter, uses the Agent in-process. No webview, no
+# WebKit, no browser, no server needed. Works on any Linux with Python.
+echo "[launch] Starting HackerBrain OS native desktop app..."
 cd "$ROOT_DIR"
-exec "$VENV_PY" "$ROOT_DIR/desktop/desktop_app.py" "$@"
+exec "$VENV_PY" "$ROOT_DIR/desktop/native_app.py" "$@"

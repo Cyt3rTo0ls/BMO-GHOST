@@ -166,14 +166,19 @@ permissions and checks for a local assistant engine.
 Official site (info, screenshots, tutorials):
 **https://cyt3rto0ls.github.io/hackerbrain-os**
 
-### Desktop app (native window, automatic setup)
+### Desktop app (native program, no browser, no server)
 
-A native desktop version is included in `desktop/`. It installs everything
-automatically (venv + dependencies) and opens the interface in its own
-window - no browser needed:
+A real native desktop program is included in `desktop/` (tkinter, ships
+with Python - zero extra dependencies). It uses the agent directly
+in-process: no web server, no webview, no WebKit, no browser. Features an
+integrated terminal, status bar (engine/PRO/tools), vulnerabilities,
+memory and timeline panels, PRO activation modal and EN/ES toggle.
+Installation runs with a live progress bar; a full uninstaller is included:
 
 ```bash
-./desktop/run.sh
+./desktop/run.sh                 # install (progress bar) + open the app
+./desktop/run.sh --uninstall     # remove it (keeps your data + license)
+./desktop/run.sh --web           # alternative: web UI in the browser
 ```
 
 See [desktop/README.md](desktop/README.md) for details.
