@@ -172,31 +172,24 @@ permisos de archivos y comprueba si hay un assistant engine local.
 Sitio oficial (informacion, capturas, tutoriales):
 **https://cyt3rto0ls.github.io/hackerbrain-os**
 
-### App de escritorio (interfaz completa en ventana nativa)
+### Instalacion automatica (abre tu navegador por ti)
 
-La version de escritorio abre la **interfaz web completa** (mapa IoT, grafo
-OSINT, terminal, paneles...) en una **ventana nativa de escritorio** con
-pywebview - sin necesidad de navegador. El instalador configura todo
-automaticamente con barra de progreso, **incluyendo la libreria WebKit2 GTK
-del sistema** (via sudo, una vez) para que funcione en cualquier maquina.
-Hay una app ligera en tkinter como `--lite` y la version de navegador como
-`--web`:
+El instalador hace todo en un solo comando: crea el virtualenv, instala las
+dependencias, **ofusca el codigo** con PyArmor (el runtime corre desde
+`dist/`), inicializa la base de datos, arranca el servidor local y **abre
+Firefox (o tu navegador por defecto de Kali) automaticamente**:
 
 ```bash
-./desktop/run.sh                 # instala (barra de progreso) + abre ventana nativa
-./desktop/run.sh --uninstall     # desinstala (conserva tus datos y licencia)
-./desktop/run.sh --lite          # app ligera en tkinter
-./desktop/run.sh --web           # alternativa: interfaz web en el navegador
+./install.sh          # instala todo (venv, deps, ofuscacion, BD)
+./install.sh once     # instala (si hace falta) + arranca + abre tu navegador
+./install.sh run      # arranca solo el servidor (usa el dist/ ofuscado)
+./install.sh stop     # detiene el servidor
+./install.sh obfuscate  # regenera el build ofuscado (dist/)
 ```
 
-Ver [desktop/README.md](desktop/README.md) para detalles.
-
-### Arrancar la aplicacion
-
-```bash
-source .venv/bin/activate
-uvicorn app:app --host 127.0.0.1 --port 8080
-```
+Abre `http://127.0.0.1:8080` en tu navegador (o deja que `./install.sh once`
+lo haga por ti). El codigo corre desde el build ofuscado `dist/`; el arbol
+de codigo fuente se conserva como copia de desarrollo.
 
 Abre `http://127.0.0.1:8080` en tu navegador.
 

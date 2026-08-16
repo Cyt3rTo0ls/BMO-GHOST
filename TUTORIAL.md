@@ -63,11 +63,13 @@ What `install.sh` does:
 
 1. Verifies that Python 3.10+ is present (with a clear error otherwise).
 2. Creates a Python virtual environment (`.venv`).
-3. Installs all dependencies from `requirements.txt`.
-4. Creates the folder structure (`data/`, `ui/assets/`, `reports/`, ...).
-5. Initializes the local SQLite database (`data/memory.db`).
-6. Sets the correct file permissions.
-7. Probes for a local assistant engine on ports 8080, 8010 and 8011.
+3. Installs all dependencies from `requirements.txt` (including PyArmor).
+4. **Obfuscates the code** with PyArmor into `dist/` (the app runs from this
+   obfuscated build).
+5. Creates the folder structure (`data/`, `ui/assets/`, `reports/`, ...).
+6. Initializes the local SQLite database (`data/memory.db`).
+7. Sets the correct file permissions.
+8. Probes for a local assistant engine on ports 8080, 8010 and 8011.
 
 If you prefer to install manually:
 
@@ -77,12 +79,19 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 3. Start the application
+## 3. Start the application (opens Firefox for you)
 
 ```bash
-./install.sh run     # start on http://127.0.0.1:8080
-./install.sh stop    # stop it
+./install.sh once        # install (if needed) + start + open your browser
+./install.sh run         # start the server on http://127.0.0.1:8080 (obfuscated dist/)
+./install.sh stop        # stop it
+./install.sh obfuscate   # regenerate the obfuscated build (dist/)
 ```
+
+`./install.sh once` does everything and **opens Firefox (or your default
+Kali browser) automatically** on `http://127.0.0.1:8080`. The server runs
+the obfuscated code from `dist/`; the source tree is kept as the
+development copy.
 
 Or manually:
 

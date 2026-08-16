@@ -22,24 +22,81 @@ UI_DIR="$ROOT_DIR/ui"
 CORE_DIR="$ROOT_DIR/core"
 
 # --- commands -------------------------------------------------------------
-# ./install.sh run   -> start the application
-# ./install.sh stop  -> stop the application
+# ./install.sh          -> install everything (venv, deps, DB)
+# ./install.sh run      -> start the application + open Firefox/browser
+# ./install.sh once     -> install (if needed) + start + open browser
+# ./install.sh stop     -> stop the application
 CMD="${1:-install}"
+
+# --- open the default browser (Firefox on Kali by default) ----------------
+open_browser() {
+    URL="http://127.0.0.1:${PORT:-8080}"
+    echo "[INFO] Opening $URL in your browser (Firefox by default on Kali)..."
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "$URL" >/dev/null 2>&1 || true
+    elif command -v firefox >/dev/null 2>&1; then
+        firefox "$URL" >/dev/null 2>&1 || true
+    elif command -v chromium >/dev/null 2>&1; then
+        chromium "$URL" >/dev/null 2>&1 || true
+    else
+        echo "[WARN] No browser opener found. Open manually: $URL"
+    fi
+}
 
 # --- run / stop shortcuts (before the banner, so stop stays clean) --------
 if [ "$CMD" = "run" ]; then
-    if [ ! -x "$VENV_DIR/bin/uvicorn" ]; then
-        echo "[ERROR] Not installed yet. Run ./install.sh first." >&2
+    if [ ! -x "$VENV_DIR/bin/python" ]; then
+        echo "[ERROR] Not installed yet. Run ./install.sh (without arguments) first." >&2
         exit 1
     fi
-    echo "[INFO] Starting HackerBrain OS on http://127.0.0.1:8080"
+    echo "[INFO] Starting HackerBrain OS on http://127.0.0.1:${PORT:-8080}"
     cd "$ROOT_DIR"
-    exec "$VENV_DIR/bin/python" -m uvicorn app:app --host 127.0.0.1 --port 8080
+    # Prefer the obfuscated build (dist/); fall back to the source tree.
+    if [ -f "$ROOT_DIR/dist/app.py" ]; then
+        APP_DIR="$ROOT_DIR/dist"
+        echo "[INFO] Running obfuscated build (dist/)..."
+    else
+        APP_DIR="$ROOT_DIR"
+        echo "[INFO] Obfuscated build not found, running from source..."
+    fi
+    # start the server detached (survives terminal close), then open the browser
+    setsid nohup bash -c "cd '$APP_DIR' && '$VENV_DIR/bin/python' -m uvicorn app:app \
+        --host 127.0.0.1 --port '${PORT:-8080}'" \
+        >/tmp/hackerbrain_os.log 2>&1 &
+    SERVER_PID=$!
+    echo "$SERVER_PID" > "$DATA_DIR/.server_pid" 2>/dev/null || true
+    sleep 2
+    open_browser
+    echo "[INFO] Server running (PID $SERVER_PID). Stop it with: ./install.sh stop"
+    echo "[INFO] Log: /tmp/hackerbrain_os.log"
+    exit 0
+fi
+
+if [ "$CMD" = "once" ]; then
+    # one-shot: make sure it's installed, then run + open browser
+    if [ ! -x "$VENV_DIR/bin/python" ] || [ ! -f "$DATA_DIR/.installed" ]; then
+        exec "$0" install
+    fi
+    exec "$0" run
 fi
 
 if [ "$CMD" = "stop" ]; then
     pkill -f 'uvicorn app:app' 2>/dev/null || true
+    pkill -f 'hackerbrain_os.log' 2>/dev/null || true
+    rm -f "$DATA_DIR/.server_pid" 2>/dev/null || true
     echo "[OK] HackerBrain OS stopped."
+    exit 0
+fi
+
+if [ "$CMD" = "obfuscate" ]; then
+    if [ ! -x "$VENV_DIR/bin/python" ]; then
+        echo "[ERROR] Not installed yet. Run ./install.sh (without arguments) first." >&2
+        exit 1
+    fi
+    echo "[INFO] Obfuscating the code with PyArmor -> dist/ ..."
+    "$VENV_DIR/bin/python" -m pip install --quiet pyarmor 2>/dev/null || true
+    ( cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py )
+    echo "[OK] Obfuscated build ready in dist/ (used automatically by ./install.sh run)."
     exit 0
 fi
 
@@ -93,6 +150,12 @@ source "$VENV_DIR/bin/activate" || fail "Failed to activate virtual environment.
 info "Installing dependencies (pip install -r requirements.txt)..."
 python -m pip install --upgrade pip >/dev/null 2>&1 || true
 python -m pip install -r "$ROOT_DIR/requirements.txt" || fail "Dependency installation failed."
+
+# --- obfuscation ---------------------------------------------------------
+info "Obfuscating the code (PyArmor -> dist/)..."
+python -m pip install --quiet pyarmor 2>/dev/null || true
+(cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py) \
+    || info "[WARN] Obfuscation failed, the app will run from the source tree."
 
 # --- folder structure ----------------------------------------------------
 info "Creating folder structure..."
@@ -196,13 +259,20 @@ info "Setting file permissions..."
 chmod 755 "$ROOT_DIR/install.sh" "$ROOT_DIR/app.py" 2>/dev/null || true
 chmod 644 "$ROOT_DIR/requirements.txt" "$ROOT_DIR/README.md" 2>/dev/null || true
 
+# --- mark installed -------------------------------------------------------
+touch "$DATA_DIR/.installed" 2>/dev/null || true
+
 # --- done ----------------------------------------------------------------
 cat <<'DONE'
 
-[OK] Installation complete.
-     Start the application with:  ./install.sh run
-     Stop it with:                ./install.sh stop
-     Open:                        http://127.0.0.1:8080
+[OK] Installation complete. The code was obfuscated into dist/ and the
+     server will run from that obfuscated build.
+
+     Start everything and open Firefox/browser:  ./install.sh once
+     Start the server only:                      ./install.sh run
+     Stop it:                                    ./install.sh stop
+     Re-obfuscate the code:                      ./install.sh obfuscate
+     Open:                                       http://127.0.0.1:8080
 
      Note: HackerBrain OS is LOCAL. The assistant engine runs on this
      machine and consumes significant CPU/RAM/disk resources.

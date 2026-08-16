@@ -166,32 +166,24 @@ permissions and checks for a local assistant engine.
 Official site (info, screenshots, tutorials):
 **https://cyt3rto0ls.github.io/hackerbrain-os**
 
-### Desktop app (full interface in a native window)
+### Automatic install (opens your browser for you)
 
-The desktop version opens the **complete web interface** (IoT map, OSINT
-graph, terminal, panels...) in a **native desktop window** via pywebview -
-no browser needed. The installer sets up everything automatically with a
-live progress bar, **including the WebKit2 GTK system library** (via sudo
-once) so it works on any machine. A lightweight tkinter app is available
-as `--lite`, and the browser version as `--web`:
+The installer does everything in one command: creates the virtualenv,
+installs dependencies, **obfuscates the code** with PyArmor (the runtime
+runs from `dist/`), initializes the database, starts the local server and
+**opens Firefox (or your default Kali browser) automatically**:
 
 ```bash
-./desktop/run.sh                 # install (progress bar) + open native window
-./desktop/run.sh --uninstall     # remove it (keeps your data + license)
-./desktop/run.sh --lite          # lightweight tkinter app
-./desktop/run.sh --web           # alternative: web UI in the browser
+./install.sh          # install everything (venv, deps, obfuscation, DB)
+./install.sh once     # install (if needed) + start + open your browser
+./install.sh run      # start the server only (uses the obfuscated dist/)
+./install.sh stop     # stop the server
+./install.sh obfuscate  # regenerate the obfuscated build (dist/)
 ```
 
-See [desktop/README.md](desktop/README.md) for details.
-
-### Start the application
-
-```bash
-source .venv/bin/activate
-uvicorn app:app --host 127.0.0.1 --port 8080
-```
-
-Open `http://127.0.0.1:8080` in your browser.
+Open `http://127.0.0.1:8080` in your browser (or let `./install.sh once`
+do it for you). The code runs from the obfuscated `dist/` build; the source
+tree is kept as the development copy.
 
 ### Configure the local assistant engine
 

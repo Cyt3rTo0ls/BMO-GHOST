@@ -26,6 +26,10 @@ venv/
 reports/
 exports/
 
+# Local install markers
+.installed
+.server_pid
+
 # OS / editor
 .DS_Store
 *.swp

@@ -64,11 +64,12 @@ Lo que hace `install.sh`:
 
 1. Verifica que Python 3.10+ esta instalado (con un mensaje claro si no).
 2. Crea un entorno virtual de Python (`.venv`).
-3. Instala todas las dependencias desde `requirements.txt`.
-4. Crea la estructura de carpetas (`data/`, `ui/assets/`, `reports/`, ...).
-5. Inicializa la base de datos SQLite local (`data/memory.db`).
-6. Ajusta los permisos de archivos.
-7. Comprueba si hay un assistant engine local en los puertos 8080, 8010 y 8011.
+3. Instala todas las dependencias desde `requirements.txt` (incluido PyArmor).
+4. **Ofusca el codigo** con PyArmor en `dist/` (la app corre desde ese build ofuscado).
+5. Crea la estructura de carpetas (`data/`, `ui/assets/`, `reports/`, ...).
+6. Inicializa la base de datos SQLite local (`data/memory.db`).
+7. Ajusta los permisos de archivos.
+8. Comprueba si hay un assistant engine local en los puertos 8080, 8010 y 8011.
 
 Instalacion manual alternativa:
 
@@ -78,12 +79,19 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 3. Arrancar la aplicacion
+## 3. Arrancar la aplicacion (abre Firefox por ti)
 
 ```bash
-./install.sh run     # arranca en http://127.0.0.1:8080
-./install.sh stop    # la detiene
+./install.sh once        # instala (si hace falta) + arranca + abre tu navegador
+./install.sh run         # arranca el servidor en http://127.0.0.1:8080 (dist/ ofuscado)
+./install.sh stop        # lo detiene
+./install.sh obfuscate   # regenera el build ofuscado (dist/)
 ```
+
+`./install.sh once` hace todo y **abre Firefox (o tu navegador por defecto
+de Kali) automaticamente** en `http://127.0.0.1:8080`. El servidor ejecuta
+el codigo ofuscado desde `dist/`; el arbol de codigo fuente se conserva
+como copia de desarrollo.
 
 O manualmente:
 

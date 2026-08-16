@@ -83,8 +83,8 @@
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <h3 data-i18n="feat_desk_t">Desktop app</h3>
-        <p data-i18n="feat_desk_d">Native windowed version (pywebview) with one-command automatic installation, live progress bar and a full uninstaller.</p>
+        <h3 data-i18n="feat_desk_t">One-command install</h3>
+        <p data-i18n="feat_desk_d">Fully automatic setup: environment, dependencies, code obfuscation and local server — then it opens Firefox (or your default Kali browser) for you.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
@@ -116,17 +116,9 @@
     <div class="codeblock">
 <pre><code>git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
 cd hackerbrain-os
-./install.sh          # creates venv, installs deps, initializes the DB
-./install.sh run      # start on http://127.0.0.1:8080</code></pre>
-    </div>
-    <p class="section-sub" data-i18n="inst_desk_sub">Desktop version (native window, automatic setup with progress bar):</p>
-    <div class="hero-actions" style="margin-top:8px">
-      <a class="btn btn-primary btn-lg" href="download/hackerbrain-os-run.sh" download="hackerbrain-os-run.sh" data-i18n="inst_dl_btn">⬇ DOWNLOAD DESKTOP</a>
-    </div>
-    <div class="codeblock">
-<pre><code>chmod +x hackerbrain-os-run.sh
-./hackerbrain-os-run.sh          # installs everything + opens the desktop app
-./hackerbrain-os-run.sh --uninstall   # removes it from your machine (keeps your data)</code></pre>
+./install.sh          # creates venv, installs deps, obfuscates + initializes the DB
+./install.sh once     # start on http://127.0.0.1:8080 and open your browser (Firefox by default)
+./install.sh stop     # stop the server</code></pre>
     </div>
     <div class="note-box">
       <strong data-i18n="inst_req_lbl">Requirements:</strong> <span data-i18n="inst_req_txt">Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). The rest of the platform works without an engine, but conversational analysis needs one.</span>
@@ -254,12 +246,12 @@ const I18N = {
     feat_graph_t: 'OSINT graph (Maltego-style)', feat_graph_d: 'Build ordered, color-coded relationship graphs from any email, domain, IP, username or phone — and map exposed devices worldwide on an interactive globe.',
     feat_vault_t: 'Encrypted vault', feat_vault_d: 'Credentials and findings stored with PBKDF2 + AES encryption. Nothing leaves your machine.',
     feat_lang_t: 'EN / ES interface', feat_lang_d: 'Full bilingual interface and tutorials. The assistant answers in the language you write in.',
-    feat_desk_t: 'Desktop app', feat_desk_d: 'The full interface in a native desktop window (pywebview) with automatic setup that installs WebKit2 GTK too - no browser needed. Lite tkinter mode and full uninstaller included.',
+    feat_desk_t: 'One-command install', feat_desk_d: 'Fully automatic setup: environment, dependencies, code obfuscation and local server - then it opens Firefox (or your default Kali browser) for you.',
     feat_rl_t: 'Rate-limit aware', feat_rl_d: 'Scans report estimated durations up front and throttle automatically (nuclei -rl, nmap --max-rate) when a target enforces limits.',
     shots_title: 'Screenshots', shots_sub: 'Real captures of the interface running against live targets.',
     inst_title: 'Install in one command',
-    inst_desk_sub: 'Desktop version (native window, automatic setup with progress bar):',
-    inst_dl_btn: '⬇ DOWNLOAD DESKTOP',
+    inst_desk_sub: 'Everything is automatic: the installer sets up the environment, obfuscates the code and opens Firefox (or your default Kali browser) on the local server.',
+    inst_dl_btn: '⬇ RUN IN YOUR BROWSER',
     inst_req_lbl: 'Requirements:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). The rest of the platform works without an engine, but conversational analysis needs one.',
     usage_title: 'Usage',
     pill_safe: 'MINIMUM CENSORSHIP', pill_safe_t: 'All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.',
@@ -292,12 +284,12 @@ const I18N = {
     feat_graph_t: 'Grafo OSINT (estilo Maltego)', feat_graph_d: 'Construye grafos de relaciones ordenados y con colores desde cualquier email, dominio, IP, usuario o teléfono — y mapea dispositivos expuestos en un mapa mundial interactivo.',
     feat_vault_t: 'Vault cifrado', feat_vault_d: 'Credenciales y hallazgos guardados con cifrado PBKDF2 + AES. Nada sale de tu máquina.',
     feat_lang_t: 'Interfaz EN / ES', feat_lang_d: 'Interfaz y tutoriales completamente bilingües. El asistente responde en el idioma en que escribes.',
-    feat_desk_t: 'App de escritorio', feat_desk_d: 'La interfaz completa en una ventana nativa de escritorio (pywebview) con instalación automática que incluye WebKit2 GTK - sin navegador. Modo ligero tkinter y desinstalador completo incluidos.',
+    feat_desk_t: 'Instalación en un comando', feat_desk_d: 'Configuración totalmente automática: entorno, dependencias, ofuscación del código y servidor local — y luego abre Firefox (o tu navegador por defecto de Kali) por ti.',
     feat_rl_t: 'Consciente del rate limit', feat_rl_d: 'Los escaneos informan la duración estimada por adelantado y se limitan automáticamente (nuclei -rl, nmap --max-rate) cuando el objetivo impone límites.',
     shots_title: 'Capturas', shots_sub: 'Capturas reales de la interfaz contra objetivos en vivo.',
     inst_title: 'Instala en un comando',
-    inst_desk_sub: 'Versión de escritorio (ventana nativa, instalación automática con barra de progreso):',
-    inst_dl_btn: '⬇ DESCARGAR DESKTOP',
+    inst_desk_sub: 'Todo es automático: el instalador configura el entorno, ofusca el código y abre Firefox (o tu navegador por defecto de Kali) en el servidor local.',
+    inst_dl_btn: '⬇ EJECUTAR EN TU NAVEGADOR',
     inst_req_lbl: 'Requisitos:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Linux basado en Debian, y un motor local de chat-completions (cualquier servidor de LLM local — la URL del engine se configura en <code>data/config.yaml</code>). El resto de la plataforma funciona sin engine, pero el análisis conversacional lo necesita.',
     usage_title: 'Uso',
     pill_safe: 'MÍNIMA CENSURA', pill_safe_t: 'Todo el toolset profesional corre libre (iptables, ufw, dd, mkfs, explotación). Solo se bloquean los comandos que borrarían tu propio host.',
