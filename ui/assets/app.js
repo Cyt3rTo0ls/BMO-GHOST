@@ -1157,7 +1157,7 @@ Local only. WARNING: authorized security testing only.
     setSessionTimer();
     connectWS();
 
-    ['pro', 'vulns', 'vault', 'reports', 'memory'].forEach(function (view) {
+    ['pro', 'vulns', 'vault', 'reports', 'memory', 'iotmap', 'osintgraph'].forEach(function (view) {
       if (hash.indexOf(view) !== -1) {
         document.querySelectorAll('.nav-btn').forEach(function (x) { x.classList.remove('active'); });
         document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
@@ -1171,6 +1171,20 @@ Local only. WARNING: authorized security testing only.
         if (view === 'osintgraph') initOsintGraph();
       }
     });
+    // #osintgraph:<seed> auto-builds the graph (deep link / screenshots).
+    const gs = hash.match(/osintgraph(?::|%3A)([^&]+)/);
+    if (gs) {
+      try {
+        $('osintgraph-seed').value = decodeURIComponent(gs[1]);
+        setTimeout(function () {
+          document.querySelector('.nav-btn[data-view="osintgraph"]').classList.add('active');
+          document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+          $('view-osintgraph').classList.add('active');
+          initOsintGraph();
+          setTimeout(buildOsintGraph, 1200);
+        }, 800);
+      } catch (e) { /* ignore */ }
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);

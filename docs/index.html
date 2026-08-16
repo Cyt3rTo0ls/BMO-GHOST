@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HackerBrain OS — Local AI Pentesting Assistant</title>
-<meta name="description" content="HackerBrain OS is a 100% local AI-powered penetration testing assistant for Kali/Parrot Linux. Runs offline, connects to your own models, and automates reconnaissance, vulnerability scanning and bug bounty workflows.">
+<meta name="description" content="HackerBrain OS is a 100% local AI-powered penetration testing assistant for Kali/Parrot Linux. Runs offline, connects to your own models, and automates reconnaissance, OSINT, vulnerability scanning and bug bounty workflows.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300e5c7'><path d='M12 2L2 7l10 5 10-5-10-5z'/><path d='M2 17l10 5 10-5'/><path d='M2 12l10 5 10-5'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -17,83 +17,79 @@
       <span>HackerBrain <b>OS</b></span>
     </a>
     <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#screenshots">Screenshots</a>
-      <a href="#install">Install</a>
-      <a href="#usage">Usage</a>
-      <a href="#pro">PRO</a>
-      <a href="#docs">Docs</a>
+      <a href="#features" data-i18n="nav_features">Features</a>
+      <a href="#screenshots" data-i18n="nav_screenshots">Screenshots</a>
+      <a href="#install" data-i18n="nav_install">Install</a>
+      <a href="#usage" data-i18n="nav_usage">Usage</a>
+      <a href="#pro" data-i18n="nav_pro">PRO</a>
+      <a href="#docs" data-i18n="nav_docs">Docs</a>
     </nav>
-    <a class="btn btn-primary btn-sm" href="https://github.com/Cyt3rTo0ls/hackerbrain-os" target="_blank" rel="noopener">GitHub</a>
+    <button id="lang-toggle" class="btn btn-ghost btn-sm" onclick="toggleLang()">ES</button>
+    <a class="btn btn-primary btn-sm" href="https://github.com/Cyt3rTo0ls/hackerbrain-os" target="_blank" rel="noopener" data-i18n="nav_github">GitHub</a>
   </div>
 </header>
 
 <section class="hero" id="top">
   <div class="container">
-    <div class="hero-badge">100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)</div>
-    <h1>Your AI penetration testing <span class="accent">assistant</span>, running entirely on your machine.</h1>
-    <p class="lead">HackerBrain OS is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.</p>
+    <div class="hero-badge" data-i18n="hero_badge">100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)</div>
+    <h1 data-i18n="hero_title">Your AI penetration testing <span class="accent">assistant</span>, running entirely on your machine.</h1>
+    <p class="lead" data-i18n="hero_lead">HackerBrain OS is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, OSINT, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary btn-lg" href="#install">Get started</a>
-      <a class="btn btn-ghost btn-lg" href="#screenshots">See it in action</a>
+      <a class="btn btn-primary btn-lg" href="#install" data-i18n="hero_cta1">Get started</a>
+      <a class="btn btn-ghost btn-lg" href="#screenshots" data-i18n="hero_cta2">See it in action</a>
     </div>
     <div class="hero-meta">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg> Runs offline</span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Your keys, your vault</span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 45+ tools detected</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg> <span data-i18n="hero_m1">Runs offline</span></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> <span data-i18n="hero_m2">Your keys, your vault</span></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> <span data-i18n="hero_m3">45+ tools detected</span></span>
     </div>
   </div>
 </section>
 
 <section class="features" id="features">
   <div class="container">
-    <h2 class="section-title">Everything a pentest needs, <span class="accent">local-first</span></h2>
-    <p class="section-sub">HackerBrain OS orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.</p>
+    <h2 class="section-title" data-i18n="feat_title">Everything a pentest needs, <span class="accent">local-first</span></h2>
+    <p class="section-sub" data-i18n="feat_sub">HackerBrain OS orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.</p>
     <div class="grid">
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18"/><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
-        <h3>Autonomous agent</h3>
-        <p>Ask in plain language (EN/ES): the agent plans steps with your local model, executes real commands, and iterates until the goal is reached.</p>
+        <h3 data-i18n="feat_agent_t">Autonomous agent</h3>
+        <p data-i18n="feat_agent_d">Ask in plain language (EN/ES): the agent plans steps with your local model, executes real commands, and iterates until the goal is reached.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-        <h3>Vulnerability scanning</h3>
-        <p>Port, service, IoT and template-based vulnerability scans (Nmap, Nuclei, masscan) with severity classification and CVE correlation.</p>
+        <h3 data-i18n="feat_vuln_t">Vulnerability scanning</h3>
+        <p data-i18n="feat_vuln_d">Port, service, IoT and template-based vulnerability scans (Nmap, Nuclei, masscan) with severity classification and CVE correlation.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-        <h3>Tech fingerprinting</h3>
-        <p>Identifies the web stack (frameworks, servers, WAFs) and summarizes the likely attack surface before you start.</p>
+        <h3 data-i18n="feat_tech_t">Tech fingerprinting</h3>
+        <p data-i18n="feat_tech_d">Identifies the web stack (frameworks, servers, WAFs) and summarizes the likely attack surface before you start.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="7" r="3"/><circle cx="9" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.5 7.5l6 1M10 15l5-6M18 10v5"/></svg></div>
+        <h3 data-i18n="feat_graph_t">OSINT graph (Maltego-style)</h3>
+        <p data-i18n="feat_graph_d">Build ordered, color-coded relationship graphs from any email, domain, IP, username or phone — and map exposed devices worldwide on an interactive globe.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
-        <h3>Encrypted vault</h3>
-        <p>Credentials and findings stored with PBKDF2 + AES encryption. Nothing leaves your machine.</p>
+        <h3 data-i18n="feat_vault_t">Encrypted vault</h3>
+        <p data-i18n="feat_vault_d">Credentials and findings stored with PBKDF2 + AES encryption. Nothing leaves your machine.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M2 12h20"/><path d="M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg></div>
-        <h3>EN / ES interface</h3>
-        <p>Full bilingual interface and tutorials. The assistant answers in the language you write in.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-        <h3>Bug bounty workflows</h3>
-        <p>Subdomain enumeration, directory fuzzing, header analysis, brute-force gates with explicit confirmation, and DNS recon/spoofing tests.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/><path d="M8 3l1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2z"/></svg></div>
-        <h3>OSINT module</h3>
-        <p>Domain, email, username, phone, IP and metadata intelligence over public sources — WHOIS, DNS, certificate transparency, breach checks and social profile probing.</p>
+        <h3 data-i18n="feat_lang_t">EN / ES interface</h3>
+        <p data-i18n="feat_lang_d">Full bilingual interface and tutorials. The assistant answers in the language you write in.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <h3>Desktop app</h3>
-        <p>Native windowed version (pywebview) with one-command automatic installation. No browser needed.</p>
+        <h3 data-i18n="feat_desk_t">Desktop app</h3>
+        <p data-i18n="feat_desk_d">Native windowed version (pywebview) with one-command automatic installation, live progress bar and a full uninstaller.</p>
       </div>
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
-        <h3>Rate-limit aware</h3>
-        <p>Scans report estimated durations up front and throttle automatically (nuclei -rl, nmap --max-rate) when a target enforces limits.</p>
+        <h3 data-i18n="feat_rl_t">Rate-limit aware</h3>
+        <p data-i18n="feat_rl_d">Scans report estimated durations up front and throttle automatically (nuclei -rl, nmap --max-rate) when a target enforces limits.</p>
       </div>
     </div>
   </div>
@@ -101,93 +97,93 @@
 
 <section class="shots" id="screenshots">
   <div class="container">
-    <h2 class="section-title">Screenshots</h2>
-    <p class="section-sub">Real captures of the interface running against live targets.</p>
+    <h2 class="section-title" data-i18n="shots_title">Screenshots</h2>
+    <p class="section-sub" data-i18n="shots_sub">Real captures of the interface running against live targets.</p>
     <div class="shot-grid">
       <figure><a href="images/dashboard.png" target="_blank"><img src="images/dashboard.png" alt="Dashboard (EN)"></a><figcaption>Dashboard · EN</figcaption></figure>
       <figure><a href="images/dashboard_es.png" target="_blank"><img src="images/dashboard_es.png" alt="Dashboard (ES)"></a><figcaption>Dashboard · ES</figcaption></figure>
+      <figure><a href="images/osint_graph.png" target="_blank"><img src="images/osint_graph.png" alt="OSINT graph (Maltego-style)"></a><figcaption>OSINT Graph</figcaption></figure>
+      <figure><a href="images/iot_map.png" target="_blank"><img src="images/iot_map.png" alt="Global IoT map"></a><figcaption>Global IoT Map</figcaption></figure>
       <figure><a href="images/vulns.png" target="_blank"><img src="images/vulns.png" alt="Vulnerabilities view"></a><figcaption>Vulnerabilities</figcaption></figure>
-      <figure><a href="images/memory.png" target="_blank"><img src="images/memory.png" alt="Memory panel"></a><figcaption>Memory</figcaption></figure>
       <figure><a href="images/pro_features.png" target="_blank"><img src="images/pro_features.png" alt="PRO comparison (EN)"></a><figcaption>PRO · EN</figcaption></figure>
-      <figure><a href="images/pro_features_es.png" target="_blank"><img src="images/pro_features_es.png" alt="PRO comparison (ES)"></a><figcaption>PRO · ES</figcaption></figure>
     </div>
   </div>
 </section>
 
 <section class="install" id="install">
   <div class="container">
-    <h2 class="section-title">Install in one command</h2>
+    <h2 class="section-title" data-i18n="inst_title">Install in one command</h2>
     <div class="codeblock">
 <pre><code>git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
 cd hackerbrain-os
 ./install.sh          # creates venv, installs deps, initializes the DB
 ./install.sh run      # start on http://127.0.0.1:8080</code></pre>
     </div>
-    <p class="section-sub">Desktop version (native window, automatic setup):</p>
+    <p class="section-sub" data-i18n="inst_desk_sub">Desktop version (native window, automatic setup with progress bar):</p>
+    <div class="hero-actions" style="margin-top:8px">
+      <a class="btn btn-primary btn-lg" href="https://raw.githubusercontent.com/Cyt3rTo0ls/hackerbrain-os/main/desktop/run.sh" download="hackerbrain-os-run.sh" data-i18n="inst_dl_btn">⬇ DOWNLOAD DESKTOP</a>
+    </div>
     <div class="codeblock">
-<pre><code>./desktop/run.sh      # installs everything and opens the desktop app</code></pre>
+<pre><code>chmod +x hackerbrain-os-run.sh
+./hackerbrain-os-run.sh          # installs everything + opens the desktop app
+./hackerbrain-os-run.sh --uninstall   # removes it from your machine (keeps your data)</code></pre>
     </div>
     <div class="note-box">
-      <strong>Requirements:</strong> Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). The rest of the platform works without an engine, but conversational analysis needs one.
+      <strong data-i18n="inst_req_lbl">Requirements:</strong> <span data-i18n="inst_req_txt">Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). The rest of the platform works without an engine, but conversational analysis needs one.</span>
     </div>
   </div>
 </section>
 
 <section class="usage" id="usage">
   <div class="container">
-    <h2 class="section-title">Usage</h2>
+    <h2 class="section-title" data-i18n="usage_title">Usage</h2>
     <div class="codeblock">
 <pre><code>&gt; escanea solo los dispositivos conectados a mi red
 &gt; scan ports of 10.10.10.1
 &gt; enumerate subdomains of example.com
-&gt; fuzz directories on example.com
-&gt; analiza las tecnologias de https://target.com
+&gt; osint example.com
+&gt; graph alice@example.com
+&gt; shodan cameras port:554
 &gt; scan for vulnerabilities on http://127.0.0.1:8081 (tiene rate limit)
 &gt; dns example.com
-&gt; osint example.com
-&gt; email alice@example.com
-&gt; user torvalds
-&gt; subdomains example.com
-&gt; ip 8.8.8.8
 &gt; train preference: siempre usa -sV</code></pre>
     </div>
     <div class="notes">
-      <p><span class="pill pill-ok">MINIMUM CENSORSHIP</span> All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.</p>
-      <p><span class="pill pill-rl">AGGRESSIVE MODE</span> <code>aggressive on</code> skips the confirmation gate entirely for autonomous engagements (persistent).</p>
-      <p><span class="pill pill-local">100% LOCAL</span> No telemetry, no cloud, no data exfiltration. Offline by design.</p>
+      <p><span class="pill pill-ok" data-i18n="pill_safe">MINIMUM CENSORSHIP</span> <span data-i18n="pill_safe_t">All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.</span></p>
+      <p><span class="pill pill-rl" data-i18n="pill_agg">AGGRESSIVE MODE</span> <span data-i18n="pill_agg_t"><code>aggressive on</code> skips the confirmation gate entirely for autonomous engagements (persistent).</span></p>
+      <p><span class="pill pill-local" data-i18n="pill_local">100% LOCAL</span> <span data-i18n="pill_local_t">No telemetry, no cloud, no data exfiltration. Offline by design.</span></p>
     </div>
   </div>
 </section>
 
 <section class="pro" id="pro">
   <div class="container">
-    <h2 class="section-title">PRO</h2>
-    <p class="section-sub">PRO is a permanent, single-use license. Activate once, keep it forever on that machine.</p>
+    <h2 class="section-title" data-i18n="pro_title">PRO</h2>
+    <p class="section-sub" data-i18n="pro_sub">PRO is a permanent, single-use license. Activate once, keep it forever on that machine.</p>
     <div class="pro-grid">
       <div class="pro-card">
-        <h3>FREE</h3>
+        <h3 data-i18n="pro_free">FREE</h3>
         <ul>
-          <li>20 queries / session</li>
-          <li>Local agent + tools</li>
-          <li>Port / vuln / IoT scanning</li>
-          <li>EN / ES interface</li>
-          <li>Terminal + timeline</li>
+          <li data-i18n="pro_f1">20 queries / session</li>
+          <li data-i18n="pro_f2">Local agent + tools</li>
+          <li data-i18n="pro_f3">Port / vuln / IoT scanning</li>
+          <li data-i18n="pro_f4">EN / ES interface</li>
+          <li data-i18n="pro_f5">Terminal + timeline</li>
         </ul>
       </div>
       <div class="pro-card pro-card-hl">
         <h3>PRO <span class="tag">35 USDT</span></h3>
         <ul>
-          <li>Unlimited engine usage</li>
-          <li>Global IoT map (Shodan, your key, interactive world map)</li>
-          <li>OSINT relationship graph (Maltego-style entity mapping)</li>
-          <li>Reverse face search (FaceCheck ID, your key)</li>
-          <li>Encrypted vault</li>
-          <li>Report generation (Executive, Technical, PCI-DSS, HIPAA)</li>
-          <li>Persistent memory</li>
-          <li>Assistant training (teach the agent)</li>
-          <li>DNS spoofing tests</li>
-          <li>Unlimited projects, snapshots, plugins, webhooks</li>
-          <li><b>Permanent</b> · single-use key · revocable if leaked</li>
+          <li data-i18n="pro_p1">Unlimited engine usage</li>
+          <li data-i18n="pro_p2">Global IoT map (Shodan, your key, interactive world map)</li>
+          <li data-i18n="pro_p3">OSINT relationship graph (Maltego-style entity mapping)</li>
+          <li data-i18n="pro_p4">Reverse face search (FaceCheck ID, your key)</li>
+          <li data-i18n="pro_p5">Encrypted vault</li>
+          <li data-i18n="pro_p6">Report generation (Executive, Technical, PCI-DSS, HIPAA)</li>
+          <li data-i18n="pro_p7">Persistent memory</li>
+          <li data-i18n="pro_p8">Assistant training (teach the agent)</li>
+          <li data-i18n="pro_p9">DNS spoofing tests</li>
+          <li data-i18n="pro_p10"><b>Permanent</b> · single-use key · revocable if leaked</li>
         </ul>
       </div>
     </div>
@@ -196,23 +192,23 @@ cd hackerbrain-os
 
 <section class="docs" id="docs">
   <div class="container">
-    <h2 class="section-title">Documentation</h2>
+    <h2 class="section-title" data-i18n="docs_title">Documentation</h2>
     <div class="docs-grid">
       <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/README.md" target="_blank" rel="noopener">
         <span class="doc-icon">EN</span>
-        <div><h4>README (English)</h4><p>Overview, install, structure and license.</p></div>
+        <div><h4 data-i18n="docs_r1t">README (English)</h4><p data-i18n="docs_r1d">Overview, install, structure and license.</p></div>
       </a>
       <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/README_ES.md" target="_blank" rel="noopener">
         <span class="doc-icon">ES</span>
-        <div><h4>README (Español)</h4><p>Resumen, instalación, estructura y licencia.</p></div>
+        <div><h4 data-i18n="docs_r2t">README (Español)</h4><p data-i18n="docs_r2d">Resumen, instalación, estructura y licencia.</p></div>
       </a>
       <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/TUTORIAL.md" target="_blank" rel="noopener">
         <span class="doc-icon">📘</span>
-        <div><h4>Tutorial (EN)</h4><p>Step-by-step guide with examples.</p></div>
+        <div><h4 data-i18n="docs_t1t">Tutorial (EN)</h4><p data-i18n="docs_t1d">Step-by-step guide with examples.</p></div>
       </a>
       <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/TUTORIAL_ES.md" target="_blank" rel="noopener">
         <span class="doc-icon">📘</span>
-        <div><h4>Tutorial (ES)</h4><p>Guía paso a paso con ejemplos.</p></div>
+        <div><h4 data-i18n="docs_t2t">Tutorial (ES)</h4><p data-i18n="docs_t2d">Guía paso a paso con ejemplos.</p></div>
       </a>
     </div>
   </div>
@@ -226,18 +222,122 @@ cd hackerbrain-os
         <span>HackerBrain <b>OS</b></span>
       </div>
       <div class="footer-links">
-        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os" target="_blank" rel="noopener">Source</a>
-        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os/issues" target="_blank" rel="noopener">Issues</a>
-        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os" target="_blank" rel="noopener" data-i18n="foot_source">Source</a>
+        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os/issues" target="_blank" rel="noopener" data-i18n="foot_issues">Issues</a>
+        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="foot_license">License</a>
       </div>
     </div>
-    <p class="legal">
+    <p class="legal" data-i18n="foot_legal">
       HackerBrain OS is intended for <strong>authorized security testing only</strong>.
       Unauthorized access to computer systems is illegal. Licensed under AGPL-3.0.
       Runs 100% locally and consumes significant system resources while a model is loaded.
     </p>
   </div>
 </footer>
+
+<script>
+// ---------------- i18n (EN/ES) ---------------- 
+const I18N = {
+  en: {
+    nav_features: 'Features', nav_screenshots: 'Screenshots', nav_install: 'Install',
+    nav_usage: 'Usage', nav_pro: 'PRO', nav_docs: 'Docs', nav_github: 'GitHub',
+    hero_badge: '100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)',
+    hero_title: 'Your AI penetration testing <span class="accent">assistant</span>, running entirely on your machine.',
+    hero_lead: 'HackerBrain OS is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, OSINT, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.',
+    hero_cta1: 'Get started', hero_cta2: 'See it in action',
+    hero_m1: 'Runs offline', hero_m2: 'Your keys, your vault', hero_m3: '45+ tools detected',
+    feat_title: 'Everything a pentest needs, <span class="accent">local-first</span>',
+    feat_sub: 'HackerBrain OS orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.',
+    feat_agent_t: 'Autonomous agent', feat_agent_d: 'Ask in plain language (EN/ES): the agent plans steps with your local model, executes real commands, and iterates until the goal is reached.',
+    feat_vuln_t: 'Vulnerability scanning', feat_vuln_d: 'Port, service, IoT and template-based vulnerability scans (Nmap, Nuclei, masscan) with severity classification and CVE correlation.',
+    feat_tech_t: 'Tech fingerprinting', feat_tech_d: 'Identifies the web stack (frameworks, servers, WAFs) and summarizes the likely attack surface before you start.',
+    feat_graph_t: 'OSINT graph (Maltego-style)', feat_graph_d: 'Build ordered, color-coded relationship graphs from any email, domain, IP, username or phone — and map exposed devices worldwide on an interactive globe.',
+    feat_vault_t: 'Encrypted vault', feat_vault_d: 'Credentials and findings stored with PBKDF2 + AES encryption. Nothing leaves your machine.',
+    feat_lang_t: 'EN / ES interface', feat_lang_d: 'Full bilingual interface and tutorials. The assistant answers in the language you write in.',
+    feat_desk_t: 'Desktop app', feat_desk_d: 'Native windowed version (pywebview) with one-command automatic installation, live progress bar and a full uninstaller.',
+    feat_rl_t: 'Rate-limit aware', feat_rl_d: 'Scans report estimated durations up front and throttle automatically (nuclei -rl, nmap --max-rate) when a target enforces limits.',
+    shots_title: 'Screenshots', shots_sub: 'Real captures of the interface running against live targets.',
+    inst_title: 'Install in one command',
+    inst_desk_sub: 'Desktop version (native window, automatic setup with progress bar):',
+    inst_dl_btn: '⬇ DOWNLOAD DESKTOP',
+    inst_req_lbl: 'Requirements:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). The rest of the platform works without an engine, but conversational analysis needs one.',
+    usage_title: 'Usage',
+    pill_safe: 'MINIMUM CENSORSHIP', pill_safe_t: 'All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.',
+    pill_agg: 'AGGRESSIVE MODE', pill_agg_t: '<code>aggressive on</code> skips the confirmation gate entirely for autonomous engagements (persistent).',
+    pill_local: '100% LOCAL', pill_local_t: 'No telemetry, no cloud, no data exfiltration. Offline by design.',
+    pro_title: 'PRO', pro_sub: 'PRO is a permanent, single-use license. Activate once, keep it forever on that machine.',
+    pro_free: 'FREE', pro_f1: '20 queries / session', pro_f2: 'Local agent + tools', pro_f3: 'Port / vuln / IoT scanning', pro_f4: 'EN / ES interface', pro_f5: 'Terminal + timeline',
+    pro_p1: 'Unlimited engine usage', pro_p2: 'Global IoT map (Shodan, your key, interactive world map)', pro_p3: 'OSINT relationship graph (Maltego-style entity mapping)', pro_p4: 'Reverse face search (FaceCheck ID, your key)', pro_p5: 'Encrypted vault', pro_p6: 'Report generation (Executive, Technical, PCI-DSS, HIPAA)', pro_p7: 'Persistent memory', pro_p8: 'Assistant training (teach the agent)', pro_p9: 'DNS spoofing tests', pro_p10: '<b>Permanent</b> · single-use key · revocable if leaked',
+    docs_title: 'Documentation',
+    docs_r1t: 'README (English)', docs_r1d: 'Overview, install, structure and license.',
+    docs_r2t: 'README (Español)', docs_r2d: 'Resumen, instalación, estructura y licencia.',
+    docs_t1t: 'Tutorial (EN)', docs_t1d: 'Step-by-step guide with examples.',
+    docs_t2t: 'Tutorial (ES)', docs_t2d: 'Guía paso a paso con ejemplos.',
+    foot_source: 'Source', foot_issues: 'Issues', foot_license: 'License',
+    foot_legal: 'HackerBrain OS is intended for <strong>authorized security testing only</strong>. Unauthorized access to computer systems is illegal. Licensed under AGPL-3.0. Runs 100% locally and consumes significant system resources while a model is loaded.'
+  },
+  es: {
+    nav_features: 'Características', nav_screenshots: 'Capturas', nav_install: 'Instalar',
+    nav_usage: 'Uso', nav_pro: 'PRO', nav_docs: 'Docs', nav_github: 'GitHub',
+    hero_badge: '100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)',
+    hero_title: 'Tu <span class="accent">asistente</span> de pentesting con IA, ejecutándose completamente en tu máquina.',
+    hero_lead: 'HackerBrain OS es un asistente local con IA para Kali / Parrot Linux. Se conecta a tus propios modelos locales, detecta tus herramientas de seguridad instaladas y automatiza reconocimiento, OSINT, escaneo de vulnerabilidades y flujos de bug bounty — sin nube, sin que los datos salgan de tu equipo.',
+    hero_cta1: 'Empezar', hero_cta2: 'Ver en acción',
+    hero_m1: 'Funciona offline', hero_m2: 'Tus keys, tu vault', hero_m3: '45+ herramientas detectadas',
+    feat_title: 'Todo lo que un pentest necesita, <span class="accent">local-first</span>',
+    feat_sub: 'HackerBrain OS orquesta las herramientas que ya tienes en tu sistema y deja que un motor de IA local planifique, ejecute y analice las pruebas.',
+    feat_agent_t: 'Agente autónomo', feat_agent_d: 'Pide en lenguaje natural (EN/ES): el agente planifica con tu modelo local, ejecuta comandos reales e itera hasta cumplir el objetivo.',
+    feat_vuln_t: 'Escaneo de vulnerabilidades', feat_vuln_d: 'Escaneos de puertos, servicios, IoT y por plantillas (Nmap, Nuclei, masscan) con clasificación de severidad y correlación de CVEs.',
+    feat_tech_t: 'Fingerprinting de tecnologías', feat_tech_d: 'Identifica el stack web (frameworks, servidores, WAFs) y resume la superficie de ataque probable antes de empezar.',
+    feat_graph_t: 'Grafo OSINT (estilo Maltego)', feat_graph_d: 'Construye grafos de relaciones ordenados y con colores desde cualquier email, dominio, IP, usuario o teléfono — y mapea dispositivos expuestos en un mapa mundial interactivo.',
+    feat_vault_t: 'Vault cifrado', feat_vault_d: 'Credenciales y hallazgos guardados con cifrado PBKDF2 + AES. Nada sale de tu máquina.',
+    feat_lang_t: 'Interfaz EN / ES', feat_lang_d: 'Interfaz y tutoriales completamente bilingües. El asistente responde en el idioma en que escribes.',
+    feat_desk_t: 'App de escritorio', feat_desk_d: 'Versión nativa con ventana (pywebview), instalación automática en un comando, barra de progreso en vivo y desinstalador completo.',
+    feat_rl_t: 'Consciente del rate limit', feat_rl_d: 'Los escaneos informan la duración estimada por adelantado y se limitan automáticamente (nuclei -rl, nmap --max-rate) cuando el objetivo impone límites.',
+    shots_title: 'Capturas', shots_sub: 'Capturas reales de la interfaz contra objetivos en vivo.',
+    inst_title: 'Instala en un comando',
+    inst_desk_sub: 'Versión de escritorio (ventana nativa, instalación automática con barra de progreso):',
+    inst_dl_btn: '⬇ DESCARGAR DESKTOP',
+    inst_req_lbl: 'Requisitos:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Linux basado en Debian, y un motor local de chat-completions (cualquier servidor de LLM local — la URL del engine se configura en <code>data/config.yaml</code>). El resto de la plataforma funciona sin engine, pero el análisis conversacional lo necesita.',
+    usage_title: 'Uso',
+    pill_safe: 'MÍNIMA CENSURA', pill_safe_t: 'Todo el toolset profesional corre libre (iptables, ufw, dd, mkfs, explotación). Solo se bloquean los comandos que borrarían tu propio host.',
+    pill_agg: 'MODO AGRESIVO', pill_agg_t: '<code>aggressive on</code> omite el gate de confirmación por completo en modo autónomo (persistente).',
+    pill_local: '100% LOCAL', pill_local_t: 'Sin telemetría, sin nube, sin exfiltración de datos. Offline por diseño.',
+    pro_title: 'PRO', pro_sub: 'PRO es una licencia permanente de un solo uso. Actívala una vez, consérvala para siempre en esa máquina.',
+    pro_free: 'GRATIS', pro_f1: '20 consultas / sesión', pro_f2: 'Agente local + herramientas', pro_f3: 'Escaneo de puertos / vuln / IoT', pro_f4: 'Interfaz EN / ES', pro_f5: 'Terminal + timeline',
+    pro_p1: 'Uso ilimitado del engine', pro_p2: 'Mapa IoT global (Shodan, tu key, mapa mundial interactivo)', pro_p3: 'Grafo de relaciones OSINT (mapeo de entidades estilo Maltego)', pro_p4: 'Búsqueda inversa de caras (FaceCheck ID, tu key)', pro_p5: 'Vault cifrado', pro_p6: 'Generación de informes (Ejecutivo, Técnico, PCI-DSS, HIPAA)', pro_p7: 'Memoria persistente', pro_p8: 'Entrenamiento del asistente (enséñale)', pro_p9: 'Pruebas de DNS spoofing', pro_p10: '<b>Permanente</b> · key de un solo uso · revocable si se filtra',
+    docs_title: 'Documentación',
+    docs_r1t: 'README (English)', docs_r1d: 'Visión general, instalación, estructura y licencia.',
+    docs_r2t: 'README (Español)', docs_r2d: 'Resumen, instalación, estructura y licencia.',
+    docs_t1t: 'Tutorial (EN)', docs_t1d: 'Guía paso a paso con ejemplos.',
+    docs_t2t: 'Tutorial (ES)', docs_t2d: 'Guía paso a paso con ejemplos.',
+    foot_source: 'Código', foot_issues: 'Issues', foot_license: 'Licencia',
+    foot_legal: 'HackerBrain OS está pensado <strong>solo para pruebas de seguridad autorizadas</strong>. El acceso no autorizado a sistemas informáticos es ilegal. Licenciado bajo AGPL-3.0. Corre 100% local y consume recursos significativos del sistema mientras hay un modelo cargado.'
+  }
+};
+
+let lang = 'en';
+try { if (localStorage.getItem('hb-lang') === 'es') lang = 'es'; } catch (e) {}
+try { const h = location.hash; if (h.indexOf('es') !== -1) lang = 'es'; if (h.indexOf('en') !== -1) lang = 'en'; } catch (e) {}
+
+function applyLang() {
+  const dict = I18N[lang] || I18N.en;
+  document.documentElement.lang = lang;
+  document.getElementById('lang-toggle').textContent = lang === 'en' ? 'ES' : 'EN';
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    const key = el.dataset.i18n;
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('hb-lang', lang); } catch (e) {}
+  applyLang();
+}
+
+applyLang();
+</script>
 
 </body>
 </html>
