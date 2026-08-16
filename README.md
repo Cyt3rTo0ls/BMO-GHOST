@@ -166,18 +166,19 @@ permissions and checks for a local assistant engine.
 Official site (info, screenshots, tutorials):
 **https://cyt3rto0ls.github.io/hackerbrain-os**
 
-### Desktop app (native program, no browser, no server)
+### Desktop app (full interface in a native window)
 
-A real native desktop program is included in `desktop/` (tkinter, ships
-with Python - zero extra dependencies). It uses the agent directly
-in-process: no web server, no webview, no WebKit, no browser. Features an
-integrated terminal, status bar (engine/PRO/tools), vulnerabilities,
-memory and timeline panels, PRO activation modal and EN/ES toggle.
-Installation runs with a live progress bar; a full uninstaller is included:
+The desktop version opens the **complete web interface** (IoT map, OSINT
+graph, terminal, panels...) in a **native desktop window** via pywebview -
+no browser needed. The installer sets up everything automatically with a
+live progress bar, **including the WebKit2 GTK system library** (via sudo
+once) so it works on any machine. A lightweight tkinter app is available
+as `--lite`, and the browser version as `--web`:
 
 ```bash
-./desktop/run.sh                 # install (progress bar) + open the app
+./desktop/run.sh                 # install (progress bar) + open native window
 ./desktop/run.sh --uninstall     # remove it (keeps your data + license)
+./desktop/run.sh --lite          # lightweight tkinter app
 ./desktop/run.sh --web           # alternative: web UI in the browser
 ```
 

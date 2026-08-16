@@ -26,13 +26,36 @@ VENV_DIR = os.path.join(BASE_DIR, ".venv")
 READY_MARK = os.path.join(VENV_DIR, ".desktop_ready")
 
 STEPS = [
-    ("Checking Python 3.10+", 0.05),
-    ("Creating virtual environment", 0.20),
-    ("Installing dependencies (requirements.txt)", 0.55),
-    ("Installing pywebview (native window)", 0.80),
+    ("Checking Python 3.10+", 0.04),
+    ("Creating virtual environment", 0.15),
+    ("Installing dependencies (requirements.txt)", 0.40),
+    ("Installing pywebview + PyGObject (native window)", 0.60),
+    ("Checking WebKit2 GTK (system library)", 0.75),
     ("Creating data / plugins / reports folders", 0.92),
     ("Finalizing installation", 1.00),
 ]
+
+# System packages needed by pywebview on Linux (WebKit2 GTK + GObject
+# introspection). Installed with sudo when missing.
+WEBKIT_PACKAGES = "python3-gi gir1.2-webkit2-4.1"
+
+
+def _has_sudo_nopass() -> bool:
+    """True if `sudo -n true` works without prompting for a password."""
+    try:
+        r = subprocess.run(
+            ["sudo", "-n", "true"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10
+        )
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def _run_sudo(cmd, **kw) -> subprocess.CompletedProcess:
+    """Run a command with sudo (non-interactive when possible)."""
+    if _has_sudo_nopass():
+        return subprocess.run(["sudo", "-n"] + cmd, **kw)
+    return subprocess.run(["sudo"] + cmd, **kw)
 
 
 class Installer:
@@ -102,7 +125,7 @@ class Installer:
             else:
                 self._log("dependencies already installed")
 
-            # 4. pywebview
+            # 4. pywebview + PyGObject
             self._report(STEPS[3][1], STEPS[3][0])
             try:
                 import webview  # noqa: F401
@@ -113,18 +136,51 @@ class Installer:
                     stdout=subprocess.DEVNULL,
                 )
                 if r.returncode != 0:
-                    self._log("[WARN] pywebview install failed (browser fallback will be used)")
+                    self._log("[WARN] pywebview install failed")
                 else:
                     self._log("pywebview installed")
+            # PyGObject (gi) inside the venv - needed to load WebKit2.
+            try:
+                import gi  # noqa: F401
+                self._log("PyGObject already available")
+            except Exception:
+                r = self._run(
+                    [venv_py, "-m", "pip", "install", "PyGObject", "-q"],
+                    stdout=subprocess.DEVNULL,
+                )
+                if r.returncode != 0:
+                    self._log("[WARN] PyGObject install failed")
+                else:
+                    self._log("PyGObject installed")
 
-            # 5. folders
+            # 5. WebKit2 GTK system library (needed for the native window)
             self._report(STEPS[4][1], STEPS[4][0])
+            if sys.platform.startswith("linux"):
+                try:
+                    import gi  # noqa: F401
+                    gi.require_version("Gtk", "3.0")
+                    import webview  # noqa: F401
+                    self._log("WebKit2 GTK OK (native window available)")
+                except Exception:
+                    self._log("WebKit2 GTK missing - installing system packages (may ask for sudo)...")
+                    r = _run_sudo(["apt-get", "install", "-y", "-q"] + WEBKIT_PACKAGES.split(),
+                                  stdout=subprocess.DEVNULL)
+                    if r.returncode == 0:
+                        self._log("WebKit2 GTK installed")
+                    else:
+                        self._log(
+                            "[WARN] Could not auto-install WebKit2 GTK. "
+                            "Run: sudo apt-get install -y %s" % WEBKIT_PACKAGES
+                        )
+
+            # 6. folders
+            self._report(STEPS[5][1], STEPS[5][0])
             for folder in ("data", "plugins", "playbooks", "reports", "exports"):
                 os.makedirs(os.path.join(BASE_DIR, folder), exist_ok=True)
             self._log("data folders ready")
 
-            # 6. ready marker
-            self._report(STEPS[5][1], STEPS[5][0])
+            # 7. ready marker
+            self._report(STEPS[6][1], STEPS[6][0])
             try:
                 os.makedirs(VENV_DIR, exist_ok=True)
                 with open(READY_MARK, "w", encoding="utf-8") as fh:

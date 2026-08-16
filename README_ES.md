@@ -172,19 +172,20 @@ permisos de archivos y comprueba si hay un assistant engine local.
 Sitio oficial (informacion, capturas, tutoriales):
 **https://cyt3rto0ls.github.io/hackerbrain-os**
 
-### App de escritorio (programa nativo, sin navegador, sin servidor)
+### App de escritorio (interfaz completa en ventana nativa)
 
-El proyecto incluye un **programa de escritorio nativo real** en `desktop/`
-(tkinter, incluido en Python - cero dependencias extra). Usa el agente
-directamente en proceso: sin servidor web, sin webview, sin WebKit, sin
-navegador. Incluye terminal integrado, barra de estado (engine/PRO/
-herramientas), paneles de vulnerabilidades, memoria y timeline, modal de
-activacion PRO y selector EN/ES. La instalacion corre con barra de progreso
-y hay desinstalador completo:
+La version de escritorio abre la **interfaz web completa** (mapa IoT, grafo
+OSINT, terminal, paneles...) en una **ventana nativa de escritorio** con
+pywebview - sin necesidad de navegador. El instalador configura todo
+automaticamente con barra de progreso, **incluyendo la libreria WebKit2 GTK
+del sistema** (via sudo, una vez) para que funcione en cualquier maquina.
+Hay una app ligera en tkinter como `--lite` y la version de navegador como
+`--web`:
 
 ```bash
-./desktop/run.sh                 # instala (barra de progreso) + abre la app
+./desktop/run.sh                 # instala (barra de progreso) + abre ventana nativa
 ./desktop/run.sh --uninstall     # desinstala (conserva tus datos y licencia)
+./desktop/run.sh --lite          # app ligera en tkinter
 ./desktop/run.sh --web           # alternativa: interfaz web en el navegador
 ```
 

@@ -1,37 +1,46 @@
-# HackerBrain OS — Desktop App (programa nativo)
+# HackerBrain OS — Desktop App
 
-La versión desktop es un **programa de escritorio real** (no una web en una
-ventana): interfaz nativa con tkinter (incluido en Python, **cero
-dependencias extra**), que usa el agente directamente en proceso — **sin
-servidor web, sin webview, sin WebKit y sin navegador**. Funciona en
-cualquier Linux con Python 3.10+.
+La versión desktop abre la **interfaz web COMPLETA** (la misma bonita y
+funcional de `http://127.0.0.1:8080`: mapa IoT, grafo OSINT, terminal,
+paneles...) en una **ventana nativa de escritorio** con pywebview —
+sin necesidad de abrir el navegador.
 
-Incluye:
-- **Terminal integrado** (comandos y preguntas, EN/ES) conectado al agente
-- **Barra de estado**: engine, licencia PRO, número de herramientas
-- **Paneles laterales**: vulnerabilidades, memoria y línea de tiempo
-- **Activación PRO** con modal (licencia persistente)
-- **Selector de idioma** EN/ES en la barra superior
-- Instalación automática con **barra de progreso** y **desinstalador**
+La instalación es automática y, si falta, **instala también WebKit2 GTK**
+(la librería del sistema que necesita la ventana nativa) con sudo, para que
+el desktop funcione en cualquier máquina sin errores de "WebKit missing".
 
 ## Requisitos
 
 - Python 3.10+ (se detecta y crea el venv automáticamente)
-- No necesita WebKit/GTK/pywebview (a diferencia de la versión anterior)
+- En la primera ejecución puede pedir la contraseña sudo una vez, para
+  instalar `python3-gi gir1.2-webkit2-4.1` si no están presentes
 
 ## Instalación y arranque
 
 ```bash
 cd hackerbrain-os
-./desktop/run.sh            # instala (barra de progreso) y abre la app nativa
+./desktop/run.sh            # instala (barra de progreso) y abre la ventana nativa con la UI completa
 ```
 
 `run.sh` hace todo solo:
 1. Ejecuta `desktop/installer.py` — ventana con **barra de progreso real**
-   (Python check → venv → dependencias → carpetas de datos)
-2. Abre la **app nativa** (`desktop/native_app.py`) en una ventana propia
+   (Python check → venv → dependencias → pywebview + PyGObject →
+   WebKit2 GTK del sistema → carpetas de datos)
+2. Abre la **interfaz completa** en la ventana nativa (`desktop_app.py`)
 
-Al cerrar la ventana, el programa termina (no queda ningún servidor).
+Al cerrar la ventana, el servidor local se detiene solo.
+
+## Modos alternativos
+
+```bash
+./desktop/run.sh --lite     # app ligera (tkinter, agente en proceso, sin servidor)
+./desktop/run.sh --web      # interfaz web en el navegador
+./desktop/run.sh --lang es  # pista de idioma
+./desktop/run.sh --port 9000
+```
+
+Si WebKit2 no está disponible y no se pudo instalar, `run.sh` cae a la app
+ligera (`--lite`) en vez de abrir el navegador.
 
 ## Desinstalar
 
@@ -42,15 +51,6 @@ Al cerrar la ventana, el programa termina (no queda ningún servidor).
 Elimina el venv, los paquetes y los marcadores de instalación.
 **Tus datos se conservan** (`data/`, `reports/`, `exports/`, keys y la
 licencia PRO incluida): al reinstalar, la app vuelve con tu licencia activa.
-
-## Uso manual
-
-```bash
-./desktop/run.sh --install      # forzar reinstalación (barra de progreso)
-./desktop/run.sh --lang es      # abrir la app en español
-./desktop/run.sh --web          # alternativa: interfaz web en el navegador
-python3 desktop/native_app.py --lang en   # abrir la app directamente
-```
 
 ## Descargar desde la web
 
@@ -69,9 +69,9 @@ chmod +x hackerbrain-os-run.sh
 ```
 desktop/
 ├── run.sh            # lanzador + instalador + desinstalador
-├── installer.py      # instalador con barra de progreso (tkinter)
-├── native_app.py     # APP NATIVA (tkinter, agente en proceso, sin servidor)
-├── desktop_app.py    # (legacy) ventana webview - ya no se usa por defecto
+├── installer.py      # instalador con barra de progreso (tkinter) + WebKit2 auto
+├── desktop_app.py    # ventana nativa con la UI COMPLETA (pywebview)
+├── native_app.py     # app ligera tkinter (fallback --lite)
 └── README.md         # este archivo
 ```
 

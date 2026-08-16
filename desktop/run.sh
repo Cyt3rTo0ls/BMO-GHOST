@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 # HackerBrain OS - Desktop launcher.
-# Installs everything automatically (venv, dependencies) with a live
-# progress bar window, then opens the NATIVE desktop application
-# (a real program built with tkinter - no browser, no webview, no web
-# server). The web UI remains available with --web.
+# Installs everything automatically (venv, dependencies, WebKit2 GTK) with
+# a live progress bar window, then opens the FULL web interface in a
+# native desktop window (pywebview) - no browser needed. If WebKit2 is not
+# available it falls back to the lightweight tkinter app (--lite) or the
+# browser (--web).
 #
 # Usage:
-#   ./desktop/run.sh                # install (with progress bar) + open native app
+#   ./desktop/run.sh                # install (progress bar) + open native window (full UI)
 #   ./desktop/run.sh --install      # force reinstall (shows progress bar)
 #   ./desktop/run.sh --uninstall    # remove the app from this machine
-#   ./desktop/run.sh --web          # launch the web UI in the browser instead
-#   ./desktop/run.sh --lang es      # native app in Spanish
+#   ./desktop/run.sh --lite         # lightweight tkinter app instead
+#   ./desktop/run.sh --web          # launch the web UI in the browser
+#   ./desktop/run.sh --lang es      # language hint (native app)
+#   ./desktop/run.sh --port 9000    # server port
 #
 # WARNING: intended for authorized security testing only.
 set -euo pipefail
@@ -114,9 +117,27 @@ if [ "${1:-}" = "--web" ] || [ "${1:-}" = "-w" ]; then
         --app-dir "$ROOT_DIR"
 fi
 
-# ---- launch the NATIVE desktop application ---------------------------- #
-# A real program: tkinter, uses the Agent in-process. No webview, no
-# WebKit, no browser, no server needed. Works on any Linux with Python.
-echo "[launch] Starting HackerBrain OS native desktop app..."
+# ---- lightweight mode (tkinter, in-process agent) --------------------- #
+if [ "${1:-}" = "--lite" ] || [ "${1:-}" = "-l" ]; then
+    echo "[lite] Starting lightweight native app (tkinter)..."
+    cd "$ROOT_DIR"
+    exec "$VENV_PY" "$ROOT_DIR/desktop/native_app.py" "$@"
+fi
+
+# ---- default: full web UI in a native window (pywebview) ------------- #
+# The complete interface (maps, graphs, OSINT, IoT, terminal, panels)
+# rendered in a real desktop window. Requires WebKit2 GTK, which the
+# installer sets up automatically (may ask for sudo once).
+if "$VENV_PY" -c "import gi; gi.require_version('Gtk','3.0'); import webview" >/dev/null 2>&1; then
+    echo "[launch] Starting HackerBrain OS (full interface, native window)..."
+    cd "$ROOT_DIR"
+    exec "$VENV_PY" "$ROOT_DIR/desktop/desktop_app.py" "$@"
+fi
+
+# WebKit2 missing: fall back to the lightweight tkinter app instead of
+# opening a browser.
+echo "[warn] WebKit2 GTK not available - using the lightweight app."
+echo "       (Run './desktop/run.sh --web' for the browser, or reinstall"
+echo "       with './desktop/run.sh --install' to auto-install WebKit2)"
 cd "$ROOT_DIR"
 exec "$VENV_PY" "$ROOT_DIR/desktop/native_app.py" "$@"
