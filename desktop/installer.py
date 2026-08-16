@@ -67,7 +67,7 @@ class Installer:
             self._log("Python %d.%d.%d OK" % (ver[0], ver[1], ver[2]))
 
             # 2. venv
-            self._report(*STEPS[1][:2])
+            self._report(STEPS[1][1], STEPS[1][0])
             if not os.path.isdir(os.path.join(VENV_DIR, "bin")):
                 r = self._run([py, "-m", "venv", VENV_DIR])
                 if r.returncode != 0:
@@ -82,7 +82,7 @@ class Installer:
                 venv_py = py
 
             # 3. dependencies
-            self._report(*STEPS[2][:2])
+            self._report(STEPS[2][1], STEPS[2][0])
             if not os.path.exists(READY_MARK):
                 r = self._run(
                     [venv_py, "-m", "pip", "install", "--upgrade", "pip", "-q"],
@@ -103,7 +103,7 @@ class Installer:
                 self._log("dependencies already installed")
 
             # 4. pywebview
-            self._report(*STEPS[3][:2])
+            self._report(STEPS[3][1], STEPS[3][0])
             try:
                 import webview  # noqa: F401
                 self._log("pywebview already available")
@@ -118,13 +118,13 @@ class Installer:
                     self._log("pywebview installed")
 
             # 5. folders
-            self._report(*STEPS[4][:2])
+            self._report(STEPS[4][1], STEPS[4][0])
             for folder in ("data", "plugins", "playbooks", "reports", "exports"):
                 os.makedirs(os.path.join(BASE_DIR, folder), exist_ok=True)
             self._log("data folders ready")
 
             # 6. ready marker
-            self._report(*STEPS[5][:2])
+            self._report(STEPS[5][1], STEPS[5][0])
             try:
                 os.makedirs(VENV_DIR, exist_ok=True)
                 with open(READY_MARK, "w", encoding="utf-8") as fh:
