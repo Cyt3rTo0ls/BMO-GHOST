@@ -419,6 +419,34 @@ escalation):
 > status          # shows stealth: ON (invisible)
 ```
 
+**Reasoning modes** control how deeply BMO thinks before answering
+(persistent across restarts, also selectable in the TOOLKIT view):
+
+```
+> mode live       # fast single pass, minimal latency
+> mode medio      # plan + verify findings (default)
+> mode agresivo   # deep reasoning: plan -> execute -> self-critique -> verify
+> mode            # show current mode
+```
+
+In **agresivo** the engine runs a second self-critique pass over its own
+answer (cross-checks hallucinated commands and unsafe claims) and the
+autonomous loop runs up to 6 verified steps instead of 3 - higher latency,
+best accuracy. In **live** it answers with a single fast pass.
+
+**History cleanup** — wipe stored data by category, from the chat or the
+TOOLKIT view (CLEAR HISTORY button):
+
+```
+> clear vulns        # vulnerabilities only
+> clear scans        # scanned hosts only
+> clear creds        # credential vault
+> clear notes        # memory notes
+> clear timeline     # activity timeline
+> clear all          # everything
+> clear chat         # conversation context only
+```
+
 **Vulnerability confirmation:** when a scan finds something, the AI runs a
 live verification command and only reports findings it can confirm, with a
 confidence percentage — no unverified claims.

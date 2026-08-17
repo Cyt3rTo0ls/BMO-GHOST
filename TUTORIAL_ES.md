@@ -393,6 +393,40 @@ tunnel ssh-d 10.0.0.1           # pivoting (SSH -L/-R/-D, chisel, iodine, socat)
 > unica del operador (disclaimed dentro de cada herramienta, en el README
 > y en la web).
 
+### Modos de razonamiento + toolkit PRO visual + limpieza de historial
+
+BMO puede pensar a tres profundidades (persistente, tambien seleccionable
+desde la vista **TOOLKIT** del sidebar):
+
+```
+mode live       # pase unico rapido, latencia minima
+mode medio      # plan + verificar hallazgos (por defecto)
+mode agresivo   # razonamiento profundo: plan -> ejecutar -> autocrítica -> verificar
+mode            # mostrar modo actual
+```
+
+En **agresivo** el engine revisa su propia respuesta con un segundo pase de
+autocrítica y el bucle autonomo ejecuta hasta 6 pasos verificados (mayor
+latencia, mejor precision). En **live** responde con un pase unico rapido.
+
+La **vista TOOLKIT** es un catalogo visual de cada comando PRO: chips por
+categoria (Recon / OSINT / Grises / Ofensivo / Crypto / Varias), caja de
+busqueda en vivo y botones EJECUTAR con un clic que lanzan el comando en el
+terminal.
+
+Limpieza de historial, desde el chat o el boton LIMPIAR HISTORIAL del
+TOOLKIT:
+
+```
+clear vulns        # solo vulnerabilidades
+clear scans        # solo hosts escaneados
+clear creds        # boveda de credenciales
+clear notes        # notas de memoria
+clear timeline     # linea de tiempo de actividad
+clear all          # todo
+clear chat         # solo contexto de la conversacion
+```
+
 ### Minima censura
 
 BMO-GHOST no censura el toolset profesional: iptables/ufw, dd, mkfs y

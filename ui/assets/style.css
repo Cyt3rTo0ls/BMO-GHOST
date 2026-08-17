@@ -410,6 +410,39 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
 .pro-note { font-size: 11px; color: var(--fg-dim); line-height: 1.6; }
 @media (max-width: 700px) { .pro-compare { grid-template-columns: 1fr; } }
 
+/* ================= PRO toolkit ================= */
+.toolkit-controls .panel-box { margin-bottom: 12px; }
+.toolkit-controls .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.toolkit-controls label { font-size: 11px; color: var(--fg-dim); display: flex; align-items: center; gap: 8px; }
+.toolkit-controls select, .toolkit-controls input[type=text] {
+  background: var(--panel); border: 1px solid var(--border); color: var(--fg);
+  border-radius: 6px; padding: 6px 10px; font-size: 12px; outline: none;
+}
+.toolkit-controls input[type=text] { flex: 1; min-width: 160px; }
+.toolkit-controls select:focus, .toolkit-controls input[type=text]:focus { border-color: var(--cyan); }
+.tk-state { margin-top: 8px; font-size: 11px; color: var(--cyan); }
+.tk-cats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.tk-chip {
+  background: var(--panel2); border: 1px solid var(--border); color: var(--fg-dim);
+  border-radius: 20px; padding: 6px 14px; font-size: 11px; letter-spacing: 1px;
+  cursor: pointer; transition: all .15s ease;
+}
+.tk-chip .n { color: var(--fg-faint); margin-left: 4px; }
+.tk-chip:hover { border-color: var(--cyan); color: var(--fg); }
+.tk-chip.active { background: var(--cyan); border-color: var(--cyan); color: #04121a; }
+.tk-chip.active .n { color: rgba(4,18,26,.7); }
+.tk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.tk-card {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px; display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.tk-card:hover { border-color: var(--cyan); box-shadow: 0 0 14px var(--glow-cyan); }
+.tk-name { font-size: 13px; font-weight: 600; color: var(--fg); font-family: var(--mono); letter-spacing: .5px; }
+.tk-example { font-size: 11px; color: var(--fg-dim); font-family: var(--mono); word-break: break-all; flex: 1; }
+.tk-run { align-self: flex-start; font-size: 11px; }
+@media (max-width: 700px) { .tk-grid { grid-template-columns: 1fr; } }
+
 /* ================= timeline ================= */
 #timeline-list { display: flex; flex-direction: column; gap: 6px; }
 .tl-event {

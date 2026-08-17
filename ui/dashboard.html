@@ -67,6 +67,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1 3-6z"/></svg>
         <span class="txt" data-i18n="nav_pro">PRO</span>
       </button>
+      <button class="nav-btn" data-view="toolkit">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 005.4-5.4L14 12l-2-2 2.7-3.7z"/></svg>
+        <span class="txt" data-i18n="nav_toolkit">TOOLKIT</span>
+      </button>
       <button class="nav-btn" data-view="iotmap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 2a15 15 0 010 20 15 15 0 010-20z"/><circle cx="12" cy="12" r="3"/></svg>
         <span class="txt" data-i18n="nav_iotmap">IoT MAP</span>
@@ -250,6 +254,33 @@
         <div class="row">
           <button id="btn-pro-view-activate" class="ghost" data-i18n="vault_goto_pro">ACTIVATE PRO</button>
         </div>
+      </section>
+
+      <!-- TOOLKIT VIEW (visual catalog of every PRO command) -->
+      <section id="view-toolkit" class="view">
+        <div class="view-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 005.4-5.4L14 12l-2-2 2.7-3.7z"/></svg>
+            <span data-i18n="toolkit_title">PRO TOOLKIT</span>
+          </h2>
+        </div>
+        <div class="toolkit-controls">
+          <div class="panel-box">
+            <div class="row">
+              <span class="dim small" data-i18n="toolkit_reasoning">Reasoning mode</span>
+              <select id="tk-reasoning">
+                <option value="live" data-i18n="tk_mode_live">Live (fast)</option>
+                <option value="medio" selected data-i18n="tk_mode_medio">Medium (plan + verify)</option>
+                <option value="agresivo" data-i18n="tk_mode_agresivo">Aggressive (deep reasoning)</option>
+              </select>
+              <input id="tk-search" type="text" data-i18n-ph="tk_search_ph" placeholder="search tools...">
+              <button id="btn-tk-clear" class="ghost danger"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg><span data-i18n="tk_clear">CLEAR HISTORY</span></button>
+            </div>
+            <div class="tk-state dim small" id="tk-state"></div>
+          </div>
+        </div>
+        <div class="tk-cats" id="tk-cats"></div>
+        <div class="tk-grid" id="tk-grid"></div>
       </section>
 
       <!-- IOT MAP VIEW (PRO) -->

@@ -423,6 +423,39 @@ tunnel ssh-d 10.0.0.1           # pivoting (SSH -L/-R/-D, chisel, iodine, socat)
 > responsibility (disclaimed inside every tool, in the README and on the
 > website).
 
+### Reasoning modes + visual PRO toolkit + history cleanup
+
+BMO can think at three depths (persistent, also selectable from the
+**TOOLKIT** sidebar view):
+
+```
+mode live       # fast single pass, minimal latency
+mode medio      # plan + verify findings (default)
+mode agresivo   # deep reasoning: plan -> execute -> self-critique -> verify
+mode            # show current mode
+```
+
+In **agresivo** the engine cross-checks its own answer with a second
+self-critique pass and the autonomous loop runs up to 6 verified steps
+(higher latency, best accuracy). In **live** it answers with a single fast
+pass.
+
+The **TOOLKIT view** is a visual catalog of every PRO command: category
+chips (Recon / OSINT / Grey / Offense / Crypto / Misc), a live search box
+and one-click RUN buttons that execute the command in the terminal.
+
+History cleanup, from the chat or the TOOLKIT's CLEAR HISTORY button:
+
+```
+clear vulns        # vulnerabilities only
+clear scans        # scanned hosts only
+clear creds        # credential vault
+clear notes        # memory notes
+clear timeline     # activity timeline
+clear all          # everything
+clear chat         # conversation context only
+```
+
 ### Minimum censorship
 
 BMO-GHOST does not censor professional tooling: iptables/ufw, dd, mkfs

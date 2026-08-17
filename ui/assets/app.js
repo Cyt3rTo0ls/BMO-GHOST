@@ -297,7 +297,26 @@ Local only. WARNING: authorized security testing only.
         'Ransomware SIMULATOR (sandbox-only, AES + restore)',
         'BeEF hook generator (browser lab)',
         'Tunneling / pivoting builder (SSH -L/-R/-D, chisel, iodine)'
-      ]
+      ],
+      nav_toolkit: 'TOOLKIT',
+      toolkit_title: 'PRO TOOLKIT',
+      toolkit_reasoning: 'Reasoning mode',
+      tk_mode_live: 'Live (fast)',
+      tk_mode_medio: 'Medium (plan + verify)',
+      tk_mode_agresivo: 'Aggressive (deep reasoning)',
+      tk_search_ph: 'search tools...',
+      tk_clear: 'CLEAR HISTORY',
+      tk_cleared: 'History cleared.',
+      tk_clear_confirm: 'Clear ALL stored history (vulnerabilities, scans, creds, notes, timeline)?',
+      tk_cat_recon: 'Recon',
+      tk_cat_osint: 'OSINT',
+      tk_cat_grey: 'Grey tools',
+      tk_cat_offense: 'Offense lab',
+      tk_cat_crypto: 'Crypto / intel',
+      tk_cat_misc: 'Misc',
+      tk_run: 'RUN',
+      tk_state_mode: 'Reasoning mode:',
+      tk_none: 'No tools match your search.'
     },
     es: {
       st_project: 'PROYECTO: default',
@@ -584,9 +603,119 @@ Local only. WARNING: authorized security testing only.
         'SIMULADOR de ransomware (solo sandbox, AES + restauracion)',
         'Generador de hook BeEF (laboratorio de navegadores)',
         'Constructor de tuneles / pivoting (SSH -L/-R/-D, chisel, iodine)'
-      ]
+      ],
+      nav_toolkit: 'TOOLKIT',
+      toolkit_title: 'TOOLKIT PRO',
+      toolkit_reasoning: 'Modo de razonamiento',
+      tk_mode_live: 'Live (rapido)',
+      tk_mode_medio: 'Medio (plan + verificar)',
+      tk_mode_agresivo: 'Agresivo (razonamiento profundo)',
+      tk_search_ph: 'buscar herramientas...',
+      tk_clear: 'LIMPIAR HISTORIAL',
+      tk_cleared: 'Historial limpiado.',
+      tk_clear_confirm: '¿Borrar TODO el historial guardado (vulnerabilidades, escaneos, credenciales, notas, linea de tiempo)?',
+      tk_cat_recon: 'Recon',
+      tk_cat_osint: 'OSINT',
+      tk_cat_grey: 'Herramientas grises',
+      tk_cat_offense: 'Laboratorio ofensivo',
+      tk_cat_crypto: 'Crypto / intel',
+      tk_cat_misc: 'Varias',
+      tk_run: 'EJECUTAR',
+      tk_state_mode: 'Modo de razonamiento:',
+      tk_none: 'Ninguna herramienta coincide con tu busqueda.'
     }
   };
+
+  // ---- visual PRO toolkit catalog (name, category, desc, example) ----
+  const TK_CATS = ['recon', 'osint', 'grey', 'offense', 'crypto', 'misc'];
+  const TOOLKIT = [
+    // recon
+    { c: 'recon', n: 'scan', e: 'scan 192.168.1.1' },
+    { c: 'recon', n: 'vulnscan', e: 'vulnscan https://example.com' },
+    { c: 'recon', n: 'iotscan', e: 'iotscan 192.168.1.0/24' },
+    { c: 'recon', n: 'recon', e: 'recon example.com' },
+    { c: 'recon', n: 'dns', e: 'dns example.com' },
+    { c: 'recon', n: 'dnsspoof', e: 'dnsspoof example.com' },
+    { c: 'recon', n: 'crtsh', e: 'crtsh example.com' },
+    { c: 'recon', n: 'certinfo', e: 'certinfo example.com' },
+    { c: 'recon', n: 'webtitle', e: 'webtitle https://example.com' },
+    { c: 'recon', n: 'robots', e: 'robots https://example.com' },
+    { c: 'recon', n: 'cookies', e: 'cookies https://example.com' },
+    { c: 'recon', n: 'banner', e: 'banner example.com 80' },
+    { c: 'recon', n: 'dnssec', e: 'dnssec example.com' },
+    { c: 'recon', n: 'dnsbrute', e: 'dnsbrute example.com' },
+    { c: 'recon', n: 'asn', e: 'asn 8.8.8.8' },
+    { c: 'recon', n: 'ttl', e: 'ttl example.com' },
+    { c: 'recon', n: 'ipobf', e: 'ipobf 8.8.8.8' },
+    { c: 'recon', n: 'cors', e: 'cors https://example.com' },
+    // osint
+    { c: 'osint', n: 'osint', e: 'osint example.com' },
+    { c: 'osint', n: 'email', e: 'email alice@example.com' },
+    { c: 'osint', n: 'shodan', e: 'shodan cameras port:554' },
+    { c: 'osint', n: 'torcheck', e: 'torcheck 8.8.8.8' },
+    { c: 'osint', n: 'favhash', e: 'favhash https://example.com' },
+    { c: 'osint', n: 'subto', e: 'subto example.com' },
+    { c: 'osint', n: 'mailcheck', e: 'mailcheck example.com' },
+    { c: 'osint', n: 'homograph', e: 'homograph example.com' },
+    { c: 'osint', n: 'iprep', e: 'iprep 8.8.8.8' },
+    { c: 'osint', n: 'subwatch', e: 'subwatch example.com' },
+    { c: 'osint', n: 'facecheck', e: 'facecheck https://.../photo.jpg' },
+    // grey
+    { c: 'grey', n: 'stego', e: 'stego <base64-data>' },
+    { c: 'grey', n: 'honeytoken', e: 'honeytoken engagement1' },
+    { c: 'grey', n: 'licgen', e: 'licgen BMO' },
+    { c: 'grey', n: 'uagen', e: 'uagen' },
+    { c: 'grey', n: 'fakeid', e: 'fakeid VE' },
+    { c: 'grey', n: 'qrcode', e: 'qrcode https://example.com' },
+    { c: 'grey', n: 'wordlistgen', e: 'wordlistgen example.com' },
+    // offense
+    { c: 'offense', n: 'evade', e: 'evade 10.0.0.5 4444' },
+    { c: 'offense', n: 'privesc', e: 'privesc linux' },
+    { c: 'offense', n: 'lateral', e: 'lateral 10.0.0.1 admin' },
+    { c: 'offense', n: 'exfil', e: 'exfil your-server.com' },
+    { c: 'offense', n: 'phishmail', e: 'phishmail a@b.com c@d.com' },
+    { c: 'offense', n: 'shellgen', e: 'shellgen 10.0.0.5 4444 bash' },
+    { c: 'offense', n: 'msfvenom', e: 'msfvenom elf 10.0.0.5' },
+    { c: 'offense', n: 'phishclone', e: 'phishclone https://example.com' },
+    { c: 'offense', n: 'macro', e: 'macro whoami' },
+    { c: 'offense', n: 'persistence', e: 'persistence cron' },
+    { c: 'offense', n: 'keylogger', e: 'keylogger' },
+    { c: 'offense', n: 'wifiaudit', e: 'wifiaudit wlan0' },
+    { c: 'offense', n: 'rubberducky', e: 'rubberducky GUI r,STRING notepad,ENTER' },
+    { c: 'offense', n: 'smuggle', e: 'smuggle <base64> invoice.pdf' },
+    { c: 'offense', n: 'c2', e: 'c2 10.0.0.5 8443' },
+    { c: 'offense', n: 'mimikatz', e: 'mimikatz logonpasswords' },
+    { c: 'offense', n: 'impacket', e: 'impacket secretsdump 10.0.0.1 admin' },
+    { c: 'offense', n: 'llmnr', e: 'llmnr eth0' },
+    { c: 'offense', n: 'rogueap', e: 'rogueap Free-WiFi wlan0' },
+    { c: 'offense', n: 'ransomlab', e: 'ransomlab /tmp/sandbox' },
+    { c: 'offense', n: 'beefhook', e: 'beefhook http://your-beef:3000' },
+    { c: 'offense', n: 'tunnel', e: 'tunnel ssh-d 10.0.0.1' },
+    // crypto / intel
+    { c: 'crypto', n: 'xor', e: 'xor 48656c6c6f' },
+    { c: 'crypto', n: 'basecrack', e: 'basecrack <b64>' },
+    { c: 'crypto', n: 'hashid', e: 'hashid 5f4dcc3b5aa765d61d8327deb882cf99' },
+    { c: 'crypto', n: 'entropy', e: 'entropy <text>' },
+    { c: 'crypto', n: 'jwt', e: 'jwt <token>' },
+    { c: 'crypto', n: 'mimetype', e: 'mimetype <file>' },
+    { c: 'crypto', n: 'leet', e: 'leet password' },
+    { c: 'crypto', n: 'caseperm', e: 'caseperm admin' },
+    { c: 'crypto', n: 'numgen', e: 'numgen word' },
+    { c: 'crypto', n: 'pwstrength', e: 'pwstrength P@ssw0rd' },
+    { c: 'crypto', n: 'ioc', e: 'ioc <text>' },
+    { c: 'crypto', n: 'defang', e: 'defang http://evil.com' },
+    { c: 'crypto', n: 'uuid', e: 'uuid 3' },
+    { c: 'crypto', n: 'macvendor', e: 'macvendor 08:00:27' },
+    // misc
+    { c: 'misc', n: 'encode', e: 'encode base64 hello' },
+    { c: 'misc', n: 'hash', e: 'hash md5 hello' },
+    { c: 'misc', n: 'genpass', e: 'genpass 16' },
+    { c: 'misc', n: 'geoip', e: 'geoip 8.8.8.8' },
+    { c: 'misc', n: 'cve', e: 'cve CVE-2021-44228' },
+    { c: 'misc', n: 'qrcode', e: 'qrcode hello' },
+    { c: 'misc', n: 'mode', e: 'mode agresivo' },
+    { c: 'misc', n: 'clear', e: 'clear vulns' }
+  ];
 
   const STORAGE_KEY = 'hb_lang';
   const VERBOSE_KEY = 'hb_verbose';
@@ -636,6 +765,81 @@ Local only. WARNING: authorized security testing only.
     $('pro-pro-list').innerHTML = t('pro_pro_features').map(function (f) {
       return '<li>' + f + '</li>';
     }).join('');
+  }
+
+  // ---------------- visual PRO toolkit ----------------
+  function renderToolkit() {
+    const q = ($('tk-search').value || '').trim().toLowerCase();
+    const shown = TOOLKIT.filter(function (tl) {
+      if (!q) return true;
+      return tl.n.toLowerCase().indexOf(q) !== -1 || tl.e.toLowerCase().indexOf(q) !== -1;
+    });
+    // category chips
+    const chips = TK_CATS.map(function (c) {
+      const cnt = TOOLKIT.filter(function (tl) { return tl.c === c; }).length;
+      return '<button class="tk-chip" data-cat="' + c + '">' + t('tk_cat_' + c) + ' <span class="n">' + cnt + '</span></button>';
+    }).join('');
+    $('tk-cats').innerHTML = chips;
+    document.querySelectorAll('.tk-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        const cat = chip.dataset.cat;
+        document.querySelectorAll('.tk-chip').forEach(function (x) { x.classList.remove('active'); });
+        chip.classList.add('active');
+        renderToolkitGrid(cat, q);
+      });
+    });
+    renderToolkitGrid(null, q);
+  }
+
+  function renderToolkitGrid(cat, q) {
+    const list = TOOLKIT.filter(function (tl) {
+      if (cat && tl.c !== cat) return false;
+      if (!q) return true;
+      return tl.n.toLowerCase().indexOf(q) !== -1 || tl.e.toLowerCase().indexOf(q) !== -1;
+    });
+    if (!list.length) {
+      $('tk-grid').innerHTML = '<p class="dim small">' + t('tk_none') + '</p>';
+      return;
+    }
+    $('tk-grid').innerHTML = list.map(function (tl) {
+      return '<div class="tk-card">' +
+        '<div class="tk-name">' + tl.n + '</div>' +
+        '<div class="tk-example">' + tl.e + '</div>' +
+        '<button class="ghost tk-run" data-cmd="' + tl.e.replace(/"/g, '&quot;') + '">' + t('tk_run') + '</button>' +
+        '</div>';
+    }).join('');
+    document.querySelectorAll('.tk-run').forEach(function (b) {
+      b.addEventListener('click', function () {
+        $('term-input').value = b.dataset.cmd;
+        sendChat(b.dataset.cmd);
+        HBTerminal.print('> ' + b.dataset.cmd, 'out-cmd');
+      });
+    });
+  }
+
+  async function setReasoningMode(mode) {
+    const r = await api('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, message: 'mode ' + mode })
+    });
+    $('tk-state').textContent = t('tk_state_mode') + ' ' + mode + (r.error ? ' (' + r.error + ')' : '');
+    return r;
+  }
+
+  async function clearHistory() {
+    if (!confirm(t('tk_clear_confirm'))) return;
+    const r = await api('/api/history/clear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scope: 'all' })
+    });
+    if (r.ok) {
+      toast(t('tk_cleared'), 'ok');
+      loadVulns(); loadMemory(); loadTimeline();
+    } else {
+      toast((r.error || 'error'), 'err');
+    }
   }
 
   function setLang(next) {
@@ -820,6 +1024,12 @@ Local only. WARNING: authorized security testing only.
       $('status-ver').textContent = 'v' + s.version + ' LOCAL';
       const q = s.quota === -1 ? 'unlimited' : (s.queries_today + '/' + s.quota);
       $('status-project').textContent = s.project + ' | ' + q;
+      // sync reasoning-mode selector with the server state
+      if (s.reasoning_mode) {
+        const sel = $('tk-reasoning');
+        if (sel && sel.value !== s.reasoning_mode) sel.value = s.reasoning_mode;
+        $('tk-state').textContent = t('tk_state_mode') + ' ' + s.reasoning_mode;
+      }
       // BMO reflects the engine state in the status bar
       // (skipped when a #bmo= expression is pinned for screenshots)
       if (!forcedBmo) {
@@ -1112,6 +1322,7 @@ Local only. WARNING: authorized security testing only.
         if (b.dataset.view === 'memory') loadMemory();
         if (b.dataset.view === 'vault') loadVaultEntries(false);
         if (b.dataset.view === 'pro') renderProView();
+        if (b.dataset.view === 'toolkit') renderToolkit();
         if (b.dataset.view === 'iotmap') initIotMap();
         if (b.dataset.view === 'osintgraph') initOsintGraph();
       });
@@ -1122,6 +1333,15 @@ Local only. WARNING: authorized security testing only.
     $('btn-activate').addEventListener('click', activate);
     $('btn-goto-pro').addEventListener('click', openModal);
     $('btn-pro-view-activate').addEventListener('click', openModal);
+    $('tk-reasoning').addEventListener('change', function () {
+      setReasoningMode(this.value);
+    });
+    $('tk-search').addEventListener('input', function () {
+      const q = this.value.trim().toLowerCase();
+      const active = document.querySelector('.tk-chip.active');
+      renderToolkitGrid(active ? active.dataset.cat : null, q);
+    });
+    $('btn-tk-clear').addEventListener('click', clearHistory);
     document.querySelectorAll('[data-goto-pro]').forEach(function (b) {
       b.addEventListener('click', openModal);
     });
