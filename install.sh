@@ -145,7 +145,7 @@ if [ "$CMD" = "obfuscate" ]; then
     fi
     echo "[INFO] Obfuscating the code with PyArmor -> dist/ ..."
     "$VENV_DIR/bin/python" -m pip install --quiet pyarmor 2>/dev/null || true
-    ( cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py )
+    ( cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py key_validator.py )
     echo "[OK] Obfuscated build ready in dist/ (used automatically by ./install.sh run)."
     exit 0
 fi
@@ -204,7 +204,7 @@ python -m pip install -r "$ROOT_DIR/requirements.txt" || fail "Dependency instal
 # --- obfuscation ---------------------------------------------------------
 info "Obfuscating the code (PyArmor -> dist/)..."
 python -m pip install --quiet pyarmor 2>/dev/null || true
-(cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py) \
+(cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py key_validator.py) \
     || info "[WARN] Obfuscation failed, the app will run from the source tree."
 
 # --- folder structure ----------------------------------------------------
