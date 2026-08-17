@@ -52,7 +52,7 @@
           <img id="hero-bmo-img" src="assets/bmo/neutral.png" alt="BMO avatar">
         </div>
         <div class="bmo-expr-label" id="hero-bmo-label">NEUTRAL</div>
-        <div class="bmo-caption" id="hero-bmo-caption">the AI core</div>
+        <div class="bmo-caption" id="hero-bmo-caption" data-i18n="bmo_caption">the AI core</div>
       </div>
     </div>
   </div>
@@ -63,13 +63,13 @@
     <h2 class="section-title" data-i18n="bmo_title">Meet <span class="accent">BMO</span>, your AI core</h2>
     <p class="section-sub" data-i18n="bmo_sub">BMO lives in the terminal and reacts to the engine's verbose state: it shows its emotion by name as the AI plans, executes and analyzes — no secrets, you always see what the core is feeling.</p>
     <div class="bmo-strip">
-      <div class="bmo-tile"><img src="assets/bmo/neutral.png" alt="neutral"><div class="bmo-tile-name">NEUTRAL</div><div class="bmo-tile-desc" data-i18n="bmo_neutral">idle</div></div>
-      <div class="bmo-tile"><img src="assets/bmo/entusiasta.png" alt="entusiasta"><div class="bmo-tile-name">ENTUSIASTA</div><div class="bmo-tile-desc" data-i18n="bmo_entusiasta">thinking</div></div>
-      <div class="bmo-tile"><img src="assets/bmo/sutil.png" alt="sutil"><div class="bmo-tile-name">SUTIL</div><div class="bmo-tile-desc" data-i18n="bmo_sutil">analyzing</div></div>
-      <div class="bmo-tile"><img src="assets/bmo/contento.png" alt="contento"><div class="bmo-tile-name">CONTENTO</div><div class="bmo-tile-desc" data-i18n="bmo_contento">done</div></div>
-      <div class="bmo-tile"><img src="assets/bmo/panico.png" alt="panico"><div class="bmo-tile-name">PANICO</div><div class="bmo-tile-desc" data-i18n="bmo_panico">error</div></div>
-      <div class="bmo-tile"><img src="assets/bmo/enojado.png" alt="enojado"><div class="bmo-tile-name">ENOJADO</div><div class="bmo-tile-desc" data-i18n="bmo_enojado">warning</div></div>
-      <div class="bmo-tile"><img src="assets/bmo/enfadado.png" alt="enfadado"><div class="bmo-tile-name">ENFADADO</div><div class="bmo-tile-desc" data-i18n="bmo_enfadado">failed</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/neutral.png" alt="neutral"><div class="bmo-tile-name" data-i18n="bmo_name_neutral">NEUTRAL</div><div class="bmo-tile-desc" data-i18n="bmo_neutral">idle</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/entusiasta.png" alt="entusiasta"><div class="bmo-tile-name" data-i18n="bmo_name_entusiasta">ENTHUSIASTIC</div><div class="bmo-tile-desc" data-i18n="bmo_entusiasta">thinking</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/sutil.png" alt="sutil"><div class="bmo-tile-name" data-i18n="bmo_name_sutil">SUBTLE</div><div class="bmo-tile-desc" data-i18n="bmo_sutil">analyzing</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/contento.png" alt="contento"><div class="bmo-tile-name" data-i18n="bmo_name_contento">HAPPY</div><div class="bmo-tile-desc" data-i18n="bmo_contento">done</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/panico.png" alt="panico"><div class="bmo-tile-name" data-i18n="bmo_name_panico">PANIC</div><div class="bmo-tile-desc" data-i18n="bmo_panico">error</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/enojado.png" alt="enojado"><div class="bmo-tile-name" data-i18n="bmo_name_enojado">ANGRY</div><div class="bmo-tile-desc" data-i18n="bmo_enojado">warning</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/enfadado.png" alt="enfadado"><div class="bmo-tile-name" data-i18n="bmo_name_enfadado">FURIOUS</div><div class="bmo-tile-desc" data-i18n="bmo_enfadado">failed</div></div>
     </div>
   </div>
 </section>
@@ -280,6 +280,8 @@ const I18N = {
     feat_rl_t: 'Rate-limit aware', feat_rl_d: 'Scans report estimated durations up front and throttle automatically (nuclei -rl, nmap --max-rate) when a target enforces limits.',
     bmo_title: 'Meet <span class="accent">BMO</span>, your AI core',
     bmo_sub: 'BMO lives in the terminal and reacts to the engine verbose state: it shows its emotion by name as the AI plans, executes and analyzes — you always see what the core is feeling.',
+    bmo_caption: 'the AI core',
+    bmo_name_neutral: 'NEUTRAL', bmo_name_entusiasta: 'ENTHUSIASTIC', bmo_name_sutil: 'SUBTLE', bmo_name_contento: 'HAPPY', bmo_name_panico: 'PANIC', bmo_name_enojado: 'ANGRY', bmo_name_enfadado: 'FURIOUS',
     bmo_neutral: 'idle', bmo_entusiasta: 'thinking', bmo_sutil: 'analyzing', bmo_contento: 'done', bmo_panico: 'error', bmo_enojado: 'warning', bmo_enfadado: 'failed',
     shots_title: 'Screenshots', shots_sub: 'Real captures of the interface running against live targets.',
     inst_title: 'Install in one command',
@@ -323,6 +325,8 @@ const I18N = {
     feat_rl_t: 'Consciente del rate limit', feat_rl_d: 'Los escaneos informan la duración estimada por adelantado y se limitan automáticamente (nuclei -rl, nmap --max-rate) cuando el objetivo impone límites.',
     bmo_title: 'Conoce a <span class="accent">BMO</span>, tu AI core',
     bmo_sub: 'BMO vive en el terminal y reacciona al estado verbose del engine: muestra su emocion por nombre mientras la IA planifica, ejecuta y analiza — sin secretos, siempre ves lo que siente el core.',
+    bmo_caption: 'el AI core',
+    bmo_name_neutral: 'NEUTRAL', bmo_name_entusiasta: 'ENTUSIASTA', bmo_name_sutil: 'SUTIL', bmo_name_contento: 'CONTENTO', bmo_name_panico: 'PANICO', bmo_name_enojado: 'ENOJADO', bmo_name_enfadado: 'ENFADADO',
     bmo_neutral: 'en espera', bmo_entusiasta: 'pensando', bmo_sutil: 'analizando', bmo_contento: 'listo', bmo_panico: 'error', bmo_enojado: 'aviso', bmo_enfadado: 'fallo',
     shots_title: 'Capturas', shots_sub: 'Capturas reales de la interfaz contra objetivos en vivo.',
     inst_title: 'Instala en un comando',
@@ -371,13 +375,13 @@ function toggleLang() {
 // ---------------- BMO hero avatar (cycles expressions) ----------------
 (function () {
   const exprs = [
-    { img: 'neutral.png', label: 'NEUTRAL', cap: 'the AI core' },
-    { img: 'entusiasta.png', label: 'ENTUSIASTA', cap: 'thinking' },
-    { img: 'sutil.png', label: 'SUTIL', cap: 'analyzing' },
-    { img: 'contento.png', label: 'CONTENTO', cap: 'done' },
-    { img: 'panico.png', label: 'PANICO', cap: 'error' },
-    { img: 'enojado.png', label: 'ENOJADO', cap: 'warning' },
-    { img: 'enfadado.png', label: 'ENFADADO', cap: 'failed' }
+    { img: 'neutral.png', name: 'bmo_name_neutral', cap: 'bmo_caption' },
+    { img: 'entusiasta.png', name: 'bmo_name_entusiasta', cap: 'bmo_entusiasta' },
+    { img: 'sutil.png', name: 'bmo_name_sutil', cap: 'bmo_sutil' },
+    { img: 'contento.png', name: 'bmo_name_contento', cap: 'bmo_contento' },
+    { img: 'panico.png', name: 'bmo_name_panico', cap: 'bmo_panico' },
+    { img: 'enojado.png', name: 'bmo_name_enojado', cap: 'bmo_enojado' },
+    { img: 'enfadado.png', name: 'bmo_name_enfadado', cap: 'bmo_enfadado' }
   ];
   let i = 0;
   const img = document.getElementById('hero-bmo-img');
@@ -387,9 +391,10 @@ function toggleLang() {
   setInterval(function () {
     i = (i + 1) % exprs.length;
     const e = exprs[i];
+    const dict = I18N[lang] || I18N.en;
     img.src = 'assets/bmo/' + e.img;
-    label.textContent = e.label;
-    cap.textContent = e.cap;
+    label.textContent = dict[e.name];
+    cap.textContent = dict[e.cap];
   }, 2200);
 })();
 
