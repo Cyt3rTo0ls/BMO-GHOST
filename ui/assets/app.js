@@ -484,6 +484,7 @@ Local only. WARNING: authorized security testing only.
         'Colaboracion multiusuario en red local',
         'Marketplace de playbooks',
         'Acceso a TODAS las herramientas de Kali Linux / Parrot OS',
+        'Mapa global de IoT con Shodan (tu key, globo 3D interactivo con filtros)',
         'Grafo de relaciones OSINT (estilo Maltego, 12 tipos de entidad)',
         'Busqueda facial inversa (FaceCheck ID, con tu key)',
         'Modo defensivo: honeyports + deteccion de escaneos entrantes',

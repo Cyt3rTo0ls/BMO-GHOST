@@ -358,6 +358,71 @@ Every scan reports an **estimated duration** up front (verbose line
 `[estimated duration: ~X min]`), so you know how long a step will take,
 including how rate limits stretch the time.
 
+### PRO grey-tools kit (obscure but legal)
+
+```
+# --- hidden-data & crypto -------------------------------------------------
+stego <base64-data> [tag]       # LSB steganography: hide data inside an image
+stego extract <base64-png>      # recover the hidden payload
+ipobf 8.8.8.8                   # IP in decimal/octal/hex/IPv6-mapped forms
+xor <hex|text> [key]            # XOR cipher; no key = single-byte brute force
+basecrack <string>              # recursive base16/32/58/64/85 decoding
+hashid <hash>                   # identify hash type (MD5/NTLM/SHA*/bcrypt...)
+entropy <hex|text>              # Shannon entropy (spot encrypted payloads)
+jwt <token>                     # decode JWT + crack weak HS256 secrets
+mimetype <hex|base64>           # magic-byte file type detection (offline)
+# --- web & infra recon (no API key) ---------------------------------------
+crtsh <domain>                  # subdomains from certificate transparency
+certinfo <host>                 # live TLS cert: issuer, SANs, expiry
+webtitle <url>                  # status, title, server, tech hints
+robots <url>                    # robots.txt parser (hidden paths)
+cookies <url>                   # cookie flag audit (HttpOnly/Secure/SameSite)
+banner <host> <port>            # TCP banner grab
+favhash <url>                   # Shodan-style favicon hash (pivot servers)
+subto <domain>                  # subdomain takeover fingerprints
+mailcheck <domain>              # SPF / DMARC / DKIM posture
+dnssec <domain>                 # DNSSEC signed? algorithms
+asn <ip>                        # ASN / network ownership
+# --- wordlists & intel ----------------------------------------------------
+leet <word> / caseperm <word> / numgen <word>   # password expansion
+pwstrength <password>           # password strength scorer (zxcvbn-lite)
+ioc <text>                      # extract IPs/domains/URLs/hashes from any text
+defang <url>                    # hxxp:// + [.] for safe report sharing
+macvendor <mac>                 # MAC vendor lookup (OUI table, offline)
+uuid [n] / licgen [tag] / uagen # UUIDs / offline license keys / User-Agents
+```
+
+### PRO offense lab (authorized red-team tooling)
+
+Every tool below only **generates** commands, scripts and configs - nothing
+attacks anything by itself. Run them only against hosts you own or have
+written authorization to test.
+
+```
+evade 10.0.0.5 4444             # AV-evasion payload factory (msfvenom encoders + UPX)
+privesc linux                   # privilege-escalation checklist (also: windows)
+lateral 10.0.0.1 admin          # lateral movement (impacket, SSH pivots, chisel)
+exfil your-server.com           # exfiltration techniques for DLP testing
+phishmail a@b.com c@d.com       # phishing email generator (raw SMTP + tracking pixel)
+rubberducky GUI r,STRING notepad,ENTER   # USB HID (Flipper Zero / Rubber Ducky)
+smuggle <base64-file> file.pdf  # HTML smuggling generator (malware-delivery lab)
+c2 10.0.0.5 8443                # minimal C2 server + agent pair (lab beacon testing)
+mimikatz logonpasswords         # mimikatz command builder (lab)
+impacket secretsdump 10.0.0.1 admin      # impacket suite command builder
+llmnr eth0                      # LLMNR/NBT-NS poisoning launcher (internal lab)
+rogueap Free-WiFi wlan0         # rogue AP configs (hostapd + dnsmasq)
+ransomlab /tmp/sandbox          # ransomware SIMULATOR (AES + restore, sandbox only)
+ransomlab decrypt /tmp/sandbox <KEY>
+beefhook http://your-beef:3000  # BeEF hook generator (browser lab)
+tunnel ssh-d 10.0.0.1           # pivoting (SSH -L/-R/-D, chisel, iodine, socat)
+```
+
+> [!WARNING]
+> All offensive tools are authorized-testing only. Using them against
+> third parties without permission is illegal and is the operator's sole
+> responsibility (disclaimed inside every tool, in the README and on the
+> website).
+
 ### Minimum censorship
 
 BMO-GHOST does not censor professional tooling: iptables/ufw, dd, mkfs

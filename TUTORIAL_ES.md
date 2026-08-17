@@ -362,6 +362,37 @@ Cada escaneo informa una **duracion estimada** por adelantado (linea verbose
 `[estimated duration: ~X min]`), para que sepas cuanto tardara cada paso,
 incluyendo como el rate limit alarga el tiempo.
 
+### Laboratorio PRO ofensivo (tooling red-team autorizado)
+
+Cada herramienta de abajo solo **genera** comandos, scripts y configs -
+nada ataca nada por si mismo. Ejecutalas solo contra hosts que sean tuyos
+o sobre los que tengas autorizacion por escrito.
+
+```
+evade 10.0.0.5 4444             # fabrica de payloads con evasion AV (encoders msfvenom + UPX)
+privesc linux                   # checklist de escalada de privilegios (tambien: windows)
+lateral 10.0.0.1 admin          # movimiento lateral (impacket, pivotes SSH, chisel)
+exfil tu-servidor.com           # tecnicas de exfiltracion para pruebas DLP
+phishmail a@b.com c@d.com       # generador de emails de phishing (SMTP crudo + tracking pixel)
+rubberducky GUI r,STRING notepad,ENTER   # USB HID (Flipper Zero / Rubber Ducky)
+smuggle <base64> archivo.pdf    # generador de HTML smuggling (lab de entrega de malware)
+c2 10.0.0.5 8443                # par C2 minimo servidor + agente (beacon de laboratorio)
+mimikatz logonpasswords         # constructor de comandos mimikatz (laboratorio)
+impacket secretsdump 10.0.0.1 admin      # constructor de comandos de la suite impacket
+llmnr eth0                      # envenenamiento LLMNR/NBT-NS (lab interno)
+rogueap Free-WiFi wlan0         # configs de AP rogue (hostapd + dnsmasq)
+ransomlab /tmp/sandbox          # SIMULADOR de ransomware (AES + restauracion, solo sandbox)
+ransomlab decrypt /tmp/sandbox <KEY>
+beefhook http://tu-beef:3000    # generador de hooks BeEF (lab de navegadores)
+tunnel ssh-d 10.0.0.1           # pivoting (SSH -L/-R/-D, chisel, iodine, socat)
+```
+
+> [!ADVERTENCIA]
+> Todas las herramientas ofensivas son solo para testing autorizado.
+> Usarlas contra terceros sin permiso es ilegal y es responsabilidad
+> unica del operador (disclaimed dentro de cada herramienta, en el README
+> y en la web).
+
 ### Minima censura
 
 BMO-GHOST no censura el toolset profesional: iptables/ufw, dd, mkfs y
