@@ -281,7 +281,22 @@ Local only. WARNING: authorized security testing only.
         'IOC extractor (IPs, domains, URLs, emails, hashes, paths from any text)',
         'URL defanger/refanger (hxxp:// + [.] for safe report sharing)',
         'UUID v4 generator + version/variant parser',
-        'MAC vendor lookup (built-in OUI table, offline)'
+        'MAC vendor lookup (built-in OUI table, offline)',
+        'AV-evasion payload factory (msfvenom encoders + UPX packing, lab)',
+        'Privilege-escalation checklist generator (Linux + Windows)',
+        'Lateral movement builder (impacket, SSH pivots, chisel)',
+        'Data-exfiltration techniques (DNS/ICMP/HTTP/tunnel, DLP testing)',
+        'Phishing email generator (raw SMTP + tracking pixel, authorized sims)',
+        'Rubber Ducky script generator (USB HID lab)',
+        'HTML smuggling generator (malware-delivery lab)',
+        'Minimal C2 server + agent pair (lab beacon testing)',
+        'mimikatz command builder (credential-theft lab)',
+        'impacket suite command builder (psexec/wmiexec/secretsdump...)',
+        'LLMNR/NBT-NS poisoning launcher (internal lab)',
+        'Rogue AP config generator (hostapd + dnsmasq, WiFi lab)',
+        'Ransomware SIMULATOR (sandbox-only, AES + restore)',
+        'BeEF hook generator (browser lab)',
+        'Tunneling / pivoting builder (SSH -L/-R/-D, chisel, iodine)'
       ]
     },
     es: {
@@ -552,7 +567,22 @@ Local only. WARNING: authorized security testing only.
         'Extractor de IOCs (IPs, dominios, URLs, emails, hashes, rutas de cualquier texto)',
         'Defang/refang de URLs (hxxp:// + [.] para compartir informes seguros)',
         'Generador de UUID v4 + parser de version/variante',
-        'Consulta de fabricante de MAC (tabla OUI integrada, offline)'
+        'Consulta de fabricante de MAC (tabla OUI integrada, offline)',
+        'Fabrica de payloads con evasion de AV (encoders msfvenom + UPX, laboratorio)',
+        'Generador de checklist de escalada de privilegios (Linux + Windows)',
+        'Constructor de movimiento lateral (impacket, pivotes SSH, chisel)',
+        'Tecnicas de exfiltracion de datos (DNS/ICMP/HTTP/tunel, pruebas DLP)',
+        'Generador de emails de phishing (SMTP crudo + pixel de tracking, sims autorizadas)',
+        'Generador de scripts Rubber Ducky (laboratorio USB HID)',
+        'Generador de HTML smuggling (laboratorio de entrega de malware)',
+        'Par C2 minimo servidor + agente (pruebas de beacon en laboratorio)',
+        'Constructor de comandos mimikatz (laboratorio de robo de credenciales)',
+        'Constructor de comandos de la suite impacket (psexec/wmiexec/secretsdump...)',
+        'Lanzador de envenenamiento LLMNR/NBT-NS (laboratorio interno)',
+        'Generador de configs de AP rogue (hostapd + dnsmasq, laboratorio WiFi)',
+        'SIMULADOR de ransomware (solo sandbox, AES + restauracion)',
+        'Generador de hook BeEF (laboratorio de navegadores)',
+        'Constructor de tuneles / pivoting (SSH -L/-R/-D, chisel, iodine)'
       ]
     }
   };

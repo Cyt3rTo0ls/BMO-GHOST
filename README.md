@@ -341,6 +341,31 @@ Authorized testing only - the operator is solely responsible for lawful use.
 > macvendor <mac>              # MAC vendor lookup (built-in OUI table, offline)
 ```
 
+### PRO offense lab (authorized red-team tooling)
+
+Every tool below only generates commands, scripts and configs - nothing
+attacks anything by itself. Run them only against hosts you own or have
+written authorization to test.
+
+```text
+> evade 10.0.0.5 4444          # AV-evasion payload factory (msfvenom encoders + UPX)
+> privesc linux                # privilege-escalation checklist (also: privesc windows)
+> lateral 10.0.0.1 admin       # lateral movement (impacket, SSH pivots, chisel)
+> exfil your-server.com        # exfiltration techniques for DLP testing
+> phishmail a@b.com c@d.com    # phishing email generator (authorized sims)
+> rubberducky GUI r,STRING notepad,ENTER
+> smuggle <base64> file.pdf    # HTML smuggling generator (lab)
+> c2 10.0.0.5 8443             # minimal C2 server + agent pair (lab)
+> mimikatz logonpasswords      # mimikatz command builder (lab)
+> impacket secretsdump 10.0.0.1 admin
+> llmnr eth0                   # LLMNR/NBT-NS poisoning launcher (internal lab)
+> rogueap Free-WiFi wlan0      # rogue AP configs (hostapd + dnsmasq)
+> ransomlab /tmp/sandbox       # ransomware SIMULATOR (AES + restore, sandbox only)
+> ransomlab decrypt /tmp/sandbox <KEY>
+> beefhook http://your-beef:3000
+> tunnel ssh-d 10.0.0.1        # pivoting (ssh -L/-R/-D, chisel, iodine, socat)
+```
+
 ### Autonomous pentest / bug-bounty mode
 
 Ask for an engagement in plain language and the agent plans and executes it
