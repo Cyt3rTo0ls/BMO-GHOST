@@ -143,6 +143,10 @@ if [ "$CMD" = "obfuscate" ]; then
         echo "[ERROR] Not installed yet. Run ./install.sh (without arguments) first." >&2
         exit 1
     fi
+    if [ ! -f "$ROOT_DIR/core/agent.py" ]; then
+        echo "[ERROR] Source tree (core/) not found. 'obfuscate' needs the local source; the public repo only ships dist/." >&2
+        exit 1
+    fi
     echo "[INFO] Obfuscating the code with PyArmor -> dist/ ..."
     "$VENV_DIR/bin/python" -m pip install --quiet pyarmor 2>/dev/null || true
     ( cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py key_validator.py )
@@ -202,10 +206,19 @@ python -m pip install --upgrade pip >/dev/null 2>&1 || true
 python -m pip install -r "$ROOT_DIR/requirements.txt" || fail "Dependency installation failed."
 
 # --- obfuscation ---------------------------------------------------------
-info "Obfuscating the code (PyArmor -> dist/)..."
-python -m pip install --quiet pyarmor 2>/dev/null || true
-(cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py key_validator.py) \
-    || info "[WARN] Obfuscation failed, the app will run from the source tree."
+# The repository ships the obfuscated build (dist/). Only regenerate it when
+# it is missing AND the plain source tree is available locally. Never run
+# pyarmor with -O when the source is absent: it would wipe the shipped dist/.
+if [ -f "$ROOT_DIR/dist/app.py" ]; then
+    info "Using the existing obfuscated build (dist/)..."
+elif [ -f "$ROOT_DIR/app.py" ]; then
+    info "Obfuscating the code (PyArmor -> dist/)..."
+    python -m pip install --quiet pyarmor 2>/dev/null || true
+    (cd "$ROOT_DIR" && "$VENV_DIR/bin/pyarmor" gen -O dist -r core app.py bot_handler.py key_validator.py) \
+        || info "[WARN] Obfuscation failed, the app will run from the source tree."
+else
+    info "[WARN] No obfuscated build (dist/) and no source tree in this checkout; continuing with what is present."
+fi
 
 # --- folder structure ----------------------------------------------------
 info "Creating folder structure..."

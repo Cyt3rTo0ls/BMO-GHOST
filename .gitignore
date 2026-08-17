@@ -15,6 +15,13 @@ data/.keep
 generate_key.py
 key_mint*/
 
+# Plain source stays local: the public repo ships only the obfuscated dist/.
+# Keep the source on this machine for development, rebuild dist/, push dist/.
+/core/
+/app.py
+/bot_handler.py
+/key_validator.py
+
 # Python
 __pycache__/
 *.py[cod]
