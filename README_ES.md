@@ -145,7 +145,7 @@ desbloquea PRO.
 | Marketplace de playbooks | Si |
 | Todas las herramientas de Kali Linux / Parrot OS | Si |
 | Escaneo de IoT / servicios expuestos (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Si |
-| Mapa IoT global con Shodan (tu propia key, mapa mundial interactivo) | Si |
+| Mapa IoT global con Shodan (tu propia key, globo 3D interactivo + filtros) | Si |
 | Grafo de relaciones OSINT (estilo Maltego, entidades ordenadas) | Si |
 | Busqueda inversa de caras (FaceCheck ID, tu propia key) | Si |
 
@@ -304,6 +304,21 @@ modo agresivo (persistente entre reinicios):
 
 Cuando esta ON, el gate de confirmacion se omite y tu asumes toda la
 responsabilidad de cada comando que ejecute el engine.
+
+**Modo sigilo** (persistente entre reinicios) hace cada operacion invisible
+en el objetivo: ritmos bajos y lentos, pasivo-primero, sin fingerprinting
+de SO y huella minima (incluidas primitivas silenciosas de escalada de
+privilegios):
+
+```
+> stealth on
+> stealth off
+> status          # muestra stealth: ON (invisible)
+```
+
+**Confirmacion de vulnerabilidades:** cuando un escaneo encuentra algo, la
+IA ejecuta una comprobacion en vivo y solo reporta hallazgos que pueda
+confirmar, con porcentaje de confianza — sin afirmaciones sin verificar.
 
 El panel de memoria registra hosts, credenciales, vulnerabilidades y notas. El
 panel de linea de tiempo registra cada evento con marca de tiempo.

@@ -139,7 +139,7 @@ The free version shows the full PRO capability list in the interface
 | Playbook marketplace | Yes |
 | All Kali Linux / Parrot OS tools | Yes |
 | IoT / exposed-services scanning (MQTT, OPC-UA, Modbus, CoAP, TR-069, RTSP) | Yes |
-| Global IoT map with Shodan (your own key, interactive world map) | Yes |
+| Global IoT map with Shodan (your key, interactive 3D globe + filters) | Yes |
 | OSINT relationship graph (Maltego-style, ordered entities) | Yes |
 | Reverse face search (FaceCheck ID, your own key) | Yes |
 
@@ -293,6 +293,21 @@ aggressive mode (persistent across restarts):
 
 When ON, the confirmation gate is skipped and you take full responsibility
 for every command the engine runs.
+
+**Stealth mode** (persistent across restarts) makes every operation
+invisible on the target: low-and-slow rates, passive-first, no OS
+fingerprinting and a minimal footprint (including quiet privilege
+escalation):
+
+```
+> stealth on
+> stealth off
+> status          # shows stealth: ON (invisible)
+```
+
+**Vulnerability confirmation:** when a scan finds something, the AI runs a
+live verification command and only reports findings it can confirm, with a
+confidence percentage — no unverified claims.
 
 Memory panel tracks hosts, credentials, vulnerabilities and notes. The
 timeline panel records every event with timestamps.

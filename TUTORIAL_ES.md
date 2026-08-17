@@ -318,11 +318,15 @@ facecheck /home/usuario/foto.jpg
 Los resultados muestran el sitio de origen, la puntuacion y la URL (abre en
 una pestana nueva). La key nunca se sube a ningun sitio.
 
-### Mapa IoT global (PRO, Shodan)
+### Mapa IoT global (PRO, Shodan) — globo 3D interactivo
 
-PRO incluye un mapa mundial interactivo de dispositivos expuestos. Abre la
-pestana **IoT MAP** en el sidebar, pega **tu propia Shodan API key** (la capa
-gratuita funciona) y busca con sintaxis de consulta de Shodan:
+PRO incluye un **globo 3D interactivo** de dispositivos expuestos. Abre la
+pestana **IoT MAP** en el sidebar, pega **tu propia Shodan API key** y busca
+con sintaxis de consulta de Shodan. El panel derecho tiene **filtros
+funcionales**: busquedas preset de un clic (Camaras, Routers, DVR/NVR,
+SCADA/ICS, RTSP :554, RDP :3389, ...), un **filtro de pais** (p. ej. `VE`
+-> anade `country:VE` a la consulta) y un selector de categoria. Arrastra
+para rotar el globo, rueda para hacer zoom.
 
 ```
 cameras
@@ -332,10 +336,13 @@ product:"Hikvision"
 "default password"
 ```
 
-Cada resultado es un marcador en un mapa mundial con zoom. Haz clic en un
-host para ver el detalle completo: organizacion duena, ISP, ASN,
-ciudad/pais, puertos abiertos, banners de servicios y CVEs conocidos. La
-misma busqueda funciona desde el terminal:
+Cada resultado es un marcador en el globo (puertos calientes 3389/23/21 en
+rojo). Haz clic en un host para ver el detalle completo: organizacion
+duena, ISP, ASN, ciudad/pais, puertos abiertos, banners de servicios y CVEs
+conocidos. Si tu key de Shodan no tiene credits de busqueda (plan gratis),
+el mapa cae a datos DEMO claramente etiquetados para que puedas explorarlo,
+y funciona con datos reales en cuanto la key tenga credits. La misma
+busqueda funciona desde el terminal:
 
 ```
 shodan cameras port:554

@@ -48,6 +48,10 @@ Local only. WARNING: authorized security testing only.
       iotmap_key_ph: 'your Shodan API key',
       iotmap_savekey: 'SAVE KEY',
       iotmap_hosts: 'HOSTS',
+      iotmap_map3d: '3D GLOBE MAP',
+      iotmap_filters: 'FILTERS / PRESETS',
+      iotmap_filter: 'APPLY COUNTRY',
+      iotmap_cat_all: 'Category...',
       iotmap_nokey: 'Add your Shodan API key above to start. (Stored only on your machine, never uploaded.)',
       iotmap_searching: 'Searching Shodan',
       iotmap_noresults: 'No geolocated results to map.',
@@ -202,6 +206,10 @@ Local only. WARNING: authorized security testing only.
       iotmap_key_ph: 'tu Shodan API key',
       iotmap_savekey: 'GUARDAR KEY',
       iotmap_hosts: 'HOSTS',
+      iotmap_map3d: 'MAPA GLOBO 3D',
+      iotmap_filters: 'FILTROS / PRESETS',
+      iotmap_filter: 'APLICAR PAIS',
+      iotmap_cat_all: 'Categoria...',
       iotmap_nokey: 'Configura tu Shodan API key arriba para empezar. (Se guarda solo en tu maquina, nunca se sube).',
       iotmap_searching: 'Buscando en Shodan',
       iotmap_noresults: 'Sin resultados con coordenadas para mapear.',
@@ -567,9 +575,14 @@ Local only. WARNING: authorized security testing only.
         $('vault-body').classList.remove('hidden');
         $('reports-lock').classList.add('hidden');
         $('reports-body').classList.remove('hidden');
-        if (window.L) { // Leaflet loaded
+        if (window.maplibregl) { // MapLibre GL loaded (3D globe)
           $('iotmap-lock').classList.add('hidden');
           $('iotmap-body').classList.remove('hidden');
+          // If the view was opened by deep link before the license loaded,
+          // initIotMap() bailed on !pro: initialize it now that we are PRO.
+          if (!iotInitialized && $('iotmap-body') && !$('iotmap-body').classList.contains('hidden')) {
+            initIotMap();
+          }
         }
         if (window.vis) { // vis-network loaded
           $('osintgraph-lock').classList.add('hidden');
@@ -862,6 +875,17 @@ Local only. WARNING: authorized security testing only.
     $('iotmap-query').addEventListener('keydown', function (e) {
       if (e.key === 'Enter') iotSearch();
     });
+    document.querySelectorAll('#iotmap-presets .preset').forEach(function (b) {
+      b.addEventListener('click', function () {
+        $('iotmap-query').value = b.dataset.query;
+        iotSearch();
+      });
+    });
+    $('btn-iotmap-filter').addEventListener('click', iotSearch);
+    $('iotmap-country').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') iotSearch();
+    });
+    $('iotmap-cat').addEventListener('change', iotSearch);
     $('btn-osintgraph-build').addEventListener('click', buildOsintGraph);
     $('osintgraph-seed').addEventListener('keydown', function (e) {
       if (e.key === 'Enter') buildOsintGraph();
@@ -895,9 +919,10 @@ Local only. WARNING: authorized security testing only.
 
   // ---------------- IoT MAP (PRO) ----------------
   let iotMap = null;
-  let iotLayer = null;
+  let iotMarkers = [];
   let iotHosts = [];
   let iotInitialized = false;
+  let iotFilterCountry = '';
 
   function initIotMap() {
     if (!pro) {
@@ -910,17 +935,50 @@ Local only. WARNING: authorized security testing only.
     if (iotInitialized) return;
     iotInitialized = true;
 
-    if (!window.L) {
-      $('iotmap-meta').textContent = 'Leaflet failed to load (offline?). The map needs internet access to load the tile layer.';
+    if (!window.maplibregl) {
+      $('iotmap-meta').textContent = 'MapLibre GL failed to load (offline?). The 3D map needs internet access to load the tile layer.';
       return;
     }
-    iotMap = L.map('iotmap-map').setView([20, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Free OSM raster style, rendered on a 3D interactive globe (MapLibre v4).
+    const style = {
+      version: 8,
+      sources: {
+        osm: {
+          type: 'raster',
+          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tileSize: 256,
+          attribution: '&copy; OpenStreetMap contributors'
+        }
+      },
+      layers: [
+        {
+          id: 'osm',
+          type: 'raster',
+          source: 'osm',
+          paint: { 'raster-saturation': -0.35, 'raster-contrast': 0.08 }
+        }
+      ]
+    };
+    iotMap = new maplibregl.Map({
+      container: 'iotmap-map',
+      style: style,
+      projection: 'globe',
+      center: [-60, 10],
+      zoom: 2,
+      minZoom: 1.4,
       maxZoom: 18,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(iotMap);
-    iotLayer = L.layerGroup().addTo(iotMap);
-    checkShodanStatus();
+      attributionControl: { compact: true }
+    });
+    iotMap.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+    // Darken the oceans/space around the globe for the theme.
+    iotMap.on('load', function () {
+      iotMap.setSky({ 'sky-color': '#070b12', 'sky-horizon-blend': 0.6 });
+      checkShodanStatus();
+      // #iotmapsearch auto-runs a search on load (deep link / screenshots).
+      if ((location.hash || '').indexOf('iotmapsearch') !== -1) {
+        setTimeout(function () { iotSearch(); }, 1200);
+      }
+    });
   }
 
   async function checkShodanStatus() {
@@ -958,9 +1016,22 @@ Local only. WARNING: authorized security testing only.
     checkShodanStatus();
   }
 
+  function buildIotQuery() {
+    // Compose the Shodan query from the search box + active filters.
+    let q = $('iotmap-query').value.trim();
+    const cat = $('iotmap-cat').value;
+    const cc = $('iotmap-country').value.trim().toUpperCase();
+    const parts = [];
+    if (q) parts.push(q);
+    if (cat) parts.push(cat);
+    if (cc) parts.push('country:' + cc);
+    const final = parts.join(' ') || 'camera';
+    $('iotmap-filterinfo').textContent = 'query: "' + final + '"';
+    return final;
+  }
+
   async function iotSearch() {
-    const q = $('iotmap-query').value.trim();
-    if (!q) { toast('Enter a Shodan search query', 'err'); return; }
+    const q = buildIotQuery();
     $('iotmap-meta').textContent = t('iotmap_searching') + ' ...';
     const r = await api('/api/shodan/search', {
       method: 'POST',
@@ -969,6 +1040,16 @@ Local only. WARNING: authorized security testing only.
     });
     if (!r.ok) {
       $('iotmap-meta').textContent = r.error || 'search failed';
+      // If the key has no search credits (free plan), offer demo data so the
+      // 3D map and filters can still be explored.
+      if (r.demo) {
+        iotHosts = r.hosts || [];
+        $('iotmap-count').textContent = iotHosts.length + ' hosts (DEMO)';
+        $('iotmap-meta').textContent = 'DEMO DATA: ' + (r.note || r.error || 'your key has no search credits');
+        renderIotHosts();
+        renderIotMarkers();
+        return;
+      }
       toast(r.error || 'search failed', 'err');
       return;
     }
@@ -988,14 +1069,14 @@ Local only. WARNING: authorized security testing only.
       box.innerHTML = '<div class="dim small">' + t('iotmap_noresults') + '</div>';
       return;
     }
-    iotHosts.forEach(function (h, idx) {
+    iotHosts.forEach(function (h) {
       const el = document.createElement('div');
       el.className = 'iotmap-host';
       el.innerHTML =
         '<div class="ip">' + (h.ip || '?') + '</div>' +
         '<div class="meta">' +
         '  <span class="port">:' + (h.port || '?') + '</span>' +
-        '  <span class="org">' + ((h.org || h.product || 'unknown').slice(0, 24)) + '</span>' +
+        '  <span class="org">' + ((h.org || h.product || 'unknown').slice(0, 22)) + '</span>' +
         '  <span class="loc">' + (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') + '</span>' +
         '</div>';
       el.addEventListener('click', function () { showIotDetail(h); });
@@ -1004,30 +1085,35 @@ Local only. WARNING: authorized security testing only.
   }
 
   function renderIotMarkers() {
-    if (!iotLayer) return;
-    iotLayer.clearLayers();
+    if (!iotMap) return;
+    iotMarkers.forEach(function (m) { m.remove(); });
+    iotMarkers = [];
     const withGeo = iotHosts.filter(function (h) { return h.lat !== null && h.lon !== null; });
     withGeo.forEach(function (h) {
-      const icon = L.divIcon({
-        className: '',
-        html: '<div class="iotmap-marker-dot' + (h.port === 3389 || h.port === 23 || h.port === 21 ? ' hot' : '') + '"></div>',
-        iconSize: [14, 14],
-        iconAnchor: [7, 7]
-      });
-      const marker = L.marker([h.lat, h.lon], { icon: icon });
-      marker.bindPopup(
-        '<b>' + (h.ip || '?') + ':' + (h.port || '?') + '</b><br>' +
-        (h.org || '') + '<br>' +
-        (h.product || '') + '<br>' +
-        (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') +
-        (h.hostnames && h.hostnames.length ? '<br>' + h.hostnames[0] : '')
-      );
-      marker.on('click', function () { showIotDetail(h); });
-      iotLayer.addLayer(marker);
+      const el = document.createElement('div');
+      el.className = 'iotmap-marker-dot' + (h.port === 3389 || h.port === 23 || h.port === 21 ? ' hot' : '');
+      el.title = (h.ip || '') + ':' + (h.port || '');
+      const marker = new maplibregl.Marker({ element: el })
+        .setLngLat([h.lon, h.lat])
+        .setPopup(new maplibregl.Popup({ offset: 18 }).setHTML(
+          '<b>' + (h.ip || '?') + ':' + (h.port || '?') + '</b><br>' +
+          (h.org || '') + '<br>' +
+          (h.product || '') + '<br>' +
+          (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') +
+          (h.hostnames && h.hostnames.length ? '<br>' + h.hostnames[0] : '')
+        ))
+        .addTo(iotMap);
+      marker.getElement().addEventListener('click', function () { showIotDetail(h); });
+      iotMarkers.push(marker);
     });
     if (withGeo.length) {
-      const bounds = L.latLngBounds(withGeo.map(function (h) { return [h.lat, h.lon]; }));
-      iotMap.fitBounds(bounds, { padding: [30, 30] });
+      // Fly to the cluster of results on the 3D globe.
+      let minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
+      withGeo.forEach(function (h) {
+        minLat = Math.min(minLat, h.lat); maxLat = Math.max(maxLat, h.lat);
+        minLon = Math.min(minLon, h.lon); maxLon = Math.max(maxLon, h.lon);
+      });
+      iotMap.fitBounds([[minLon, minLat], [maxLon, maxLat]], { padding: 60, maxZoom: 8, duration: 1800 });
     }
   }
 

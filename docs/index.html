@@ -171,6 +171,8 @@ cd BMO-GHOST
     <div class="notes">
       <p><span class="pill pill-ok" data-i18n="pill_safe">MINIMUM CENSORSHIP</span> <span data-i18n="pill_safe_t">All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.</span></p>
       <p><span class="pill pill-rl" data-i18n="pill_agg">AGGRESSIVE MODE</span> <span data-i18n="pill_agg_t"><code>aggressive on</code> skips the confirmation gate entirely for autonomous engagements (persistent).</span></p>
+      <p><span class="pill pill-stealth" data-i18n="pill_stealth">STEALTH MODE</span> <span data-i18n="pill_stealth_t"><code>stealth on</code> makes every scan invisible: low-and-slow rates (nmap -T2, nuclei -rl 1), no OS fingerprinting, passive-first and minimal footprint — including quiet privilege-escalation primitives.</span></p>
+      <p><span class="pill pill-verify" data-i18n="pill_verify">VERIFIED FINDINGS</span> <span data-i18n="pill_verify_t">The AI confirms every vulnerability with a live check before reporting it (executes a verification command and gives a confidence verdict).</span></p>
       <p><span class="pill pill-local" data-i18n="pill_local">100% LOCAL</span> <span data-i18n="pill_local_t">No telemetry, no cloud, no data exfiltration. Offline by design.</span></p>
     </div>
   </div>
@@ -271,7 +273,7 @@ const I18N = {
     feat_agent_t: 'Autonomous agent', feat_agent_d: 'Ask in plain language (EN/ES): the agent plans steps with your local model, executes real commands, and iterates until the goal is reached.',
     feat_vuln_t: 'Vulnerability scanning', feat_vuln_d: 'Port, service, IoT and template-based vulnerability scans (Nmap, Nuclei, masscan) with severity classification and CVE correlation.',
     feat_tech_t: 'Tech fingerprinting', feat_tech_d: 'Identifies the web stack (frameworks, servers, WAFs) and summarizes the likely attack surface before you start.',
-    feat_graph_t: 'OSINT graph (Maltego-style)', feat_graph_d: 'Build ordered, color-coded relationship graphs from any email, domain, IP, username or phone — and map exposed devices worldwide on an interactive globe.',
+    feat_graph_t: 'OSINT graph (Maltego-style)', feat_graph_d: 'Build ordered, color-coded relationship graphs from any email, domain, IP, username or phone — and map exposed devices worldwide on an interactive 3D globe (rotate, zoom, filters by country/category and preset IoT searches).',
     feat_vault_t: 'Encrypted vault', feat_vault_d: 'Credentials and findings stored with PBKDF2 + AES encryption. Nothing leaves your machine.',
     feat_lang_t: 'EN / ES interface', feat_lang_d: 'Full bilingual interface and tutorials. The assistant answers in the language you write in.',
     feat_desk_t: 'One-command install', feat_desk_d: 'Fully automatic setup: environment, dependencies, code obfuscation and local server - then it opens Firefox (or your default Kali browser) for you.',
@@ -287,6 +289,8 @@ const I18N = {
     usage_title: 'Usage',
     pill_safe: 'MINIMUM CENSORSHIP', pill_safe_t: 'All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.',
     pill_agg: 'AGGRESSIVE MODE', pill_agg_t: '<code>aggressive on</code> skips the confirmation gate entirely for autonomous engagements (persistent).',
+    pill_stealth: 'STEALTH MODE', pill_stealth_t: '<code>stealth on</code> makes every scan invisible: low-and-slow rates (nmap -T2, nuclei -rl 1), no OS fingerprinting, passive-first and minimal footprint — including quiet privilege-escalation primitives.',
+    pill_verify: 'VERIFIED FINDINGS', pill_verify_t: 'The AI confirms every vulnerability with a live check before reporting it (executes a verification command and gives a confidence verdict).',
     pill_local: '100% LOCAL', pill_local_t: 'No telemetry, no cloud, no data exfiltration. Offline by design.',
     pro_title: 'PRO', pro_sub: 'PRO is a permanent, single-use license. Activate once, keep it forever on that machine.',
     pro_free: 'FREE', pro_f1: '20 queries / session', pro_f2: 'Local agent + tools', pro_f3: 'Port / vuln / IoT scanning', pro_f4: 'EN / ES interface', pro_f5: 'Terminal + timeline',
@@ -328,6 +332,8 @@ const I18N = {
     usage_title: 'Uso',
     pill_safe: 'MÍNIMA CENSURA', pill_safe_t: 'Todo el toolset profesional corre libre (iptables, ufw, dd, mkfs, explotación). Solo se bloquean los comandos que borrarían tu propio host.',
     pill_agg: 'MODO AGRESIVO', pill_agg_t: '<code>aggressive on</code> omite el gate de confirmación por completo en modo autónomo (persistente).',
+    pill_stealth: 'MODO SIGILO', pill_stealth_t: '<code>stealth on</code> hace cada escaneo invisible: ritmos bajos y lentos (nmap -T2, nuclei -rl 1), sin fingerprinting de SO, pasivo-primero y huella mínima — incluyendo primitivas silenciosas de escalada de privilegios.',
+    pill_verify: 'HALLAZGOS VERIFICADOS', pill_verify_t: 'La IA confirma cada vulnerabilidad con una comprobación en vivo antes de reportarla (ejecuta un comando de verificación y da un veredicto de confianza).',
     pill_local: '100% LOCAL', pill_local_t: 'Sin telemetría, sin nube, sin exfiltración de datos. Offline por diseño.',
     pro_title: 'PRO', pro_sub: 'PRO es una licencia permanente de un solo uso. Actívala una vez, consérvala para siempre en esa máquina.',
     pro_free: 'GRATIS', pro_f1: '20 consultas / sesión', pro_f2: 'Agente local + herramientas', pro_f3: 'Escaneo de puertos / vuln / IoT', pro_f4: 'Interfaz EN / ES', pro_f5: 'Terminal + timeline',

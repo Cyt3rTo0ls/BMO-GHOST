@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BMO-GHOST - Local Pentesting Command Center</title>
 <link rel="stylesheet" href="/assets/style.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/vis-network@9.1.9/styles/vis-network.min.css">
 <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
 </head>
@@ -278,10 +278,49 @@
 
           <div class="iotmap-grid">
             <div class="panel-box">
-              <div id="iotmap-map" style="height:480px;border-radius:10px;overflow:hidden"></div>
-            </div>
-            <div class="panel-box">
               <div class="view-head" style="padding:0 0 8px">
+                <h3 class="dim small" data-i18n="iotmap_map3d">3D GLOBE MAP</h3>
+                <span class="count dim small">drag to rotate · scroll to zoom</span>
+              </div>
+              <div id="iotmap-map" style="height:520px;border-radius:10px;overflow:hidden"></div>
+            </div>
+
+            <div class="panel-box">
+              <!-- Functional filters / preset searches -->
+              <div class="view-head" style="padding:0 0 6px">
+                <h3 class="dim small" data-i18n="iotmap_filters">FILTERS</h3>
+              </div>
+              <div class="preset-chips" id="iotmap-presets">
+                <button class="preset" data-query="camera">C&#225;maras</button>
+                <button class="preset" data-query="webcam">Webcams</button>
+                <button class="preset" data-query="router">Routers</button>
+                <button class="preset" data-query="dvr">DVR/NVR</button>
+                <button class="preset" data-query="printer">Impresoras</button>
+                <button class="preset" data-query="scada">SCADA/ICS</button>
+                <button class="preset" data-query="port:554">RTSP :554</button>
+                <button class="preset" data-query="port:3389">RDP :3389</button>
+                <button class="preset" data-query="port:23">Telnet :23</button>
+                <button class="preset" data-query="port:21">FTP :21</button>
+                <button class="preset" data-query="port:37777">Dahua :37777</button>
+              </div>
+              <div class="filter-row">
+                <input id="iotmap-country" type="text" maxlength="2" placeholder="Pa&#237;s (ej: VE, US, CN)" title="Country code to append to the query (e.g. VE)">
+                <button id="btn-iotmap-filter" class="ghost small"><span data-i18n="iotmap_filter">APLICAR PAIS</span></button>
+              </div>
+              <div class="filter-row">
+                <select id="iotmap-cat">
+                  <option value="" data-i18n="iotmap_cat_all">Categor&#237;a...</option>
+                  <option value="camera">C&#225;maras</option>
+                  <option value="webcam">Webcams</option>
+                  <option value="router">Routers</option>
+                  <option value="printer">Impresoras</option>
+                  <option value="dvr">DVR / NVR</option>
+                  <option value="scada">SCADA / ICS</option>
+                </select>
+              </div>
+              <div id="iotmap-filterinfo" class="dim small"></div>
+
+              <div class="view-head" style="padding:10px 0 6px">
                 <h3 class="dim small" data-i18n="iotmap_hosts">HOSTS</h3>
                 <span class="count dim small" id="iotmap-count">0</span>
               </div>
