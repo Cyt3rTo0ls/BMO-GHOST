@@ -231,7 +231,15 @@ Local only. WARNING: authorized security testing only.
         'QR code generator',
         'Live DNS blacklist reputation scoring',
         'Subdomain drift monitor with snapshots',
-        'Honeytoken canary credentials that alert on use'
+        'Honeytoken canary credentials that alert on use',
+        'Reverse shell generator (bash, python, nc, php, perl, ruby, powershell)',
+        'msfvenom payload factory (Windows/Linux/Android/php/python/macOS)',
+        'Phishing page cloner for authorized social-engineering tests',
+        'Office macro (VBA) generator for AV-lab simulations',
+        'Persistence script generator (cron, systemd, bashrc, LD_PRELOAD)',
+        'Keylogger script generator (authorized lab testing)',
+        'Wireless audit workflow (WPA handshake capture + deauth)',
+        'Payload + post-exploitation lab suite (SET / Metasploit style)'
       ]
     },
     es: {
@@ -452,7 +460,15 @@ Local only. WARNING: authorized security testing only.
         'Generador de codigos QR',
         'Puntuacion de reputacion DNSBL en vivo',
         'Monitor de deriva de subdominios con snapshots',
-        'Credenciales honeytoken canary que alertan al usarse'
+        'Credenciales honeytoken canary que alertan al usarse',
+        'Generador de reverse shells (bash, python, nc, php, perl, ruby, powershell)',
+        'Fabrica de payloads msfvenom (Windows/Linux/Android/php/python/macOS)',
+        'Clonador de paginas de phishing para pruebas de ingenieria social autorizadas',
+        'Generador de macros de Office (VBA) para simulaciones de laboratorio AV',
+        'Generador de scripts de persistencia (cron, systemd, bashrc, LD_PRELOAD)',
+        'Generador de scripts keylogger (pruebas de laboratorio autorizadas)',
+        'Flujo de auditoria inalambrica (captura de handshake WPA + deauth)',
+        'Suite de laboratorio de payloads y post-explotacion (estilo SET / Metasploit)'
       ]
     }
   };
