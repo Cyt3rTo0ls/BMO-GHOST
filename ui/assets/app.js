@@ -219,7 +219,19 @@ Local only. WARNING: authorized security testing only.
         'Password policy auditor (NIST checklist)',
         'Session timeline replay (forensic playback)',
         'Dork generator with one-click search links',
-        'Metadata forensics (EXIF/GPS on documents and images)'
+        'Metadata forensics (EXIF/GPS on documents and images)',
+        'Fake identity generator (fakenamegenerator.com style, 5 locales)',
+        'IP geolocation (country, city, ISP, coords)',
+        'CVE lookup engine (by ID or keyword, live feed)',
+        'NIST-compliant password generator (800-63B)',
+        'Random MAC address generator',
+        'Target-specific wordlist builder',
+        'Encoder/decoder toolkit (base64, hex, URL, ROT13, binary)',
+        'Hash calculator (MD5, SHA1, SHA256, SHA512)',
+        'QR code generator',
+        'Live DNS blacklist reputation scoring',
+        'Subdomain drift monitor with snapshots',
+        'Honeytoken canary credentials that alert on use'
       ]
     },
     es: {
@@ -428,7 +440,19 @@ Local only. WARNING: authorized security testing only.
         'Auditor de politicas de contraseñas (checklist NIST)',
         'Replay de la linea de tiempo de sesion (reproduccion forense)',
         'Generador de dorks con enlaces de busqueda de un clic',
-        'Forensia de metadatos (EXIF/GPS en documentos e imagenes)'
+        'Forensia de metadatos (EXIF/GPS en documentos e imagenes)',
+        'Generador de identidades falsas (estilo fakenamegenerator, 5 idiomas)',
+        'Geolocalizacion de IP (pais, ciudad, ISP, coordenadas)',
+        'Motor de consulta de CVEs (por ID o palabra clave, feed en vivo)',
+        'Generador de contraseñas NIST (800-63B)',
+        'Generador de direcciones MAC aleatorias',
+        'Constructor de wordlists personalizadas por objetivo',
+        'Kit de codificadores/decodificadores (base64, hex, URL, ROT13, binario)',
+        'Calculadora de hashes (MD5, SHA1, SHA256, SHA512)',
+        'Generador de codigos QR',
+        'Puntuacion de reputacion DNSBL en vivo',
+        'Monitor de deriva de subdominios con snapshots',
+        'Credenciales honeytoken canary que alertan al usarse'
       ]
     }
   };
