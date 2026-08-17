@@ -59,3 +59,8 @@ sherlock_*.txt
 *.txt
 data/shodan.key
 data/facecheck.key
+data/auth_pin
+data/engine_model.json
+data/iot_monitors.json
+data/honeytokens.json
+data/subwatch_*.json

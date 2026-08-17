@@ -56,7 +56,7 @@ if [ "$CMD" = "run" ]; then
         echo "[ERROR] Not installed yet. Run ./install.sh (without arguments) first." >&2
         exit 1
     fi
-    echo "[INFO] Starting BMO-GHOST on http://127.0.0.1:${PORT:-8080}"
+    echo "[INFO] Starting BMO-GHOST on http://${HOST:-127.0.0.1}:${PORT:-8080}"
     cd "$ROOT_DIR"
     # Prefer the obfuscated build (dist/); fall back to the source tree.
     if [ -f "$ROOT_DIR/dist/app.py" ]; then
@@ -66,9 +66,14 @@ if [ "$CMD" = "run" ]; then
         APP_DIR="$ROOT_DIR"
         echo "[INFO] Obfuscated build not found, running from source..."
     fi
+    # HOST=0.0.0.0 allows remote access from your phone on the same network
+    # (the dashboard then asks for the 6-digit PIN shown on this screen).
+    if [ "${HOST:-127.0.0.1}" != "127.0.0.1" ]; then
+        echo "[INFO] Remote access enabled - connect from your phone and enter the login PIN shown in the UI."
+    fi
     # start the server detached (survives terminal close), then open the browser
     setsid nohup bash -c "cd '$APP_DIR' && '$VENV_DIR/bin/python' -m uvicorn app:app \
-        --host 127.0.0.1 --port '${PORT:-8080}'" \
+        --host '${HOST:-127.0.0.1}' --port '${PORT:-8080}'" \
         >/tmp/bmo_ghost.log 2>&1 &
     SERVER_PID=$!
     echo "$SERVER_PID" > "$DATA_DIR/.server_pid" 2>/dev/null || true

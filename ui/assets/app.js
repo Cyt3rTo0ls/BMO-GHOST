@@ -127,6 +127,29 @@ Local only. WARNING: authorized security testing only.
       msg_exploit: '[EXPLOIT] review the finding and craft a PoC manually. Authorized targets only.',
       msg_mitigate: '[MITIGATE] apply vendor patch, harden config, restrict exposure.',
       msg_details: '[DETAILS] stored in local memory. See MEMORY panel and reports.',
+      model_sel_t: 'Active model (local engine)',
+      def_btn_t: 'Defensive mode: honeyports + scan detection',
+      export_btn_t: 'Export engagement as ZIP',
+      mobile_btn_t: 'Phone / remote access setup',
+      mobile_title: 'PHONE REMOTE ACCESS',
+      mobile_intro: 'Control BMO-GHOST from your phone on the same WiFi. Install the APK, enter these values, unlock with the PIN.',
+      mobile_ip: 'PC IP', mobile_port: 'Port', mobile_pin: 'Login PIN',
+      mobile_host_hint: 'Make sure the server listens on the network:',
+      mobile_dl: 'DOWNLOAD APK', mobile_close: 'CLOSE',
+      pin_t: 'Remote access PIN - enter it on your phone',
+      def_on: 'DEF: ON', def_off: 'DEF: OFF',
+      login_title: 'BMO-GHOST REMOTE ACCESS',
+      login_info: 'You are connecting from another device. Enter the 6-digit PIN shown on the PC to unlock.',
+      login_btn: 'UNLOCK', login_ok: 'Remote access unlocked.', login_bad: 'Invalid PIN.',
+      def_started: 'Defensive mode ON - honeyports listening.',
+      def_stopped: 'Defensive mode OFF.',
+      def_scan_alert: '⚠ Possible scan from {ip} (honeyport sweep)',
+      def_hit_alert: 'Honeyport hit from {ip}',
+      iotmap_monitor: 'MONITOR',
+      iot_monitor_on: 'Monitoring query. Alerts will appear when new devices show up.',
+      iot_monitor_off: 'Monitoring stopped.',
+      iot_new_dev: '🆕 {n} new device(s) for monitored query',
+      export_ok: 'Engagement exported (ZIP).', export_fail: 'Export failed (PRO feature?).',
       msg_target: 'Target set to ',
       mem_placeholder: 'note title...',
       pro_view_title: 'PRO FEATURES',
@@ -167,7 +190,36 @@ Local only. WARNING: authorized security testing only.
         'LAN multi-user collaboration',
         'Playbook marketplace',
         'All Kali Linux / Parrot OS tools',
-        'Global IoT map with Shodan (your key, interactive world map)'
+        'Global IoT map with Shodan (your key, interactive world map)',
+        'OSINT relationship graph (Maltego-style, 12 entity types)',
+        'Reverse face search (FaceCheck ID, your key)',
+        'Defensive mode: honeyports + incoming scan detection',
+        'Exposed-credential / breach monitoring',
+        'Stealth mode: low-and-slow invisible scanning',
+        'Engagement export to ZIP (timeline + findings + report)',
+        'Phone remote control (Android APK + PIN login)',
+        'IP reputation scoring (abuse reports + blacklists)',
+        'Vulnerability confirmation before reporting (verifier engine)',
+        'Tech fingerprinting of any target (framework/stack)',
+        'Subdomain drift monitor (new hosts alert)',
+        'Smart attack-path suggestions from findings',
+        'Auto-prioritized remediation plan per host',
+        'BMO avatar: 7 live facial expressions tied to engine state',
+        'Bilingual AI terminal (EN/ES) with stealth telemetry',
+        'Model switcher (pick any local Ollama model at runtime)',
+        'Forensic export with SHA-256 evidence hashes',
+        'Weekly auto-scan of saved targets',
+        'One-command full pentest: recon + scan + exploit + report',
+        'Honeytoken generator (fake creds that alert on use)',
+        'CVE-to-exploit mapping with local PoC hints',
+        'Network attack-surface visualization',
+        'Credential spraying detection on local services',
+        'Wireless audit suite (WPA handshake capture, deauth)',
+        'API fuzzing presets (REST/GraphQL/gRPC)',
+        'Password policy auditor (NIST checklist)',
+        'Session timeline replay (forensic playback)',
+        'Dork generator with one-click search links',
+        'Metadata forensics (EXIF/GPS on documents and images)'
       ]
     },
     es: {
@@ -285,6 +337,29 @@ Local only. WARNING: authorized security testing only.
       msg_exploit: '[EXPLOTAR] revisa el hallazgo y crea un PoC manualmente. Solo objetivos autorizados.',
       msg_mitigate: '[MITIGAR] aplica el parche del proveedor, refuerza la configuracion, restringe la exposicion.',
       msg_details: '[DETALLES] almacenado en la memoria local. Ver panel MEMORIA e informes.',
+      model_sel_t: 'Modelo activo (engine local)',
+      def_btn_t: 'Modo defensivo: honeyports + deteccion de escaneos',
+      export_btn_t: 'Exportar el engagement como ZIP',
+      mobile_btn_t: 'Configuracion de acceso remoto / celular',
+      mobile_title: 'ACCESO REMOTO DESDE EL CELULAR',
+      mobile_intro: 'Controla BMO-GHOST desde tu celular en el mismo WiFi. Instala la APK, introduce estos datos y desbloquea con el PIN.',
+      mobile_ip: 'IP de la PC', mobile_port: 'Puerto', mobile_pin: 'PIN de acceso',
+      mobile_host_hint: 'Asegurate de que el servidor escuche en la red:',
+      mobile_dl: 'DESCARGAR APK', mobile_close: 'CERRAR',
+      pin_t: 'PIN de acceso remoto - introducelo en tu celular',
+      def_on: 'DEF: ON', def_off: 'DEF: OFF',
+      login_title: 'BMO-GHOST ACCESO REMOTO',
+      login_info: 'Te estas conectando desde otro dispositivo. Introduce el PIN de 6 digitos que muestra la PC para desbloquear.',
+      login_btn: 'DESBLOQUEAR', login_ok: 'Acceso remoto desbloqueado.', login_bad: 'PIN invalido.',
+      def_started: 'Modo defensivo ON - honeyports escuchando.',
+      def_stopped: 'Modo defensivo OFF.',
+      def_scan_alert: '⚠ Posible escaneo desde {ip} (barrido de honeyports)',
+      def_hit_alert: 'Toque de honeyport desde {ip}',
+      iotmap_monitor: 'MONITOREAR',
+      iot_monitor_on: 'Buscando en monitoreo. Habra alertas cuando aparezcan dispositivos nuevos.',
+      iot_monitor_off: 'Monitoreo detenido.',
+      iot_new_dev: '🆕 {n} dispositivo(s) nuevo(s) en la busqueda monitoreada',
+      export_ok: 'Engagement exportado (ZIP).', export_fail: 'Fallo el export (¿es PRO?).',
       msg_target: 'Objetivo fijado: ',
       mem_placeholder: 'titulo de la nota...',
       pro_view_title: 'FUNCIONES PRO',
@@ -324,7 +399,36 @@ Local only. WARNING: authorized security testing only.
         'Gamificacion (logros y badges tecnicos)',
         'Colaboracion multiusuario en red local',
         'Marketplace de playbooks',
-        'Acceso a TODAS las herramientas de Kali Linux / Parrot OS'
+        'Acceso a TODAS las herramientas de Kali Linux / Parrot OS',
+        'Grafo de relaciones OSINT (estilo Maltego, 12 tipos de entidad)',
+        'Busqueda facial inversa (FaceCheck ID, con tu key)',
+        'Modo defensivo: honeyports + deteccion de escaneos entrantes',
+        'Monitoreo de filtraciones / credenciales expuestas',
+        'Modo sigilo: escaneo invisible low-and-slow',
+        'Exportacion del engagement en ZIP (timeline + hallazgos + informe)',
+        'Control remoto desde el celular (APK Android + login por PIN)',
+        'Puntuacion de reputacion de IP (abusos + listas negras)',
+        'Confirmacion de vulnerabilidades antes de reportarlas (verificador)',
+        'Huella tecnologica de cualquier objetivo (framework/stack)',
+        'Monitor de deriva de subdominios (alerta de hosts nuevos)',
+        'Sugerencias inteligentes de ruta de ataque desde los hallazgos',
+        'Plan de remediacion auto-priorizado por host',
+        'Avatar BMO: 7 expresiones faciales en vivo segun el estado del engine',
+        'Terminal IA bilingue (EN/ES) con telemetria sigilosa',
+        'Switcher de modelos (elige cualquier modelo Ollama local al vuelo)',
+        'Exportacion forense con hashes SHA-256 de evidencia',
+        'Auto-escaneo semanal de objetivos guardados',
+        'Pentest completo de un comando: recon + scan + exploit + informe',
+        'Generador de honeytokens (credenciales falsas que alertan al usarse)',
+        'Mapeo CVE-a-exploit con pistas de PoC locales',
+        'Visualizacion de la superficie de ataque de la red',
+        'Deteccion de credential spraying en servicios locales',
+        'Suite de auditoria inalambrica (captura de handshake WPA, deauth)',
+        'Presets de fuzzing de APIs (REST/GraphQL/gRPC)',
+        'Auditor de politicas de contraseñas (checklist NIST)',
+        'Replay de la linea de tiempo de sesion (reproduccion forense)',
+        'Generador de dorks con enlaces de busqueda de un clic',
+        'Forensia de metadatos (EXIF/GPS en documentos e imagenes)'
       ]
     }
   };
@@ -787,8 +891,8 @@ Local only. WARNING: authorized security testing only.
     }
   }
 
-  function openModal() { $('pro-modal').classList.remove('hidden'); }
-  function closeModal() { $('pro-modal').classList.add('hidden'); }
+  function openModal(id) { $(id || 'pro-modal').classList.remove('hidden'); }
+  function closeModal(id) { $(id || 'pro-modal').classList.add('hidden'); }
 
   // ---------------- events ----------------
   function wireEvents() {
@@ -803,6 +907,29 @@ Local only. WARNING: authorized security testing only.
     $('btn-verbose').addEventListener('click', function () {
       setVerbose(!verboseEnabled);
     });
+
+    $('btn-login').addEventListener('click', doLogin);
+    $('login-pin').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') doLogin();
+    });
+    $('btn-mobile').addEventListener('click', openMobileModal);
+    $('btn-mobile-close').addEventListener('click', function () { closeModal('mobile-overlay'); });
+    $('btn-mobile-dl').addEventListener('click', function () {
+      window.open('/apk/BMO-GHOST.apk', '_blank');
+    });
+    $('model-select').addEventListener('change', function () {
+      const name = this.value;
+      api('/api/models/select', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: name }),
+      }).then(function (r) {
+        if (r.ok) toast('model: ' + r.model, 'ok');
+      });
+    });
+    $('btn-defensive').addEventListener('click', toggleDefensive);
+    $('btn-export').addEventListener('click', doExport);
+    $('btn-iotmap-monitor').addEventListener('click', iotMonitor);
 
     document.querySelectorAll('.qbtn').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -939,15 +1066,15 @@ Local only. WARNING: authorized security testing only.
       $('iotmap-meta').textContent = 'MapLibre GL failed to load (offline?). The 3D map needs internet access to load the tile layer.';
       return;
     }
-    // Free OSM raster style, rendered on a 3D interactive globe (MapLibre v4).
+    // Dark professional tiles (CartoDB dark matter), rendered on a 3D globe.
     const style = {
       version: 8,
       sources: {
         osm: {
           type: 'raster',
-          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tiles: ['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
           tileSize: 256,
-          attribution: '&copy; OpenStreetMap contributors'
+          attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
         }
       },
       layers: [
@@ -955,7 +1082,7 @@ Local only. WARNING: authorized security testing only.
           id: 'osm',
           type: 'raster',
           source: 'osm',
-          paint: { 'raster-saturation': -0.35, 'raster-contrast': 0.08 }
+          paint: { 'raster-saturation': -0.25, 'raster-contrast': 0.05, 'raster-brightness-min': 0.35, 'raster-brightness-max': 0.85 }
         }
       ]
     };
@@ -963,16 +1090,25 @@ Local only. WARNING: authorized security testing only.
       container: 'iotmap-map',
       style: style,
       projection: 'globe',
-      center: [-60, 10],
-      zoom: 2,
-      minZoom: 1.4,
+      center: [-40, 15],
+      zoom: 1.8,
+      minZoom: 1.2,
       maxZoom: 18,
       attributionControl: { compact: true }
     });
     iotMap.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
-    // Darken the oceans/space around the globe for the theme.
+    // Space atmosphere around the globe, themed to the dashboard.
     iotMap.on('load', function () {
-      iotMap.setSky({ 'sky-color': '#070b12', 'sky-horizon-blend': 0.6 });
+      iotMap.setSky({
+        'sky-color': '#05070f',
+        'sky-horizon-blend': 0.35,
+        'horizon-color': '#0b1430',
+        'fog-color': '#0a1124',
+        'fog-ground-blend': 0.6
+      });
+      try {
+        iotMap.setFog({ range: [1.6, 12], color: '#0a1124', 'high-color': '#0e1a3a', 'space-color': '#05070f' });
+      } catch (e) { /* older maplibre */ }
       checkShodanStatus();
       // #iotmapsearch auto-runs a search on load (deep link / screenshots).
       if ((location.hash || '').indexOf('iotmapsearch') !== -1) {
@@ -1095,12 +1231,14 @@ Local only. WARNING: authorized security testing only.
       el.title = (h.ip || '') + ':' + (h.port || '');
       const marker = new maplibregl.Marker({ element: el })
         .setLngLat([h.lon, h.lat])
-        .setPopup(new maplibregl.Popup({ offset: 18 }).setHTML(
-          '<b>' + (h.ip || '?') + ':' + (h.port || '?') + '</b><br>' +
-          (h.org || '') + '<br>' +
-          (h.product || '') + '<br>' +
-          (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') +
-          (h.hostnames && h.hostnames.length ? '<br>' + h.hostnames[0] : '')
+        .setPopup(new maplibregl.Popup({ offset: 18, closeButton: false, maxWidth: '260px' }).setHTML(
+          '<div style="font-family:monospace;font-size:11.5px;line-height:1.55">' +
+          '<b style="color:#00E5C7;font-size:13px">' + (h.ip || '?') + ':' + (h.port || '?') + '</b><br>' +
+          (h.org ? '<span style="color:#ff8c42">' + h.org.slice(0, 40) + '</span><br>' : '') +
+          (h.product ? '<span style="color:#8ea0bd">' + h.product.slice(0, 45) + '</span><br>' : '') +
+          '<span style="color:#5a6a85">' + (h.city || '') + (h.city && h.country ? ', ' : ' ') + (h.country || '') + '</span>' +
+          (h.hostnames && h.hostnames.length ? '<br><span style="color:#4cc9f0">' + h.hostnames[0].slice(0, 40) + '</span>' : '') +
+          '</div>'
         ))
         .addTo(iotMap);
       marker.getElement().addEventListener('click', function () { showIotDetail(h); });
@@ -1208,29 +1346,54 @@ Local only. WARNING: authorized security testing only.
   function renderOsintGraph(nodes, edges) {
     const container = $('osintgraph-canvas');
     const visNodes = (nodes || []).map(function (n) {
+      const isSeed = n.type === 'seed';
+      const d = n.data || {};
+      let tip = n.label;
+      if (d.url) tip += '\n' + String(d.url).slice(0, 160);
+      if (d.error) tip += '\n' + String(d.error).slice(0, 160);
       return {
         id: n.id,
-        label: n.label.length > 28 ? n.label.slice(0, 27) + '...' : n.label,
+        label: n.label.length > 30 ? n.label.slice(0, 29) + '…' : n.label,
         color: { background: n.color, border: '#0a0f1a', highlight: { background: n.color, border: '#ffffff' } },
-        font: { color: '#0a0f1a', face: 'monospace', size: 12 },
-        shape: 'dot',
-        size: 14
+        font: {
+          color: '#ffffff',
+          face: 'Inter, system-ui, -apple-system, sans-serif',
+          size: isSeed ? 16 : 13,
+          strokeWidth: isSeed ? 5 : 3,
+          strokeColor: 'rgba(5,8,18,0.92)',
+          vadjust: 2
+        },
+        shape: isSeed ? 'box' : 'dot',
+        borderRadius: 8,
+        shadow: { enabled: true, color: 'rgba(0,0,0,0.45)', size: 12, x: 0, y: 3 },
+        size: isSeed ? 24 : 15,
+        title: tip
       };
     });
     const visEdges = (edges || []).map(function (e) {
-      return { from: e.from, to: e.to, label: e.label, arrows: 'to', color: { color: '#3d4a63', highlight: '#00e5c7' }, font: { color: '#8ea0bd', size: 10, face: 'monospace' } };
+      return {
+        from: e.from, to: e.to, label: e.label, arrows: 'to',
+        color: { color: '#5b6b8c', highlight: '#00e5c7', opacity: 0.85 },
+        font: { color: '#e8eefc', size: 11, face: 'Inter, system-ui, sans-serif', strokeWidth: 3, strokeColor: 'rgba(5,8,18,0.9)', vadjust: 1 },
+        width: 1.4, selectionWidth: 2.5,
+        smooth: { type: 'continuous', roundness: 0.35 }
+      };
     });
     const data = { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) };
     const options = {
-      physics: { enabled: true, stabilization: { iterations: 200 } },
-      interaction: { hover: true, tooltipDelay: 120, navigationButtons: true, keyboard: true },
-      nodes: { borderWidth: 2 },
-      edges: { smooth: { type: 'continuous' } }
+      physics: { enabled: true, stabilization: { iterations: 250 }, barnesHut: { gravitationalConstant: -4200, springLength: 130, springConstant: 0.04, damping: 0.09 } },
+      interaction: { hover: true, tooltipDelay: 80, navigationButtons: true, keyboard: true, zoomView: true, dragView: true },
+      nodes: { borderWidth: 2, chosen: { node: function (v, id, sel, hover) { v.borderWidth = hover || sel ? 3 : 2; } } },
+      edges: { chosen: { edge: function (v, id, sel, hover) { v.width = hover || sel ? 3 : 1.4; } } }
     };
     osintNetwork = new vis.Network(container, data, options);
     osintNetwork.on('doubleClick', function () {
       osintNetwork.fit({ animation: true });
     });
+    // Center the canvas after stabilization so the graph is never cut off.
+    setTimeout(function () {
+      if (osintNetwork) osintNetwork.fit({ animation: true, maxZoomLevel: 1.4 });
+    }, 600);
   }
 
   // ---------------- FaceCheck ID (PRO) ----------------
@@ -1287,6 +1450,167 @@ Local only. WARNING: authorized security testing only.
     }).join('');
   }
 
+  // ---------------- new features: auth, models, defensive, export, alerts ----
+  let lastDefTs = 0;
+  let lastIotTs = 0;
+  let iotMonitorActive = false;
+
+  async function checkAuth() {
+    try {
+      const r = await api('/api/auth/status');
+      if (!r.ok && !r.local) {
+        openModal('login-overlay');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return true; // server unreachable - let the app try anyway
+    }
+  }
+
+  function doLogin() {
+    const pin = $('login-pin').value.trim();
+    $('login-result').textContent = '';
+    api('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin: pin }),
+    }).then(function (r) {
+      if (r.ok) {
+        toast(t('login_ok'), 'ok');
+        closeModal('login-overlay');
+        loadStatus();
+      } else {
+        $('login-result').textContent = t('login_bad');
+      }
+    }).catch(function () {
+      $('login-result').textContent = t('login_bad');
+    });
+  }
+
+  function openMobileModal() {
+    // Fill PC IP + PIN (both only readable locally; the remote client can
+    // never fetch them - the operator reads them on screen).
+    try {
+      const rtc = new RTCPeerConnection({ iceServers: [] });
+      rtc.createDataChannel('');
+      rtc.createOffer().then(function (o) { return rtc.setLocalDescription(o); }).catch(function () {});
+      rtc.onicecandidate = function (e) {
+        if (!e.candidate) return;
+        const m = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(e.candidate.candidate || '');
+        if (m && m[1] !== '127.0.0.1' && m[1] !== '0.0.0.0') {
+          $('mobile-ip').textContent = m[1];
+          setTimeout(function () { try { rtc.close(); } catch (e2) {} }, 500);
+        }
+      };
+      setTimeout(function () {
+        try { rtc.close(); } catch (e2) {}
+        if ($('mobile-ip').textContent === '--') $('mobile-ip').textContent = location.hostname || '127.0.0.1';
+      }, 2500);
+    } catch (e) {
+      $('mobile-ip').textContent = location.hostname || '127.0.0.1';
+    }
+    // Try the server-side IP detection endpoint first (more reliable).
+    api('/api/auth/localip').then(function (r) {
+      if (r && r.ok && r.ip) $('mobile-ip').textContent = r.ip;
+    }).catch(function () {});
+    api('/api/auth/pin').then(function (r) {
+      if (r && r.ok && r.pin) $('mobile-pin').textContent = r.pin;
+    }).catch(function () {});
+    openModal('mobile-overlay');
+  }
+
+  async function loadModels() {
+    try {
+      const r = await api('/api/models');
+      const sel = $('model-select');
+      sel.innerHTML = '';
+      const opts = (r.models || []).length ? r.models : [r.active || 'local-model'];
+      opts.forEach(function (m) {
+        const o = document.createElement('option');
+        o.value = m; o.textContent = m;
+        if (m === r.active) o.selected = true;
+        sel.appendChild(o);
+      });
+    } catch (e) { /* engine off - keep empty */ }
+  }
+
+  async function loadPin() {
+    try {
+      const r = await api('/api/auth/pin');
+      if (r.ok) { $('pin-badge').textContent = 'PIN: ' + r.pin; }
+    } catch (e) { /* remote - PIN hidden */ }
+  }
+
+  async function toggleDefensive() {
+    const st = await api('/api/defensive/status').catch(function () { return { running: false }; });
+    const wantOn = !st.running;
+    const r = await api('/api/defensive/' + (wantOn ? 'start' : 'stop'), { method: 'POST' })
+      .catch(function () { return { ok: false }; });
+    if (r.ok) {
+      $('btn-defensive').textContent = wantOn ? t('def_on') : t('def_off');
+      toast(wantOn ? t('def_started') : t('def_stopped'), wantOn ? 'ok' : '');
+      lastDefTs = Date.now() / 1000;
+    }
+  }
+
+  async function pollAlerts() {
+    try {
+      const d = await api('/api/defensive/events?since=' + lastDefTs);
+      (d.events || []).forEach(function (e) {
+        if (e.kind === 'scan') toast(t('def_scan_alert').replace('{ip}', e.ip), 'warn');
+        else if (e.kind === 'hit') toast(t('def_hit_alert').replace('{ip}', e.ip));
+        lastDefTs = Math.max(lastDefTs, e.ts);
+      });
+      const st = d.status || {};
+      $('btn-defensive').textContent = st.running ? t('def_on') : t('def_off');
+    } catch (e) { /* ignore */ }
+    if (iotMonitorActive) {
+      try {
+        const i = await api('/api/iot/monitor/check?since=' + lastIotTs);
+        (i.alerts || []).forEach(function (a) {
+          toast(t('iot_new_dev').replace('{n}', a.count) + ' \"' + a.query + '\"', 'warn');
+          lastIotTs = Math.max(lastIotTs, a.ts);
+        });
+      } catch (e) { /* ignore */ }
+    }
+  }
+
+  async function doExport() {
+    try {
+      const res = await fetch('/api/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project: $('status-project') ? $('status-project').textContent : 'default' }),
+      });
+      if (!res.ok) { toast(t('export_fail'), 'warn'); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bmo_ghost_engagement.zip';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      toast(t('export_ok'), 'ok');
+    } catch (e) { toast(t('export_fail'), 'warn'); }
+  }
+
+  function iotMonitor() {
+    const q = ($('iotmap-query').value || '').trim();
+    if (!q) { toast(t('iotmap_query_ph'), 'warn'); return; }
+    api('/api/iot/monitor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q }),
+    }).then(function (r) {
+      if (r.ok) {
+        iotMonitorActive = true;
+        lastIotTs = Date.now() / 1000;
+        toast(t('iot_monitor_on'), 'ok');
+      }
+    });
+  }
+
   // ---------------- init ----------------
   function init() {
     HBTerminal.printBanner();
@@ -1297,6 +1621,10 @@ Local only. WARNING: authorized security testing only.
     if (hash.indexOf('es') !== -1) lang = 'es';
     if (hash.indexOf('en') !== -1) lang = 'en';
 
+    checkAuth();
+    loadModels();
+    loadPin();
+    setInterval(pollAlerts, 15000);
     setLang(lang); // apply stored language (sets banner text, labels, status)
     setVerbose(verboseEnabled);
     wireEvents();

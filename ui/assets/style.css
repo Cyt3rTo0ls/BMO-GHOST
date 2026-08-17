@@ -497,8 +497,18 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
 .iotmap-host .port { color: var(--green); }
 .iotmap-host .org { color: var(--orange); }
 .iotmap-host .loc { color: var(--fg-dim); }
-.iotmap-marker-dot { width: 10px; height: 10px; border-radius: 50%; background: #00E5C7; border: 2px solid #04211c; box-shadow: 0 0 8px rgba(0,229,199,.8); }
-.iotmap-marker-dot.hot { background: #FF0055; box-shadow: 0 0 10px rgba(255,0,85,.9); }
+
+/* mobile / remote access modal */
+.mobile-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.mobile-row label { width: 80px; flex-shrink: 0; }
+.mobile-code { flex: 1; font-family: var(--mono); font-size: 15px; color: var(--cyan, #00E5C7); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; letter-spacing: 1px; user-select: all; }
+#mobile-overlay .modal-box { max-width: 460px; }
+#mobile-overlay .row { justify-content: flex-end; }
+.iotmap-marker-dot { width: 11px; height: 11px; border-radius: 50%; background: #00E5C7; border: 2px solid #04211c; box-shadow: 0 0 10px rgba(0,229,199,.9); animation: iotPulse 2.4s ease-out infinite; }
+.iotmap-marker-dot.hot { background: #FF0055; box-shadow: 0 0 12px rgba(255,0,85,1); animation-duration: 1.5s; }
+@keyframes iotPulse { 0% { box-shadow: 0 0 0 0 rgba(0,229,199,.55); } 70% { box-shadow: 0 0 0 9px rgba(0,229,199,0); } 100% { box-shadow: 0 0 0 0 rgba(0,229,199,0); } }
+.iotmap-marker-dot.hot { animation-name: iotPulseHot; }
+@keyframes iotPulseHot { 0% { box-shadow: 0 0 0 0 rgba(255,0,85,.6); } 70% { box-shadow: 0 0 0 10px rgba(255,0,85,0); } 100% { box-shadow: 0 0 0 0 rgba(255,0,85,0); } }
 #iotmap-map { background: #070b12; }
 #iotmap-map .maplibregl-ctrl-group { background: #0e1626; border: 1px solid #1c2a42; }
 #iotmap-map .maplibregl-ctrl-group button { background: #0e1626; color: #c8d6e5; }
@@ -518,13 +528,64 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
 #iotmap-detail pre { white-space: pre-wrap; font-size: 11px; color: var(--fg-dim); }
 
 /* ============ OSINT GRAPH (PRO) ============ */
-#osintgraph-canvas { background: #070b12; border: 1px solid var(--border); }
+#osintgraph-canvas { background: radial-gradient(ellipse at 50% 40%, #0c1322 0%, #070b12 70%); border: 1px solid var(--border); min-height: 480px; }
 #osintgraph-canvas .vis-network:focus { outline: none; }
-.osintgraph-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-.osintgraph-legend span { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--fg-dim); font-family: var(--mono); }
-.osintgraph-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+#osintgraph-canvas .vis-tooltip { background: rgba(10, 16, 32, 0.97) !important; color: #e8eefc !important; border: 1px solid #2b3a5c !important; border-radius: 8px !important; padding: 8px 10px !important; font-family: var(--mono) !important; font-size: 11.5px !important; box-shadow: 0 6px 24px rgba(0,0,0,0.5); white-space: pre-line; }
+.osintgraph-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--border); }
+.osintgraph-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--fg-dim); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.5px; }
+.osintgraph-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; box-shadow: 0 0 6px rgba(0,0,0,0.4); }
 .facecheck-results { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
 .facecheck-hit { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: var(--bg); }
 .facecheck-hit .url { color: var(--accent, #00E5C7); font-size: 12px; font-family: var(--mono); word-break: break-all; }
 .facecheck-hit .src { color: var(--orange); font-size: 11px; margin-top: 2px; }
 .facecheck-hit .score { color: var(--green); font-size: 11px; margin-top: 2px; }
+
+/* ================= new controls ================= */
+#model-select.pill {
+  max-width: 180px; cursor: pointer; background: var(--panel2);
+}
+#model-select.pill option { background: #0b0b16; color: var(--fg); }
+.pill.pin { border-color: var(--orange); color: var(--orange); cursor: default; }
+.pill.pin:hover { border-color: var(--orange); color: var(--orange); }
+#btn-defensive.on { border-color: var(--orange); color: var(--orange); background: rgba(255,153,0,0.08); }
+#login-pin { font-family: var(--mono); }
+#login-result.err { color: var(--red); }
+.toast.warn { border-left-color: var(--orange); background: rgba(255,153,0,0.12); }
+
+/* ================= responsive / mobile ================= */
+@media (max-width: 1020px) {
+  #statusbar { gap: 8px; padding: 0 10px; overflow-x: auto; }
+  #statusbar .sep, #statusbar .stat:nth-of-type(1), #statusbar .stat:nth-of-type(2) { display: none; }
+  #model-select.pill { max-width: 130px; }
+}
+@media (max-width: 860px) {
+  html, body { overflow: auto; }
+  #layout { flex-direction: column; }
+  #sidebar {
+    flex-direction: row !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow-x: auto;
+    padding: 6px 8px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+  }
+  #sidebar .side-label, #sidebar .nav-foot { display: none; }
+  #sidebar .nav-btn { flex-direction: column; padding: 6px 10px; white-space: nowrap; }
+  #sidebar .nav-btn svg { margin: 0 0 2px 0 !important; }
+  #sidebar .nav-btn .count { display: none; }
+  #main { flex: 1; min-height: 0; }
+  #statusbar .stat:nth-of-type(3), #statusbar .stat:nth-of-type(4) { display: none; }
+  #statusbar #btn-verbose { display: none; }
+  .bmo-panel { display: none; }
+}
+@media (max-width: 560px) {
+  #statusbar { font-size: 10px; gap: 6px; }
+  #statusbar .brand { font-size: 11px; }
+  #statusbar #btn-export { display: none; }
+  #model-select.pill { max-width: 100px; font-size: 9.5px; padding: 3px 6px; }
+  .modal-box { width: 92vw; max-height: 86vh; }
+  #terminal { font-size: 12px; }
+  .qbtn { display: none; }
+  .pill.pin { font-size: 9px; padding: 3px 6px; }
+}
