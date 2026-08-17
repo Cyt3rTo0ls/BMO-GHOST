@@ -1,15 +1,15 @@
-# HackerBrain OS - Installation and Usage Tutorial (English)
+# BMO-GHOST - Installation and Usage Tutorial (English)
 
 **Language / Idioma:** [English](TUTORIAL.md) | [Espanol](TUTORIAL_ES.md)
 
-This guide walks you through installing HackerBrain OS, connecting the local
+This guide walks you through installing BMO-GHOST, connecting the local
 assistant engine, and using the main features.
 
 > WARNING: This tool is intended for authorized security testing only.
 > Unauthorized access to computer systems is illegal. The author assumes
 > no liability for misuse of this software.
 
-> IMPORTANT: HackerBrain OS is a LOCAL application. Everything runs on this
+> IMPORTANT: BMO-GHOST is a LOCAL application. Everything runs on this
 > machine and consumes significant CPU/RAM/disk resources, especially while
 > the assistant engine model is loaded and during inference. Plan your
 > hardware accordingly.
@@ -54,8 +54,8 @@ python3 --version
 ## 2. Installation
 
 ```bash
-git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
-cd hackerbrain-os
+git clone https://github.com/Cyt3rTo0ls/BMO-GHOST.git
+cd BMO-GHOST
 ./install.sh
 ```
 
@@ -112,8 +112,15 @@ The status bar at the top shows:
 
 ## 4. Configure the local assistant engine
 
+> **Which AI gets installed?** None by default: BMO-GHOST reuses any local
+> chat-completions engine you already have (Ollama, LM Studio, llama.cpp, a
+> local proxy on 8010/8011/11434, ...). To have the installer download
+> Ollama + a model sized to your RAM automatically run `./install.sh engine`
+> (it picks `qwen2.5:3b` for <=8 GB, `qwen2.5:7b` for 8-16 GB and
+> `qwen2.5:14b` for 16 GB+).
+
 The assistant engine is an OpenAI-compatible chat-completions API server that
-runs on your machine. HackerBrain OS probes these endpoints in order:
+runs on your machine. BMO-GHOST probes these endpoints in order:
 
 1. `http://127.0.0.1:8080` (default, from `data/config.yaml`)
 2. `http://127.0.0.1:8010`
@@ -130,7 +137,7 @@ engine:
 
 You can also override the URL with the environment variable `HB_ENGINE_URL`.
 
-If no engine is reachable, HackerBrain OS still works: tools, memory, vault
+If no engine is reachable, BMO-GHOST still works: tools, memory, vault
 and reports do not depend on it. Only conversational analysis (questions and
 autonomous decisions) is disabled until an engine is available.
 
@@ -192,14 +199,14 @@ Natural-language scanning (executed locally, not text-only):
 ```
 
 Scan requests are detected in English and Spanish. If you say "mi red" /
-"my network" without an explicit target, HackerBrain OS reads your routing
+"my network" without an explicit target, BMO-GHOST reads your routing
 table, detects the local subnet (the interface behind the default route)
 and runs a real host discovery (or port scan) against it. Live hosts are
 stored in memory with their MAC vendor when available.
 
 ### Autonomous pentest / bug-bounty mode
 
-HackerBrain OS is not limited to scans. Ask for an engagement in plain
+BMO-GHOST is not limited to scans. Ask for an engagement in plain
 language (English or Spanish) and the agent executes it locally, step by
 step:
 
@@ -346,7 +353,7 @@ including how rate limits stretch the time.
 
 ### Minimum censorship
 
-HackerBrain OS does not censor professional tooling: iptables/ufw, dd, mkfs
+BMO-GHOST does not censor professional tooling: iptables/ufw, dd, mkfs
 and all exploit/post-exploitation tools run freely. Only commands that would
 destroy the local host itself are blocked. The engine marks a step as
 high-risk only for truly irreversible actions, so routine sqlmap/hydra/
@@ -355,7 +362,7 @@ totally (persistent): `aggressive on` / `aggressive off`.
 
 ## 9b. OSINT (open-source intelligence)
 
-HackerBrain OS ships a full OSINT module (`osint <target>` auto-routes the
+BMO-GHOST ships a full OSINT module (`osint <target>` auto-routes the
 target type) that uses the Kali/Parrot OSINT toolset when installed and
 falls back to pure-Python implementations, so every command works on any
 box. Only public sources are queried (WHOIS, DNS, certificate-transparency

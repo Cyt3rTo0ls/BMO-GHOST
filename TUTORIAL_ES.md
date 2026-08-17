@@ -1,15 +1,15 @@
-# HackerBrain OS - Tutorial de instalacion y uso (Espanol)
+# BMO-GHOST - Tutorial de instalacion y uso (Espanol)
 
 **Idioma / Language:** [Espanol](TUTORIAL_ES.md) | [English](TUTORIAL.md)
 
-Esta guia explica como instalar HackerBrain OS, conectar el assistant engine
+Esta guia explica como instalar BMO-GHOST, conectar el assistant engine
 local y usar las funciones principales.
 
 > ADVERTENCIA: Esta herramienta es solo para pruebas de seguridad autorizadas.
 > El acceso no autorizado a sistemas informaticos es ilegal. El autor no se
 > hace responsable del mal uso de este software.
 
-> IMPORTANTE: HackerBrain OS es una aplicacion LOCAL. Todo se ejecuta en esta
+> IMPORTANTE: BMO-GHOST es una aplicacion LOCAL. Todo se ejecuta en esta
 > maquina y consume bastantes recursos de CPU/RAM/disco, especialmente mientras
 > el modelo del assistant engine esta cargado y durante la inferencia. Planifica
 > tu hardware en consecuencia.
@@ -55,8 +55,8 @@ python3 --version
 ## 2. Instalacion
 
 ```bash
-git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
-cd hackerbrain-os
+git clone https://github.com/Cyt3rTo0ls/BMO-GHOST.git
+cd BMO-GHOST
 ./install.sh
 ```
 
@@ -112,8 +112,15 @@ La barra de estado superior muestra:
 
 ## 4. Configurar el assistant engine local
 
+> **Que IA se instala?** Ninguna por defecto: BMO-GHOST reutiliza cualquier
+> motor local de chat-completions que ya tengas (Ollama, LM Studio, llama.cpp,
+> un proxy local en 8010/8011/11434, ...). Para que el instalador descargue
+> automaticamente Ollama + un modelo segun tu RAM ejecuta `./install.sh engine`
+> (elige `qwen2.5:3b` para <=8 GB, `qwen2.5:7b` para 8-16 GB y `qwen2.5:14b`
+> para 16 GB+).
+
 El assistant engine es un servidor de API de chat-completions que se ejecuta en
-tu maquina. HackerBrain OS prueba estos endpoints en orden:
+tu maquina. BMO-GHOST prueba estos endpoints en orden:
 
 1. `http://127.0.0.1:8080` (por defecto, desde `data/config.yaml`)
 2. `http://127.0.0.1:8010`
@@ -130,7 +137,7 @@ engine:
 
 Tambien puedes forzar la URL con la variable de entorno `HB_ENGINE_URL`.
 
-Si no hay ningun engine accesible, HackerBrain OS sigue funcionando: las
+Si no hay ningun engine accesible, BMO-GHOST sigue funcionando: las
 herramientas, la memoria, el vault y los informes no dependen de el. Solo se
 desactiva el analisis conversacional (preguntas y decisiones autonomas) hasta
 que haya un engine disponible.
@@ -195,14 +202,14 @@ Escaneo en lenguaje natural (se ejecuta de verdad, no solo texto):
 ```
 
 Las peticiones de escaneo se detectan en espanol e ingles. Si dices "mi red"
-sin objetivo explicito, HackerBrain OS lee tu tabla de rutas, detecta la
+sin objetivo explicito, BMO-GHOST lee tu tabla de rutas, detecta la
 subred local (la interfaz de la ruta por defecto) y ejecuta un descubrimiento
 de hosts real (o escaneo de puertos) contra ella. Los hosts vivos se guardan
 en memoria con su fabricante MAC cuando esta disponible.
 
 ### Modo autonomo de pentesting / bug bounty
 
-HackerBrain OS no se limita a escaneos. Pide una tarea en lenguaje natural
+BMO-GHOST no se limita a escaneos. Pide una tarea en lenguaje natural
 (espanol o ingles) y el agente la ejecuta localmente, paso a paso:
 
 ```text
@@ -350,7 +357,7 @@ incluyendo como el rate limit alarga el tiempo.
 
 ### Minima censura
 
-HackerBrain OS no censura el toolset profesional: iptables/ufw, dd, mkfs y
+BMO-GHOST no censura el toolset profesional: iptables/ufw, dd, mkfs y
 todas las herramientas de explotacion/post-explotacion se ejecutan libremente.
 Solo se bloquean los comandos que destruirian el propio host local. El engine
 marca un paso como alto riesgo solo para acciones realmente irreversibles, asi
@@ -360,7 +367,7 @@ Para desactivar el gate de confirmacion por completo (persistente):
 
 ## 9b. OSINT (inteligencia de fuentes abiertas)
 
-HackerBrain OS incluye un modulo OSINT completo (`osint <objetivo>`
+BMO-GHOST incluye un modulo OSINT completo (`osint <objetivo>`
 auto-detecta el tipo de objetivo) que usa el toolset OSINT de Kali/Parrot
 cuando esta instalado y cae a implementaciones en Python puro, asi que cada
 comando funciona en cualquier maquina. Solo se consultan fuentes publicas

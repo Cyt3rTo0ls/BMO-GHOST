@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HackerBrain OS — Local AI Pentesting Assistant</title>
-<meta name="description" content="HackerBrain OS is a 100% local AI-powered penetration testing assistant for Kali/Parrot Linux. Runs offline, connects to your own models, and automates reconnaissance, OSINT, vulnerability scanning and bug bounty workflows.">
+<title>BMO-GHOST — Local AI Pentesting Assistant</title>
+<meta name="description" content="BMO-GHOST is a 100% local AI-powered penetration testing assistant for Kali/Parrot Linux. Runs offline, connects to your own models, and automates reconnaissance, OSINT, vulnerability scanning and bug bounty workflows.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300e5c7'><path d='M12 2L2 7l10 5 10-5-10-5z'/><path d='M2 17l10 5 10-5'/><path d='M2 12l10 5 10-5'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -14,7 +14,7 @@
   <div class="container nav-inner">
     <a class="brand" href="#top">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      <span>HackerBrain <b>OS</b></span>
+      <span>BMO-GHOST <b>OS</b></span>
     </a>
     <nav class="nav-links">
       <a href="#features" data-i18n="nav_features">Features</a>
@@ -25,23 +25,51 @@
       <a href="#docs" data-i18n="nav_docs">Docs</a>
     </nav>
     <button id="lang-toggle" class="btn btn-ghost btn-sm" onclick="toggleLang()">ES</button>
-    <a class="btn btn-primary btn-sm" href="https://github.com/Cyt3rTo0ls/hackerbrain-os" target="_blank" rel="noopener" data-i18n="nav_github">GitHub</a>
+    <a class="btn btn-primary btn-sm" href="https://github.com/Cyt3rTo0ls/BMO-GHOST" target="_blank" rel="noopener" data-i18n="nav_github">GitHub</a>
   </div>
 </header>
 
 <section class="hero" id="top">
   <div class="container">
-    <div class="hero-badge" data-i18n="hero_badge">100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)</div>
-    <h1 data-i18n="hero_title">Your AI penetration testing <span class="accent">assistant</span>, running entirely on your machine.</h1>
-    <p class="lead" data-i18n="hero_lead">HackerBrain OS is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, OSINT, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary btn-lg" href="#install" data-i18n="hero_cta1">Get started</a>
-      <a class="btn btn-ghost btn-lg" href="#screenshots" data-i18n="hero_cta2">See it in action</a>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-badge" data-i18n="hero_badge">100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)</div>
+        <h1 data-i18n="hero_title">Your AI penetration testing <span class="accent">assistant</span>, running entirely on your machine.</h1>
+        <p class="lead" data-i18n="hero_lead">BMO-GHOST is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, OSINT, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#install" data-i18n="hero_cta1">Get started</a>
+          <a class="btn btn-ghost btn-lg" href="#screenshots" data-i18n="hero_cta2">See it in action</a>
+        </div>
+        <div class="hero-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg> <span data-i18n="hero_m1">Runs offline</span></span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> <span data-i18n="hero_m2">Your keys, your vault</span></span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> <span data-i18n="hero_m3">45+ tools detected</span></span>
+        </div>
+      </div>
+      <div class="hero-bmo" id="hero-bmo" title="BMO - the AI core avatar">
+        <div class="bmo-frame">
+          <span class="bmo-scanline"></span>
+          <img id="hero-bmo-img" src="assets/bmo/neutral.png" alt="BMO avatar">
+        </div>
+        <div class="bmo-expr-label" id="hero-bmo-label">NEUTRAL</div>
+        <div class="bmo-caption" id="hero-bmo-caption">the AI core</div>
+      </div>
     </div>
-    <div class="hero-meta">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg> <span data-i18n="hero_m1">Runs offline</span></span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> <span data-i18n="hero_m2">Your keys, your vault</span></span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> <span data-i18n="hero_m3">45+ tools detected</span></span>
+  </div>
+</section>
+
+<section class="shots" id="bmo">
+  <div class="container">
+    <h2 class="section-title" data-i18n="bmo_title">Meet <span class="accent">BMO</span>, your AI core</h2>
+    <p class="section-sub" data-i18n="bmo_sub">BMO lives in the terminal and reacts to the engine's verbose state: it shows its emotion by name as the AI plans, executes and analyzes — no secrets, you always see what the core is feeling.</p>
+    <div class="bmo-strip">
+      <div class="bmo-tile"><img src="assets/bmo/neutral.png" alt="neutral"><div class="bmo-tile-name">NEUTRAL</div><div class="bmo-tile-desc" data-i18n="bmo_neutral">idle</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/entusiasta.png" alt="entusiasta"><div class="bmo-tile-name">ENTUSIASTA</div><div class="bmo-tile-desc" data-i18n="bmo_entusiasta">thinking</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/sutil.png" alt="sutil"><div class="bmo-tile-name">SUTIL</div><div class="bmo-tile-desc" data-i18n="bmo_sutil">analyzing</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/contento.png" alt="contento"><div class="bmo-tile-name">CONTENTO</div><div class="bmo-tile-desc" data-i18n="bmo_contento">done</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/panico.png" alt="panico"><div class="bmo-tile-name">PANICO</div><div class="bmo-tile-desc" data-i18n="bmo_panico">error</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/enojado.png" alt="enojado"><div class="bmo-tile-name">ENOJADO</div><div class="bmo-tile-desc" data-i18n="bmo_enojado">warning</div></div>
+      <div class="bmo-tile"><img src="assets/bmo/enfadado.png" alt="enfadado"><div class="bmo-tile-name">ENFADADO</div><div class="bmo-tile-desc" data-i18n="bmo_enfadado">failed</div></div>
     </div>
   </div>
 </section>
@@ -49,7 +77,7 @@
 <section class="features" id="features">
   <div class="container">
     <h2 class="section-title" data-i18n="feat_title">Everything a pentest needs, <span class="accent">local-first</span></h2>
-    <p class="section-sub" data-i18n="feat_sub">HackerBrain OS orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.</p>
+    <p class="section-sub" data-i18n="feat_sub">BMO-GHOST orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.</p>
     <div class="grid">
       <div class="card">
         <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18"/><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
@@ -114,8 +142,8 @@
   <div class="container">
     <h2 class="section-title" data-i18n="inst_title">Install in one command</h2>
     <div class="codeblock">
-<pre><code>git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
-cd hackerbrain-os
+<pre><code>git clone https://github.com/Cyt3rTo0ls/BMO-GHOST.git
+cd BMO-GHOST
 ./install.sh          # creates venv, installs deps, obfuscates + initializes the DB
 ./install.sh once     # start on http://127.0.0.1:8080 and open your browser (Firefox by default)
 ./install.sh stop     # stop the server</code></pre>
@@ -186,19 +214,19 @@ cd hackerbrain-os
   <div class="container">
     <h2 class="section-title" data-i18n="docs_title">Documentation</h2>
     <div class="docs-grid">
-      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/README.md" target="_blank" rel="noopener">
+      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/BMO-GHOST/blob/main/README.md" target="_blank" rel="noopener">
         <span class="doc-icon">EN</span>
         <div><h4 data-i18n="docs_r1t">README (English)</h4><p data-i18n="docs_r1d">Overview, install, structure and license.</p></div>
       </a>
-      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/README_ES.md" target="_blank" rel="noopener">
+      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/BMO-GHOST/blob/main/README_ES.md" target="_blank" rel="noopener">
         <span class="doc-icon">ES</span>
         <div><h4 data-i18n="docs_r2t">README (Español)</h4><p data-i18n="docs_r2d">Resumen, instalación, estructura y licencia.</p></div>
       </a>
-      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/TUTORIAL.md" target="_blank" rel="noopener">
+      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/BMO-GHOST/blob/main/TUTORIAL.md" target="_blank" rel="noopener">
         <span class="doc-icon">📘</span>
         <div><h4 data-i18n="docs_t1t">Tutorial (EN)</h4><p data-i18n="docs_t1d">Step-by-step guide with examples.</p></div>
       </a>
-      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/TUTORIAL_ES.md" target="_blank" rel="noopener">
+      <a class="doc-card" href="https://github.com/Cyt3rTo0ls/BMO-GHOST/blob/main/TUTORIAL_ES.md" target="_blank" rel="noopener">
         <span class="doc-icon">📘</span>
         <div><h4 data-i18n="docs_t2t">Tutorial (ES)</h4><p data-i18n="docs_t2d">Guía paso a paso con ejemplos.</p></div>
       </a>
@@ -211,16 +239,16 @@ cd hackerbrain-os
     <div class="footer-inner">
       <div class="brand">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        <span>HackerBrain <b>OS</b></span>
+        <span>BMO-GHOST <b>OS</b></span>
       </div>
       <div class="footer-links">
-        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os" target="_blank" rel="noopener" data-i18n="foot_source">Source</a>
-        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os/issues" target="_blank" rel="noopener" data-i18n="foot_issues">Issues</a>
-        <a href="https://github.com/Cyt3rTo0ls/hackerbrain-os/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="foot_license">License</a>
+        <a href="https://github.com/Cyt3rTo0ls/BMO-GHOST" target="_blank" rel="noopener" data-i18n="foot_source">Source</a>
+        <a href="https://github.com/Cyt3rTo0ls/BMO-GHOST/issues" target="_blank" rel="noopener" data-i18n="foot_issues">Issues</a>
+        <a href="https://github.com/Cyt3rTo0ls/BMO-GHOST/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="foot_license">License</a>
       </div>
     </div>
     <p class="legal" data-i18n="foot_legal">
-      HackerBrain OS is intended for <strong>authorized security testing only</strong>.
+      BMO-GHOST is intended for <strong>authorized security testing only</strong>.
       Unauthorized access to computer systems is illegal. Licensed under AGPL-3.0.
       Runs 100% locally and consumes significant system resources while a model is loaded.
     </p>
@@ -235,11 +263,11 @@ const I18N = {
     nav_usage: 'Usage', nav_pro: 'PRO', nav_docs: 'Docs', nav_github: 'GitHub',
     hero_badge: '100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)',
     hero_title: 'Your AI penetration testing <span class="accent">assistant</span>, running entirely on your machine.',
-    hero_lead: 'HackerBrain OS is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, OSINT, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.',
+    hero_lead: 'BMO-GHOST is a local AI-powered assistant for Kali / Parrot Linux. It connects to your own local models, detects your installed security tools, and automates reconnaissance, OSINT, vulnerability scanning, and bug bounty workflows — no cloud, no data leaves your computer.',
     hero_cta1: 'Get started', hero_cta2: 'See it in action',
     hero_m1: 'Runs offline', hero_m2: 'Your keys, your vault', hero_m3: '45+ tools detected',
     feat_title: 'Everything a pentest needs, <span class="accent">local-first</span>',
-    feat_sub: 'HackerBrain OS orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.',
+    feat_sub: 'BMO-GHOST orchestrates the tools already on your system and lets a local AI engine plan, execute and analyze engagements.',
     feat_agent_t: 'Autonomous agent', feat_agent_d: 'Ask in plain language (EN/ES): the agent plans steps with your local model, executes real commands, and iterates until the goal is reached.',
     feat_vuln_t: 'Vulnerability scanning', feat_vuln_d: 'Port, service, IoT and template-based vulnerability scans (Nmap, Nuclei, masscan) with severity classification and CVE correlation.',
     feat_tech_t: 'Tech fingerprinting', feat_tech_d: 'Identifies the web stack (frameworks, servers, WAFs) and summarizes the likely attack surface before you start.',
@@ -248,11 +276,14 @@ const I18N = {
     feat_lang_t: 'EN / ES interface', feat_lang_d: 'Full bilingual interface and tutorials. The assistant answers in the language you write in.',
     feat_desk_t: 'One-command install', feat_desk_d: 'Fully automatic setup: environment, dependencies, code obfuscation and local server - then it opens Firefox (or your default Kali browser) for you.',
     feat_rl_t: 'Rate-limit aware', feat_rl_d: 'Scans report estimated durations up front and throttle automatically (nuclei -rl, nmap --max-rate) when a target enforces limits.',
+    bmo_title: 'Meet <span class="accent">BMO</span>, your AI core',
+    bmo_sub: 'BMO lives in the terminal and reacts to the engine verbose state: it shows its emotion by name as the AI plans, executes and analyzes — you always see what the core is feeling.',
+    bmo_neutral: 'idle', bmo_entusiasta: 'thinking', bmo_sutil: 'analyzing', bmo_contento: 'done', bmo_panico: 'error', bmo_enojado: 'warning', bmo_enfadado: 'failed',
     shots_title: 'Screenshots', shots_sub: 'Real captures of the interface running against live targets.',
     inst_title: 'Install in one command',
     inst_desk_sub: 'Everything is automatic: the installer sets up the environment, obfuscates the code and opens Firefox (or your default Kali browser) on the local server.',
     inst_dl_btn: '⬇ RUN IN YOUR BROWSER',
-    inst_req_lbl: 'Requirements:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). The rest of the platform works without an engine, but conversational analysis needs one.',
+    inst_req_lbl: 'Requirements:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Debian-based Linux, and a local chat-completions engine (any local LLM server — the engine URL is configured in <code>data/config.yaml</code>). No AI is installed by default: run <code>./install.sh engine</code> to auto-install Ollama + a model sized to your RAM (qwen2.5:3b/7b/14b). The rest of the platform works without an engine, but conversational analysis needs one.',
     usage_title: 'Usage',
     pill_safe: 'MINIMUM CENSORSHIP', pill_safe_t: 'All professional tooling runs freely (iptables, ufw, dd, mkfs, exploit tooling). Only local host-wipe commands are blocked.',
     pill_agg: 'AGGRESSIVE MODE', pill_agg_t: '<code>aggressive on</code> skips the confirmation gate entirely for autonomous engagements (persistent).',
@@ -266,18 +297,18 @@ const I18N = {
     docs_t1t: 'Tutorial (EN)', docs_t1d: 'Step-by-step guide with examples.',
     docs_t2t: 'Tutorial (ES)', docs_t2d: 'Guía paso a paso con ejemplos.',
     foot_source: 'Source', foot_issues: 'Issues', foot_license: 'License',
-    foot_legal: 'HackerBrain OS is intended for <strong>authorized security testing only</strong>. Unauthorized access to computer systems is illegal. Licensed under AGPL-3.0. Runs 100% locally and consumes significant system resources while a model is loaded.'
+    foot_legal: 'BMO-GHOST is intended for <strong>authorized security testing only</strong>. Unauthorized access to computer systems is illegal. Licensed under AGPL-3.0. Runs 100% locally and consumes significant system resources while a model is loaded.'
   },
   es: {
     nav_features: 'Características', nav_screenshots: 'Capturas', nav_install: 'Instalar',
     nav_usage: 'Uso', nav_pro: 'PRO', nav_docs: 'Docs', nav_github: 'GitHub',
     hero_badge: '100% LOCAL · OFFLINE · OPEN SOURCE (AGPL-3.0)',
     hero_title: 'Tu <span class="accent">asistente</span> de pentesting con IA, ejecutándose completamente en tu máquina.',
-    hero_lead: 'HackerBrain OS es un asistente local con IA para Kali / Parrot Linux. Se conecta a tus propios modelos locales, detecta tus herramientas de seguridad instaladas y automatiza reconocimiento, OSINT, escaneo de vulnerabilidades y flujos de bug bounty — sin nube, sin que los datos salgan de tu equipo.',
+    hero_lead: 'BMO-GHOST es un asistente local con IA para Kali / Parrot Linux. Se conecta a tus propios modelos locales, detecta tus herramientas de seguridad instaladas y automatiza reconocimiento, OSINT, escaneo de vulnerabilidades y flujos de bug bounty — sin nube, sin que los datos salgan de tu equipo.',
     hero_cta1: 'Empezar', hero_cta2: 'Ver en acción',
     hero_m1: 'Funciona offline', hero_m2: 'Tus keys, tu vault', hero_m3: '45+ herramientas detectadas',
     feat_title: 'Todo lo que un pentest necesita, <span class="accent">local-first</span>',
-    feat_sub: 'HackerBrain OS orquesta las herramientas que ya tienes en tu sistema y deja que un motor de IA local planifique, ejecute y analice las pruebas.',
+    feat_sub: 'BMO-GHOST orquesta las herramientas que ya tienes en tu sistema y deja que un motor de IA local planifique, ejecute y analice las pruebas.',
     feat_agent_t: 'Agente autónomo', feat_agent_d: 'Pide en lenguaje natural (EN/ES): el agente planifica con tu modelo local, ejecuta comandos reales e itera hasta cumplir el objetivo.',
     feat_vuln_t: 'Escaneo de vulnerabilidades', feat_vuln_d: 'Escaneos de puertos, servicios, IoT y por plantillas (Nmap, Nuclei, masscan) con clasificación de severidad y correlación de CVEs.',
     feat_tech_t: 'Fingerprinting de tecnologías', feat_tech_d: 'Identifica el stack web (frameworks, servidores, WAFs) y resume la superficie de ataque probable antes de empezar.',
@@ -286,11 +317,14 @@ const I18N = {
     feat_lang_t: 'Interfaz EN / ES', feat_lang_d: 'Interfaz y tutoriales completamente bilingües. El asistente responde en el idioma en que escribes.',
     feat_desk_t: 'Instalación en un comando', feat_desk_d: 'Configuración totalmente automática: entorno, dependencias, ofuscación del código y servidor local — y luego abre Firefox (o tu navegador por defecto de Kali) por ti.',
     feat_rl_t: 'Consciente del rate limit', feat_rl_d: 'Los escaneos informan la duración estimada por adelantado y se limitan automáticamente (nuclei -rl, nmap --max-rate) cuando el objetivo impone límites.',
+    bmo_title: 'Conoce a <span class="accent">BMO</span>, tu AI core',
+    bmo_sub: 'BMO vive en el terminal y reacciona al estado verbose del engine: muestra su emocion por nombre mientras la IA planifica, ejecuta y analiza — sin secretos, siempre ves lo que siente el core.',
+    bmo_neutral: 'en espera', bmo_entusiasta: 'pensando', bmo_sutil: 'analizando', bmo_contento: 'listo', bmo_panico: 'error', bmo_enojado: 'aviso', bmo_enfadado: 'fallo',
     shots_title: 'Capturas', shots_sub: 'Capturas reales de la interfaz contra objetivos en vivo.',
     inst_title: 'Instala en un comando',
     inst_desk_sub: 'Todo es automático: el instalador configura el entorno, ofusca el código y abre Firefox (o tu navegador por defecto de Kali) en el servidor local.',
     inst_dl_btn: '⬇ EJECUTAR EN TU NAVEGADOR',
-    inst_req_lbl: 'Requisitos:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Linux basado en Debian, y un motor local de chat-completions (cualquier servidor de LLM local — la URL del engine se configura en <code>data/config.yaml</code>). El resto de la plataforma funciona sin engine, pero el análisis conversacional lo necesita.',
+    inst_req_lbl: 'Requisitos:', inst_req_txt: 'Python 3.10+, Kali / Parrot / Linux basado en Debian, y un motor local de chat-completions (cualquier servidor de LLM local — la URL del engine se configura en <code>data/config.yaml</code>). Ninguna IA se instala por defecto: ejecuta <code>./install.sh engine</code> para instalar Ollama + un modelo segun tu RAM (qwen2.5:3b/7b/14b). El resto de la plataforma funciona sin engine, pero el análisis conversacional lo necesita.',
     usage_title: 'Uso',
     pill_safe: 'MÍNIMA CENSURA', pill_safe_t: 'Todo el toolset profesional corre libre (iptables, ufw, dd, mkfs, explotación). Solo se bloquean los comandos que borrarían tu propio host.',
     pill_agg: 'MODO AGRESIVO', pill_agg_t: '<code>aggressive on</code> omite el gate de confirmación por completo en modo autónomo (persistente).',
@@ -304,7 +338,7 @@ const I18N = {
     docs_t1t: 'Tutorial (EN)', docs_t1d: 'Guía paso a paso con ejemplos.',
     docs_t2t: 'Tutorial (ES)', docs_t2d: 'Guía paso a paso con ejemplos.',
     foot_source: 'Código', foot_issues: 'Issues', foot_license: 'Licencia',
-    foot_legal: 'HackerBrain OS está pensado <strong>solo para pruebas de seguridad autorizadas</strong>. El acceso no autorizado a sistemas informáticos es ilegal. Licenciado bajo AGPL-3.0. Corre 100% local y consume recursos significativos del sistema mientras hay un modelo cargado.'
+    foot_legal: 'BMO-GHOST está pensado <strong>solo para pruebas de seguridad autorizadas</strong>. El acceso no autorizado a sistemas informáticos es ilegal. Licenciado bajo AGPL-3.0. Corre 100% local y consume recursos significativos del sistema mientras hay un modelo cargado.'
   }
 };
 
@@ -327,6 +361,31 @@ function toggleLang() {
   try { localStorage.setItem('hb-lang', lang); } catch (e) {}
   applyLang();
 }
+
+// ---------------- BMO hero avatar (cycles expressions) ----------------
+(function () {
+  const exprs = [
+    { img: 'neutral.png', label: 'NEUTRAL', cap: 'the AI core' },
+    { img: 'entusiasta.png', label: 'ENTUSIASTA', cap: 'thinking' },
+    { img: 'sutil.png', label: 'SUTIL', cap: 'analyzing' },
+    { img: 'contento.png', label: 'CONTENTO', cap: 'done' },
+    { img: 'panico.png', label: 'PANICO', cap: 'error' },
+    { img: 'enojado.png', label: 'ENOJADO', cap: 'warning' },
+    { img: 'enfadado.png', label: 'ENFADADO', cap: 'failed' }
+  ];
+  let i = 0;
+  const img = document.getElementById('hero-bmo-img');
+  const label = document.getElementById('hero-bmo-label');
+  const cap = document.getElementById('hero-bmo-caption');
+  if (!img) return;
+  setInterval(function () {
+    i = (i + 1) % exprs.length;
+    const e = exprs[i];
+    img.src = 'assets/bmo/' + e.img;
+    label.textContent = e.label;
+    cap.textContent = e.cap;
+  }, 2200);
+})();
 
 applyLang();
 </script>

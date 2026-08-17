@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HackerBrain OS - Local Pentesting Command Center</title>
+<title>BMO-GHOST - Local Pentesting Command Center</title>
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -15,7 +15,7 @@
 
   <!-- ============ status bar ============ -->
   <header id="statusbar">
-    <span class="brand">HACKERBRAIN<span class="accent"></span></span>
+    <span class="brand">BMO<span class="accent">-GHOST</span></span>
     <span class="sep">|</span>
     <span class="stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg><b id="status-project">default</b></span>
     <span class="sep">|</span>
@@ -81,16 +81,36 @@
 
       <!-- TERMINAL VIEW -->
       <section id="view-terminal" class="view active">
-        <div id="terminal" class="terminal">
-          <div class="term-titlebar">
-            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-            <span class="term-title">HACKERBRAIN <span class="accent">OS</span> — LOCAL TERMINAL</span>
+        <div class="term-row">
+          <div id="terminal" class="terminal">
+            <div class="term-titlebar">
+              <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+              <span class="term-title">BMO-GHOST <span class="accent">OS</span> — LOCAL TERMINAL</span>
+            </div>
+            <div id="term-output"></div>
+            <div class="term-line">
+              <span class="prompt">&gt;</span>
+              <input id="term-input" type="text" autocomplete="off" spellcheck="false" data-i18n-ph="term_placeholder">
+            </div>
           </div>
-          <div id="term-output"></div>
-          <div class="term-line">
-            <span class="prompt">&gt;</span>
-            <input id="term-input" type="text" autocomplete="off" spellcheck="false" data-i18n-ph="term_placeholder">
-          </div>
+
+          <!-- ============ BMO avatar (expressions driven by the engine verbose) ============ -->
+          <aside id="bmo-panel" class="bmo-panel" title="BMO - AI core avatar. Changes expression with the engine's verbose state.">
+            <div class="bmo-head">
+              <span class="bmo-name">BMO</span>
+              <span class="bmo-tag">AI CORE</span>
+            </div>
+            <div class="bmo-face">
+              <img id="bmo-avatar" src="/assets/bmo/neutral.png" alt="BMO avatar">
+              <div class="bmo-scanline"></div>
+            </div>
+            <div id="bmo-expression" class="bmo-expression">NEUTRAL</div>
+            <div id="bmo-status" class="bmo-status">idle</div>
+            <div class="bmo-dots" id="bmo-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div id="bmo-think" class="bmo-think">--</div>
+          </aside>
         </div>
         <div class="quick-actions">
           <span class="dim small" data-i18n="term_quick">QUICK:</span>

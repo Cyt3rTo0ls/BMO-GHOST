@@ -1,5 +1,5 @@
 /*
-HackerBrain OS - terminal.js
+BMO-GHOST - terminal.js
 Terminal emulator: command history, output formatting, syntax highlighting.
 Supports EN/ES interface language. Local only.
 WARNING: authorized security testing only.
@@ -18,7 +18,7 @@ WARNING: authorized security testing only.
   const STR = {
     en: {
       banner: [
-        'HACKERBRAIN OS v1.0.0 - LOCAL PENTESTING COMMAND CENTER',
+        'BMO-GHOST v1.0.0 - LOCAL PENTESTING COMMAND CENTER',
         'authorized testing only | offline engine | bilingual terminal',
         'type a command, a question, or e.g. "scan my network"',
         'commands: status | target <host> | verbose on|off | help',
@@ -32,7 +32,7 @@ WARNING: authorized security testing only.
     },
     es: {
       banner: [
-        'HACKERBRAIN OS v1.0.0 - CENTRO LOCAL DE PENTESTING',
+        'BMO-GHOST v1.0.0 - CENTRO LOCAL DE PENTESTING',
         'solo pruebas autorizadas | engine offline | terminal bilingue',
         'escribe un comando, una pregunta, o ej. "escanea mi red"',
         'comandos: status | target <host> | verbose on|off | help',
@@ -83,6 +83,10 @@ WARNING: authorized security testing only.
 
   function renderResult(res) {
     if (!res) return;
+    if (res.output === '\u000cCLEAR') {
+      clear();
+      return;
+    }
     if (res.verbose && Array.isArray(res.verbose)) {
       res.verbose.forEach(function (v) {
         print(v, 'out-verbose');

@@ -1,4 +1,4 @@
-# HackerBrain OS - dependencies
+# BMO-GHOST - dependencies
 # Minimum versions. The pins are floor constraints so the stack installs
 # cleanly on Python 3.10 through 3.13 (older exact pins fail to build on
 # newer interpreters).

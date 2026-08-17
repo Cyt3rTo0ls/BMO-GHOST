@@ -1,5 +1,5 @@
 /*
-HackerBrain OS - app.js
+BMO-GHOST - app.js
 Frontend logic: WebSocket client, REST API calls, dynamic updates.
 Bilingual interface (EN/ES) with persistent language choice.
 Local only. WARNING: authorized security testing only.
@@ -116,7 +116,7 @@ Local only. WARNING: authorized security testing only.
       pro_close: 'CLOSE',
       pro_activated: 'PRO activated.',
       pro_invalid: 'Invalid key. The key was not accepted.',
-      msg_engine_offline: 'Assistant engine offline. HackerBrain OS is a LOCAL application: the engine runs on this machine. Start your local engine (see data/config.yaml -> engine) to enable conversational analysis.',
+      msg_engine_offline: 'Assistant engine offline. BMO-GHOST is a LOCAL application: the engine runs on this machine. Start your local engine (see data/config.yaml -> engine) to enable conversational analysis.',
       msg_quota: 'Free tier daily limit (20 queries) reached. Activate PRO for unlimited usage.',
       msg_unlock_failed: 'unlock failed',
       msg_vault_locked: 'vault locked or corrupted',
@@ -270,7 +270,7 @@ Local only. WARNING: authorized security testing only.
       pro_close: 'CERRAR',
       pro_activated: 'PRO activado.',
       pro_invalid: 'Key invalida. La key no fue aceptada.',
-      msg_engine_offline: 'Assistant engine offline. HackerBrain OS es una aplicacion LOCAL: el engine corre en esta maquina. Arranca tu engine local (ver data/config.yaml -> engine) para habilitar el analisis conversacional.',
+      msg_engine_offline: 'Assistant engine offline. BMO-GHOST es una aplicacion LOCAL: el engine corre en esta maquina. Arranca tu engine local (ver data/config.yaml -> engine) para habilitar el analisis conversacional.',
       msg_quota: 'Limite diario de la version gratuita (20 consultas) alcanzado. Activa PRO para uso ilimitado.',
       msg_unlock_failed: 'fallo el desbloqueo',
       msg_vault_locked: 'vault bloqueado o corrupto',
@@ -385,6 +385,44 @@ Local only. WARNING: authorized security testing only.
     $('btn-verbose').classList.toggle('on', verboseEnabled);
   }
 
+  // ---------------- BMO avatar (expressions driven by engine verbose) ----
+  const BMO_EXPRESSIONS = {
+    neutral:    { img: 'neutral.png',    label: 'NEUTRAL' },
+    entusiasta: { img: 'entusiasta.png', label: 'ENTUSIASTA' },
+    sutil:      { img: 'sutil.png',      label: 'SUTIL' },
+    contento:   { img: 'contento.png',   label: 'CONTENTO' },
+    panico:     { img: 'panico.png',     label: 'PANICO' },
+    enojado:    { img: 'enojado.png',    label: 'ENOJADO' },
+    enfadado:   { img: 'enfadado.png',   label: 'ENFADADO' }
+  };
+  let bmoTimer = null;
+  // When set (via #bmo=<expr> deep link), the expression is pinned so the
+  // engine-state updates do not overwrite it (used for screenshots/docs).
+  let forcedBmo = null;
+
+  function setBmo(expr, statusText, thinkText) {
+    const target = forcedBmo || expr;
+    const e = BMO_EXPRESSIONS[target] || BMO_EXPRESSIONS.neutral;
+    const avatar = $('bmo-avatar');
+    if (!avatar) return;
+    avatar.src = '/assets/bmo/' + e.img;
+    avatar.classList.remove('anim');
+    void avatar.offsetWidth; // restart the pop animation
+    avatar.classList.add('anim');
+    $('bmo-expression').textContent = e.label;
+    if (statusText !== undefined) $('bmo-status').textContent = statusText;
+    if (thinkText !== undefined) $('bmo-think').textContent = thinkText;
+    const panel = $('bmo-panel');
+    if (panel) {
+      panel.className = 'bmo-panel expr-' + target + (target === 'entusiasta' || target === 'sutil' ? ' thinking' : '');
+    }
+    if (forcedBmo) return; // pinned expression: keep it (no idle reset)
+    clearTimeout(bmoTimer);
+    bmoTimer = setTimeout(function () {
+      setBmo('neutral', lang === 'es' ? 'en espera' : 'idle', '--');
+    }, 9000);
+  }
+
   // ---------------- state ----------------
   let sessionId = null;
   let ws = null;
@@ -468,10 +506,21 @@ Local only. WARNING: authorized security testing only.
         loadTimeline();
       } else if (data.type === 'result') {
         HBTerminal.renderResult(data);
+        // BMO reacts to the engine result: ok -> CONTENTO, error -> ENFADADO
+        if (data.error) {
+          setBmo('enfadado', lang === 'es' ? 'error' : 'error', 'duration ' + (data.duration || '0.00') + 's');
+        } else {
+          setBmo('contento', lang === 'es' ? 'listo' : 'done', 'duration ' + (data.duration || '0.00') + 's');
+        }
       } else if (data.type === 'status') {
         // verbose progress event from the server (engine thinking...)
         if (verboseEnabled) {
           HBTerminal.print(data.message || '', 'out-verbose');
+        }
+        if (data.message && data.message.indexOf('thinking') !== -1) {
+          setBmo('entusiasta', lang === 'es' ? 'pensando...' : 'thinking...');
+        } else {
+          setBmo('sutil', lang === 'es' ? 'analizando...' : 'working...');
         }
       } else if (data.type === 'timeline') {
         renderTimeline(data.events || []);
@@ -479,6 +528,7 @@ Local only. WARNING: authorized security testing only.
         // tools list available; not rendered by default
       } else if (data.type === 'error') {
         HBTerminal.print(data.message || t('msg_engine_offline'), 'out-err');
+        setBmo('panico', lang === 'es' ? 'error' : 'error');
         if (!data.message) toast(t('toast_engine_offline'), 'warn');
       }
     };
@@ -503,6 +553,15 @@ Local only. WARNING: authorized security testing only.
       $('status-ver').textContent = 'v' + s.version + ' LOCAL';
       const q = s.quota === -1 ? 'unlimited' : (s.queries_today + '/' + s.quota);
       $('status-project').textContent = s.project + ' | ' + q;
+      // BMO reflects the engine state in the status bar
+      // (skipped when a #bmo= expression is pinned for screenshots)
+      if (!forcedBmo) {
+        if (s.engine_available) {
+          setBmo('neutral', lang === 'es' ? 'engine en linea' : 'engine online');
+        } else {
+          setBmo('enojado', lang === 'es' ? 'engine offline' : 'engine offline');
+        }
+      }
       if (pro) {
         $('vault-lock').classList.add('hidden');
         $('vault-body').classList.remove('hidden');
@@ -620,6 +679,7 @@ Local only. WARNING: authorized security testing only.
 
   // ---------------- chat ----------------
   function sendChat(text) {
+    setBmo('sutil', lang === 'es' ? 'procesando...' : 'processing...');
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type: 'chat', message: text }));
     } else {
@@ -1171,6 +1231,12 @@ Local only. WARNING: authorized security testing only.
         if (view === 'osintgraph') initOsintGraph();
       }
     });
+    // #bmo=<expr> forces a BMO expression on load (screenshots / deep links).
+    const bm = hash.match(/bmo(?::|%3A|=)([a-z]+)/);
+    if (bm && BMO_EXPRESSIONS[bm[1]]) {
+      forcedBmo = bm[1];
+      setBmo(bm[1], bm[1], '--');
+    }
     // #osintgraph:<seed> auto-builds the graph (deep link / screenshots).
     const gs = hash.match(/osintgraph(?::|%3A)([^&]+)/);
     if (gs) {

@@ -31,7 +31,7 @@ Este repositorio esta documentado en dos idiomas.
 
 ## IMPORTANT: LOCAL APPLICATION - RESOURCE CONSUMPTION
 
-HackerBrain OS is a **100% LOCAL, OFFLINE application**. Nothing runs in the
+BMO-GHOST is a **100% LOCAL, OFFLINE application**. Nothing runs in the
 cloud and no data leaves your machine:
 
 - The web UI, the assistant engine and every database (SQLite) run on your host.
@@ -70,27 +70,27 @@ explicitly contracted to assess.
 
 Main dashboard (terminal view):
 
-![HackerBrain OS dashboard](images/dashboard.png)
+![BMO-GHOST dashboard](images/dashboard.png)
 
 Dashboard in Spanish (`#es`):
 
-![HackerBrain OS dashboard ES](images/dashboard_es.png)
+![BMO-GHOST dashboard ES](images/dashboard_es.png)
 
 PRO features view, visible from the free tier (sidebar -> PRO, or `#pro`):
 
-![HackerBrain OS PRO features](images/pro_features.png)
+![BMO-GHOST PRO features](images/pro_features.png)
 
 PRO features view in Spanish:
 
-![HackerBrain OS PRO features ES](images/pro_features_es.png)
+![BMO-GHOST PRO features ES](images/pro_features_es.png)
 
 Vulnerabilities view with severity filters:
 
-![HackerBrain OS vulnerabilities](images/vulns.png)
+![BMO-GHOST vulnerabilities](images/vulns.png)
 
 Memory view with stats and stored entities:
 
-![HackerBrain OS memory](images/memory.png)
+![BMO-GHOST memory](images/memory.png)
 
 ---
 
@@ -152,8 +152,8 @@ security toolset). ~2 GB free disk for dependencies; the assistant engine
 adds several GB depending on the model.
 
 ```bash
-git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
-cd hackerbrain-os
+git clone https://github.com/Cyt3rTo0ls/BMO-GHOST.git
+cd BMO-GHOST
 ./install.sh
 ```
 
@@ -164,7 +164,7 @@ permissions and checks for a local assistant engine.
 ### Project website
 
 Official site (info, screenshots, tutorials):
-**https://cyt3rto0ls.github.io/hackerbrain-os**
+**https://cyt3rto0ls.github.io/BMO-GHOST**
 
 ### Automatic install (opens your browser for you)
 
@@ -185,17 +185,38 @@ Open `http://127.0.0.1:8080` in your browser (or let `./install.sh once`
 do it for you). The code runs from the obfuscated `dist/` build; the source
 tree is kept as the development copy.
 
-### Configure the local assistant engine
+### Which AI gets installed?
 
-Edit `data/config.yaml`:
+**None, by default.** The installer does NOT install any AI model. BMO-GHOST
+reuses any local chat-completions API server that is already running on your
+machine (Ollama, LM Studio, llama.cpp, a local proxy, ...) — it probes the
+URL in `data/config.yaml` and the fallback ports (8010, 8011, 11434).
+
+To auto-install the AI engine **sized to your hardware**, run:
+
+```bash
+./install.sh engine
+```
+
+It installs Ollama and pulls the model that fits your RAM:
+
+| Your RAM | Model installed |
+| --- | --- |
+| <= 8 GB  | `qwen2.5:3b`  (small, fits low-RAM laptops) |
+| 8-16 GB  | `qwen2.5:7b`  (balanced) |
+| 16 GB+   | `qwen2.5:14b` (more capable) |
+
+If an engine is already detected, `./install.sh engine` installs nothing and
+just reports which one BMO-GHOST will use. You can also point
+`data/config.yaml -> engine.url` at any other local chat-completions API:
 
 ```yaml
 engine:
-  url: "http://127.0.0.1:8080"     # your local chat-completions endpoint
+  url: "http://127.0.0.1:11434"   # e.g. Ollama
   fallback_ports: [8010, 8011, 11434]
 ```
 
-HackerBrain OS probes the main URL, then the fallback ports. If no engine is
+BMO-GHOST probes the main URL, then the fallback ports. If no engine is
 reachable, tools, memory, vault and reports still work; conversational
 analysis is skipped. Remember: the engine runs locally and consumes
 significant CPU/RAM.
@@ -305,7 +326,7 @@ Commands: `/start`, `/buy`, `/activate`, `/key` (owner only).
 ## PLUGINS
 
 Place Python plugins in `plugins/`. Each plugin exposes a `register(hb)` hook
-receiving the HackerBrain API (`hb.executor`, `hb.memory`, `hb.vault`,
+receiving the BMO-GHOST API (`hb.executor`, `hb.memory`, `hb.vault`,
 `hb.report`, `hb.agent`). Plugins are loaded at startup when PRO is active.
 
 ```python
@@ -323,7 +344,7 @@ Playbooks (reusable scan sequences, YAML/JSON) go in `playbooks/`.
 ## PROJECT STRUCTURE
 
 ```
-hackerbrain-os/
+BMO-GHOST/
 ├── app.py                 # FastAPI application (UI, WebSocket, REST, key middleware)
 ├── key_validator.py       # public key validation entry point
 ├── bot_handler.py         # Telegram support bot

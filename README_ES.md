@@ -32,7 +32,7 @@ This repository is documented in two languages.
 
 ## IMPORTANTE: APLICACION LOCAL - CONSUMO DE RECURSOS
 
-HackerBrain OS es una aplicacion **100% LOCAL y OFFLINE**. Nada se ejecuta en la
+BMO-GHOST es una aplicacion **100% LOCAL y OFFLINE**. Nada se ejecuta en la
 nube y ningun dato sale de tu maquina:
 
 - La interfaz web, el assistant engine y todas las bases de datos (SQLite) se
@@ -74,28 +74,28 @@ evaluacion.
 
 Dashboard principal (vista terminal):
 
-![HackerBrain OS dashboard](images/dashboard.png)
+![BMO-GHOST dashboard](images/dashboard.png)
 
 Dashboard en espanol (`#es`):
 
-![HackerBrain OS dashboard ES](images/dashboard_es.png)
+![BMO-GHOST dashboard ES](images/dashboard_es.png)
 
 Vista de funciones PRO, visible desde la version gratuita (sidebar -> PRO, o
 `#pro`):
 
-![HackerBrain OS PRO features](images/pro_features.png)
+![BMO-GHOST PRO features](images/pro_features.png)
 
 Vista de funciones PRO en espanol:
 
-![HackerBrain OS PRO features ES](images/pro_features_es.png)
+![BMO-GHOST PRO features ES](images/pro_features_es.png)
 
 Vista de vulnerabilidades con filtros por severidad:
 
-![HackerBrain OS vulnerabilities](images/vulns.png)
+![BMO-GHOST vulnerabilities](images/vulns.png)
 
 Vista de memoria con estadisticas y entidades guardadas:
 
-![HackerBrain OS memory](images/memory.png)
+![BMO-GHOST memory](images/memory.png)
 
 ---
 
@@ -158,8 +158,8 @@ de herramientas de seguridad). ~2 GB de disco libre para dependencias; el
 assistant engine anade varios GB segun el modelo.
 
 ```bash
-git clone https://github.com/Cyt3rTo0ls/hackerbrain-os.git
-cd hackerbrain-os
+git clone https://github.com/Cyt3rTo0ls/BMO-GHOST.git
+cd BMO-GHOST
 ./install.sh
 ```
 
@@ -170,7 +170,7 @@ permisos de archivos y comprueba si hay un assistant engine local.
 ### Sitio web del proyecto
 
 Sitio oficial (informacion, capturas, tutoriales):
-**https://cyt3rto0ls.github.io/hackerbrain-os**
+**https://cyt3rto0ls.github.io/BMO-GHOST**
 
 ### Instalacion automatica (abre tu navegador por ti)
 
@@ -193,17 +193,39 @@ de codigo fuente se conserva como copia de desarrollo.
 
 Abre `http://127.0.0.1:8080` en tu navegador.
 
-### Configurar el assistant engine local
+### Que IA se instala?
 
-Edita `data/config.yaml`:
+**Ninguna, por defecto.** El instalador NO instala ningun modelo de IA.
+BMO-GHOST reutiliza cualquier servidor local de API chat-completions que ya
+este corriendo en tu maquina (Ollama, LM Studio, llama.cpp, un proxy local,
+...) — prueba la URL de `data/config.yaml` y los puertos alternativos
+(8010, 8011, 11434).
+
+Para instalar el motor de IA automaticamente **segun tus componentes**, ejecuta:
+
+```bash
+./install.sh engine
+```
+
+Instala Ollama y descarga el modelo que encaja con tu RAM:
+
+| Tu RAM | Modelo instalado |
+| --- | --- |
+| <= 8 GB  | `qwen2.5:3b`  (pequeno, cabe en portatiles con poca RAM) |
+| 8-16 GB  | `qwen2.5:7b`  (equilibrado) |
+| 16 GB+   | `qwen2.5:14b` (mas capaz) |
+
+Si ya hay un engine detectado, `./install.sh engine` no instala nada y solo
+informa cual usara BMO-GHOST. Tambien puedes apuntar
+`data/config.yaml -> engine.url` a cualquier otra API local:
 
 ```yaml
 engine:
-  url: "http://127.0.0.1:8080"     # tu endpoint local de chat-completions
+  url: "http://127.0.0.1:11434"   # p. ej. Ollama
   fallback_ports: [8010, 8011, 11434]
 ```
 
-HackerBrain OS prueba la URL principal y luego los puertos alternativos. Si no
+BMO-GHOST prueba la URL principal y luego los puertos alternativos. Si no
 hay ningun engine accesible, las herramientas, la memoria, el vault y los
 informes siguen funcionando; el analisis conversacional se omite. Recuerda: el
 engine corre localmente y consume bastante CPU/RAM.
@@ -315,7 +337,7 @@ Comandos: `/start`, `/buy`, `/activate`, `/key` (solo el dueno).
 ## PLUGINS
 
 Coloca los plugins de Python en `plugins/`. Cada plugin expone un hook
-`register(hb)` que recibe la API de HackerBrain (`hb.executor`, `hb.memory`,
+`register(hb)` que recibe la API de BMO-GHOST (`hb.executor`, `hb.memory`,
 `hb.vault`, `hb.report`, `hb.agent`). Los plugins se cargan al inicio cuando
 PRO esta activo.
 
@@ -335,7 +357,7 @@ Los playbooks (secuencias de escaneo reutilizables, YAML/JSON) van en
 ## ESTRUCTURA DEL PROYECTO
 
 ```
-hackerbrain-os/
+BMO-GHOST/
 ├── app.py                 # Aplicacion FastAPI (UI, WebSocket, REST, middleware de key)
 ├── key_validator.py       # punto de entrada publico de validacion de key
 ├── bot_handler.py         # bot de soporte de Telegram

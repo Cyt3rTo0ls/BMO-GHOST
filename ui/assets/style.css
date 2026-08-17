@@ -1,5 +1,5 @@
 /*
-HackerBrain OS - style.css
+BMO-GHOST - style.css
 Professional dark theme. Primary cyan #00FFFF, alert red #FF0055,
 success green #00FF66, warning orange #FF6600, critical #FF0000.
 Font: Fira Code. No emojis; all icons are inline SVG.
@@ -65,7 +65,6 @@ body {
 }
 .brand { color: var(--cyan); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-shadow: 0 0 12px var(--glow-cyan); white-space: nowrap; }
 .brand .accent { color: var(--fg); }
-.brand .accent::after { content: "OS"; color: var(--cyan); }
 .sep { color: var(--fg-faint); }
 .stat { display: flex; align-items: center; gap: 6px; color: var(--fg-dim); white-space: nowrap; }
 .stat b { color: var(--fg); font-weight: 600; }
@@ -200,6 +199,76 @@ h3 { color: var(--fg-dim); font-weight: 600; letter-spacing: 1.5px; font-size: 1
 .out-warn { color: var(--orange); }
 .out-verbose { color: var(--fg-faint); font-style: italic; }
 .out-muted { color: var(--fg-dim); }
+
+/* ================= BMO avatar (AI core) ================= */
+.term-row { display: flex; gap: 14px; flex: 1; min-height: 320px; }
+.term-row .terminal { flex: 1; }
+
+.bmo-panel {
+  width: 208px; flex-shrink: 0;
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border: 1px solid var(--border); border-radius: var(--radius);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px 12px; gap: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45), inset 0 0 40px rgba(0,255,255,0.02);
+  overflow: hidden; position: relative;
+}
+.bmo-panel::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(220px 120px at 50% 0%, rgba(0,255,255,0.08), transparent 70%);
+}
+.bmo-head { display: flex; align-items: center; gap: 8px; width: 100%; justify-content: space-between; }
+.bmo-name { color: var(--cyan); font-weight: 700; letter-spacing: 3px; font-size: 15px; text-shadow: 0 0 12px var(--glow-cyan); }
+.bmo-tag { font-size: 8.5px; letter-spacing: 1.5px; color: var(--fg-faint); border: 1px solid var(--border); border-radius: 3px; padding: 2px 5px; }
+.bmo-face {
+  position: relative; width: 150px; height: 150px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: radial-gradient(120px 120px at 50% 40%, rgba(0,255,255,0.10), rgba(4,4,10,0.6));
+  overflow: hidden;
+}
+#bmo-avatar {
+  width: 128px; height: auto; object-fit: contain;
+  image-rendering: auto; filter: drop-shadow(0 0 14px var(--glow-cyan));
+  transition: transform .25s ease, filter .25s ease;
+}
+#bmo-avatar.anim { animation: bmo-pop .35s ease; }
+@keyframes bmo-pop {
+  0% { transform: scale(0.82); filter: drop-shadow(0 0 0 rgba(0,255,255,0)); }
+  60% { transform: scale(1.06); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 14px var(--glow-cyan)); }
+}
+.bmo-scanline {
+  position: absolute; left: 0; right: 0; height: 3px; top: 0;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.7), transparent);
+  opacity: 0; pointer-events: none;
+}
+.bmo-panel.thinking .bmo-scanline { opacity: 1; animation: bmo-scan 1.6s linear infinite; }
+@keyframes bmo-scan { 0% { top: 0; } 100% { top: calc(100% - 3px); } }
+.bmo-expression {
+  font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--cyan);
+  border: 1px solid rgba(0,255,255,0.25); border-radius: 4px; padding: 4px 12px;
+  background: rgba(0,255,255,0.06);
+}
+.bmo-status { font-size: 10.5px; color: var(--fg-dim); letter-spacing: 1px; text-align: center; min-height: 14px; }
+.bmo-dots { display: flex; gap: 5px; height: 8px; }
+.bmo-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--fg-faint); transition: background .2s; }
+.bmo-panel.thinking .bmo-dots span { animation: bmo-blink 1s infinite; }
+.bmo-panel.thinking .bmo-dots span:nth-child(2) { animation-delay: .2s; }
+.bmo-panel.thinking .bmo-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bmo-blink { 0%,100% { background: var(--fg-faint); } 50% { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); } }
+.bmo-panel.expr-contento { border-color: rgba(0,255,102,0.35); }
+.bmo-panel.expr-contento .bmo-expression { color: var(--green); border-color: rgba(0,255,102,0.35); background: rgba(0,255,102,0.06); }
+.bmo-panel.expr-enfadado, .bmo-panel.expr-panico { border-color: rgba(255,0,85,0.45); }
+.bmo-panel.expr-enfadado .bmo-expression, .bmo-panel.expr-panico .bmo-expression { color: var(--red); border-color: rgba(255,0,85,0.45); background: rgba(255,0,85,0.08); }
+.bmo-panel.expr-enojado { border-color: rgba(255,102,0,0.4); }
+.bmo-panel.expr-enojado .bmo-expression { color: var(--orange); border-color: rgba(255,102,0,0.4); background: rgba(255,102,0,0.06); }
+.bmo-panel.expr-entusiasta { border-color: rgba(255,255,0,0.4); }
+.bmo-panel.expr-entusiasta .bmo-expression { color: var(--yellow); border-color: rgba(255,255,0,0.4); background: rgba(255,255,0,0.06); }
+.bmo-panel.expr-sutil { border-color: rgba(76,201,240,0.35); }
+.bmo-panel.expr-sutil .bmo-expression { color: #4cc9f0; border-color: rgba(76,201,240,0.35); background: rgba(76,201,240,0.06); }
+.bmo-think { font-size: 10px; color: var(--fg-faint); letter-spacing: 1px; }
+@media (max-width: 1000px) { .term-row { flex-direction: column; } .bmo-panel { width: 100%; flex-direction: row; justify-content: center; flex-wrap: wrap; } .bmo-face { width: 96px; height: 96px; } #bmo-avatar { width: 84px; } }
 
 .quick-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .qbtn, .ghost {

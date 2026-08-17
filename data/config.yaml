@@ -1,8 +1,8 @@
-# HackerBrain OS - configuration
+# BMO-GHOST - configuration
 # This tool is intended for authorized security testing only.
 
 app:
-  name: "HackerBrain OS"
+  name: "BMO-GHOST"
   version: "1.0.0"
   author: "Cyt3rTo0ls"
   host: "127.0.0.1"
@@ -10,7 +10,7 @@ app:
   license: "AGPL-3.0"
 
 # Local assistant engine connection.
-# HackerBrain OS runs 100% local: the engine endpoint below must point to a
+# BMO-GHOST runs 100% local: the engine endpoint below must point to a
 # local chat-completions API server running on the same machine.
 engine:
   url: "http://127.0.0.1:8010"

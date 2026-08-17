@@ -1,6 +1,6 @@
 # Plugins (PRO)
 
-HackerBrain OS loads Python plugins from this directory at startup when PRO
+BMO-GHOST loads Python plugins from this directory at startup when PRO
 is active. Each plugin file must define a `register(hb)` function.
 
 ```python
