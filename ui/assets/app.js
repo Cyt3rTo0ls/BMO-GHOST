@@ -134,7 +134,14 @@ Local only. WARNING: authorized security testing only.
       mobile_title: 'PHONE REMOTE ACCESS',
       mobile_intro: 'Control BMO-GHOST from your phone on the same WiFi. Install the APK, enter these values, unlock with the PIN.',
       mobile_ip: 'PC IP', mobile_port: 'Port', mobile_pin: 'Login PIN',
+      mobile_status: 'Status',
+      mobile_ok: 'PHONE MODE ACTIVE - reachable on the network',
+      mobile_fw_closed: 'Phone mode OFF - the port is closed by the firewall',
+      mobile_fw_after: 'Run this once, then press the button again to verify.',
+      mobile_fw_copy: 'Copy this command and run it in a terminal (sudo), then reopen this panel.',
       mobile_host_hint: 'Make sure the server listens on the network:',
+      mobile_restart_hint: 'Server is bound to localhost only. Restart it listening on the network:',
+      mobile_activate: 'ACTIVATE PHONE MODE',
       mobile_dl: 'DOWNLOAD APK', mobile_close: 'CLOSE',
       pin_t: 'Remote access PIN - enter it on your phone',
       def_on: 'DEF: ON', def_off: 'DEF: OFF',
@@ -239,7 +246,18 @@ Local only. WARNING: authorized security testing only.
         'Persistence script generator (cron, systemd, bashrc, LD_PRELOAD)',
         'Keylogger script generator (authorized lab testing)',
         'Wireless audit workflow (WPA handshake capture + deauth)',
-        'Payload + post-exploitation lab suite (SET / Metasploit style)'
+        'Payload + post-exploitation lab suite (SET / Metasploit style)',
+        'LSB image steganography (hide data inside images)',
+        'IP obfuscation (decimal, octal, hex, IPv6-mapped notations)',
+        'Favicon fingerprinting (Shodan-style hash to pivot identical servers)',
+        'Subdomain takeover scanner (S3, GitHub Pages, Heroku, Azure fingerprints)',
+        'Email spoofing posture (SPF / DMARC / DKIM grading)',
+        'Homograph domain generator (typosquat + punycode lookalikes)',
+        'CORS misconfiguration scanner (origin reflection probes)',
+        'TTL / CDN infrastructure fingerprint',
+        'Realistic User-Agent generator (evasion / bot-detection tests)',
+        'Offline license-key generator (Luhn checksum, serverless validation)',
+        'Phone mode from the web dashboard (open port + PIN for the APK)'
       ]
     },
     es: {
@@ -364,7 +382,14 @@ Local only. WARNING: authorized security testing only.
       mobile_title: 'ACCESO REMOTO DESDE EL CELULAR',
       mobile_intro: 'Controla BMO-GHOST desde tu celular en el mismo WiFi. Instala la APK, introduce estos datos y desbloquea con el PIN.',
       mobile_ip: 'IP de la PC', mobile_port: 'Puerto', mobile_pin: 'PIN de acceso',
+      mobile_status: 'Estado',
+      mobile_ok: 'MODO CELULAR ACTIVO - accesible en la red',
+      mobile_fw_closed: 'Modo celular APAGADO - el puerto esta cerrado por el firewall',
+      mobile_fw_after: 'Ejecuta esto una vez, luego pulsa el boton para verificar.',
+      mobile_fw_copy: 'Copia este comando y ejecutalo en una terminal (sudo), luego reabre este panel.',
       mobile_host_hint: 'Asegurate de que el servidor escuche en la red:',
+      mobile_restart_hint: 'El servidor solo escucha en localhost. Reinicialo escuchando en la red:',
+      mobile_activate: 'ACTIVAR MODO CELULAR',
       mobile_dl: 'DESCARGAR APK', mobile_close: 'CERRAR',
       pin_t: 'PIN de acceso remoto - introducelo en tu celular',
       def_on: 'DEF: ON', def_off: 'DEF: OFF',
@@ -468,7 +493,18 @@ Local only. WARNING: authorized security testing only.
         'Generador de scripts de persistencia (cron, systemd, bashrc, LD_PRELOAD)',
         'Generador de scripts keylogger (pruebas de laboratorio autorizadas)',
         'Flujo de auditoria inalambrica (captura de handshake WPA + deauth)',
-        'Suite de laboratorio de payloads y post-explotacion (estilo SET / Metasploit)'
+        'Suite de laboratorio de payloads y post-explotacion (estilo SET / Metasploit)',
+        'Esteganografia LSB en imagenes (oculta datos dentro de imagenes)',
+        'Ofuscacion de IP (notaciones decimal, octal, hex, IPv6-mapped)',
+        'Huella de favicon (hash estilo Shodan para pivotar servidores identicos)',
+        'Escanner de subdomain takeover (S3, GitHub Pages, Heroku, Azure)',
+        'Postura de seguridad de email (calificacion SPF / DMARC / DKIM)',
+        'Generador de dominios homografos (typosquat + punycode)',
+        'Escanner de malas configuraciones CORS (sondas de reflexion de origen)',
+        'Huella de infraestructura TTL / CDN',
+        'Generador de User-Agents realistas (pruebas de evasion / anti-bot)',
+        'Generador de claves de licencia offline (checksum Luhn, validacion sin servidor)',
+        'Modo celular desde el dashboard web (abre puerto + PIN para la APK)'
       ]
     }
   };
@@ -956,6 +992,15 @@ Local only. WARNING: authorized security testing only.
     $('btn-mobile-close').addEventListener('click', function () { closeModal('mobile-overlay'); });
     $('btn-mobile-dl').addEventListener('click', function () {
       window.open('/apk/BMO-GHOST.apk', '_blank');
+    });
+    $('btn-mobile-activate').addEventListener('click', function () {
+      const fwCmd = $('mobile-hint').querySelector('code');
+      if (fwCmd && fwCmd.textContent.indexOf('sudo') !== -1) {
+        $('mobile-hint').innerHTML = '<span>' + t('mobile_fw_copy') + '</span><br><code style="color:var(--orange);user-select:all">' + fwCmd.textContent + '</code>';
+        toast(t('mobile_fw_copy'), 'warn');
+      } else {
+        toast(t('mobile_ok'), 'ok');
+      }
     });
     $('model-select').addEventListener('change', function () {
       const name = this.value;
@@ -1529,35 +1574,37 @@ Local only. WARNING: authorized security testing only.
   }
 
   function openMobileModal() {
-    // Fill PC IP + PIN (both only readable locally; the remote client can
-    // never fetch them - the operator reads them on screen).
-    try {
-      const rtc = new RTCPeerConnection({ iceServers: [] });
-      rtc.createDataChannel('');
-      rtc.createOffer().then(function (o) { return rtc.setLocalDescription(o); }).catch(function () {});
-      rtc.onicecandidate = function (e) {
-        if (!e.candidate) return;
-        const m = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(e.candidate.candidate || '');
-        if (m && m[1] !== '127.0.0.1' && m[1] !== '0.0.0.0') {
-          $('mobile-ip').textContent = m[1];
-          setTimeout(function () { try { rtc.close(); } catch (e2) {} }, 500);
-        }
-      };
-      setTimeout(function () {
-        try { rtc.close(); } catch (e2) {}
-        if ($('mobile-ip').textContent === '--') $('mobile-ip').textContent = location.hostname || '127.0.0.1';
-      }, 2500);
-    } catch (e) {
-      $('mobile-ip').textContent = location.hostname || '127.0.0.1';
-    }
-    // Try the server-side IP detection endpoint first (more reliable).
-    api('/api/auth/localip').then(function (r) {
-      if (r && r.ok && r.ip) $('mobile-ip').textContent = r.ip;
-    }).catch(function () {});
-    api('/api/auth/pin').then(function (r) {
-      if (r && r.ok && r.pin) $('mobile-pin').textContent = r.pin;
-    }).catch(function () {});
     openModal('mobile-overlay');
+    $('mobile-status').textContent = '...';
+    api('/api/mobile/mode').then(function (r) {
+      if (!r || !r.ok) { $('mobile-status').textContent = 'error'; return; }
+      $('mobile-ip').textContent = r.ip;
+      $('mobile-port').textContent = String(r.port || 8080);
+      $('mobile-pin').textContent = r.pin || '--';
+      const fw = r.firewall || {};
+      const reach = r.reachable_on_lan;
+      if (reach) {
+        $('mobile-status').textContent = t('mobile_ok');
+        $('mobile-status').className = 'mobile-status on';
+        $('mobile-hint').innerHTML = '';
+        $('btn-mobile-activate').style.display = 'none';
+      } else if (r.local_only && r.restart_command) {
+        $('mobile-status').textContent = t('mobile_fw_closed');
+        $('mobile-status').className = 'mobile-status off';
+        $('mobile-hint').innerHTML = '<span>' + t('mobile_restart_hint') + '</span><br><code style="color:var(--orange)">' + r.restart_command + '</code>';
+        $('btn-mobile-activate').style.display = 'none';
+      } else if (fw.need_sudo && fw.command) {
+        $('mobile-status').textContent = t('mobile_fw_closed');
+        $('mobile-status').className = 'mobile-status off';
+        $('mobile-hint').innerHTML = '<span>' + t('mobile_host_hint') + '</span><br><code style="color:var(--orange)">' + fw.command + '</code><br><span class="dim small">' + t('mobile_fw_after') + '</span>';
+        $('btn-mobile-activate').style.display = '';
+      } else {
+        $('mobile-status').textContent = t('mobile_fw_closed');
+        $('mobile-status').className = 'mobile-status off';
+      }
+    }).catch(function () {
+      $('mobile-status').textContent = 'error';
+    });
   }
 
   async function loadModels() {

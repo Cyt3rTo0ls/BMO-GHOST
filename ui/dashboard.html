@@ -462,7 +462,7 @@
 
 <!-- ============ mobile / remote access setup ============ -->
 <div id="mobile-overlay" class="modal hidden">
-  <div class="modal-box" style="max-width:460px">
+  <div class="modal-box" style="max-width:480px">
     <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg><span data-i18n="mobile_title">PHONE REMOTE ACCESS</span></h2>
     <p class="dim small pro-note" data-i18n="mobile_intro">Control BMO-GHOST from your phone on the same WiFi. Install the APK, enter these values, unlock with the PIN.</p>
     <div class="mobile-row">
@@ -477,11 +477,16 @@
       <label class="dim small" data-i18n="mobile_pin">Login PIN</label>
       <code id="mobile-pin" class="mobile-code">--</code>
     </div>
-    <p class="dim small" style="margin-top:10px">
+    <div class="mobile-row">
+      <label class="dim small" data-i18n="mobile_status">Status</label>
+      <span id="mobile-status" class="mobile-status">--</span>
+    </div>
+    <p class="dim small" style="margin-top:10px" id="mobile-hint">
       <span data-i18n="mobile_host_hint">Make sure the server listens on the network:</span>
       <code style="color:var(--cyan)">HOST=0.0.0.0 ./install.sh run</code>
     </p>
     <div class="row" style="margin-top:16px">
+      <button id="btn-mobile-activate" class="ghost" data-i18n="mobile_activate">ACTIVATE PHONE MODE</button>
       <button id="btn-mobile-dl" class="ghost" data-i18n="mobile_dl">DOWNLOAD APK</button>
       <button id="btn-mobile-close" class="ghost" data-i18n="mobile_close">CLOSE</button>
     </div>

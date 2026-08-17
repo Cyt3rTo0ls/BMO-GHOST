@@ -502,6 +502,9 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
 .mobile-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
 .mobile-row label { width: 80px; flex-shrink: 0; }
 .mobile-code { flex: 1; font-family: var(--mono); font-size: 15px; color: var(--cyan, #00E5C7); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; letter-spacing: 1px; user-select: all; }
+.mobile-status { flex: 1; font-size: 12px; font-family: var(--mono); padding: 8px 10px; border-radius: 6px; }
+.mobile-status.on { color: var(--green, #00FF66); background: rgba(0,255,102,0.08); border: 1px solid rgba(0,255,102,0.35); }
+.mobile-status.off { color: var(--orange, #FF6600); background: rgba(255,102,0,0.08); border: 1px solid rgba(255,102,0,0.35); }
 #mobile-overlay .modal-box { max-width: 460px; }
 #mobile-overlay .row { justify-content: flex-end; }
 .iotmap-marker-dot { width: 11px; height: 11px; border-radius: 50%; background: #00E5C7; border: 2px solid #04211c; box-shadow: 0 0 10px rgba(0,229,199,.9); animation: iotPulse 2.4s ease-out infinite; }

@@ -142,6 +142,25 @@ The free version shows the full PRO capability list in the interface
 | Global IoT map with Shodan (your key, interactive 3D globe + filters) | Yes |
 | OSINT relationship graph (Maltego-style, ordered entities) | Yes |
 | Reverse face search (FaceCheck ID, your own key) | Yes |
+| Fake identity generator (fakenamegenerator.com style, 5 locales) | Yes |
+| LSB steganography (hide data inside images) | Yes |
+| IP obfuscation (decimal / octal / hex / IPv6-mapped) | Yes |
+| Favicon fingerprinting (Shodan-style hash pivot) | Yes |
+| Subdomain takeover scanner (S3, GitHub Pages, Heroku, Azure) | Yes |
+| Email spoofing posture (SPF / DMARC / DKIM grading) | Yes |
+| Homograph domain generator (typosquat + punycode) | Yes |
+| CORS misconfiguration scanner | Yes |
+| TTL / CDN infrastructure fingerprint | Yes |
+| Realistic User-Agent generator | Yes |
+| Offline license-key generator (Luhn checksum) | Yes |
+| Phone mode from the web dashboard (open port + PIN for the APK) | Yes |
+| Reverse-shell generator (bash, python, nc, php, perl, ruby, powershell) | Yes |
+| msfvenom payload factory (Windows/Linux/Android/php/python/macOS) | Yes |
+| Phishing page cloner (authorized social-engineering tests) | Yes |
+| VBA macro generator (AV-lab simulations) | Yes |
+| Persistence script generator (cron, systemd, bashrc, LD_PRELOAD) | Yes |
+| Keylogger script generator (authorized lab testing) | Yes |
+| Wireless audit workflow (WPA handshake capture + deauth) | Yes |
 
 ---
 
@@ -266,6 +285,27 @@ using the Kali/Parrot OSINT toolset (theHarvester, amass, sublist3r,
 sherlock, phoneinfoga, exiftool...) when installed and pure-Python
 fallbacks when not. See [TUTORIAL.md](TUTORIAL.md) section 9b for the full
 command list.
+
+### PRO grey-tools kit (obscure but legal)
+
+Techniques that almost no other tool ships, all offline except where noted.
+Authorized testing only - the operator is solely responsible for lawful use.
+
+```text
+> fakeid es female                 # fake identity (5 locales: en/es/fr/de/it)
+> stego <base64-data> [tag]        # LSB steganography: hide data in an image
+> stego extract <base64-png>       # recover the hidden payload
+> ipobf 8.8.8.8                    # IP in decimal/octal/hex/IPv6-mapped forms
+> favhash example.com              # Shodan-style favicon hash (pivot identical servers)
+> subto example.com                # subdomain takeover fingerprints (S3/GH Pages/Heroku/Azure)
+> mailcheck example.com            # SPF / DMARC / DKIM email-spoofing posture
+> homograph google.com             # typosquat + punycode lookalike domains
+> cors example.com [origin]        # CORS misconfiguration probes
+> ttl example.com                  # TTL / CDN infrastructure fingerprint
+> uagen                            # realistic User-Agent strings
+> licgen BMO                       # offline license key (Luhn checksum)
+> licgen verify BMO-XXXX-...       # validate a key without any server
+```
 
 ### Autonomous pentest / bug-bounty mode
 
