@@ -22,15 +22,17 @@ UI_DIR="$ROOT_DIR/ui"
 CORE_DIR="$ROOT_DIR/core"
 
 # --- commands -------------------------------------------------------------
-# ./install.sh          -> install everything (venv, deps, DB)
+# ./install.sh          -> install EVERYTHING automatically (venv, deps, DB
+#                          + AI engine + the model that fits your hardware,
+#                          only if you don't already have a local engine)
 # ./install.sh run      -> start the application + open Firefox/browser
 # ./install.sh once     -> install (if needed) + start + open browser
 # ./install.sh stop     -> stop the application
-# ./install.sh engine   -> OPTIONAL: auto-install the local AI engine (Ollama)
-#                          + a model sized to your hardware (RAM), if no
-#                          engine is already running. Nothing is installed
-#                          by default: BMO-GHOST reuses any local
-#                          chat-completions API you already have.
+# ./install.sh engine   -> (re)install the AI engine + the best model for
+#                          this hardware (NVIDIA/AMD/Intel GPU, Apple
+#                          Silicon or CPU) - skipped automatically when a
+#                          local chat-completions engine already exists.
+#                          Set HB_SKIP_ENGINE=1 to skip engine install.
 CMD="${1:-install}"
 
 # --- open the default browser (Firefox on Kali by default) ----------------
@@ -93,75 +95,83 @@ if [ "$CMD" = "stop" ]; then
     exit 0
 fi
 
-if [ "$CMD" = "engine" ]; then
-    # OPTIONAL local AI engine: detect an existing engine first; only if none
-    # is found, install Ollama and pull a model sized to this machine's RAM.
-    echo "[INFO] Checking for an existing local engine..."
-    FOUND=""
-    for port in 8010 8011 11434; do
-        if curl -s --max-time 3 "http://127.0.0.1:${port}/health" >/dev/null 2>&1; then
-            FOUND="$port"
-            break
-        fi
-    done
-    if [ -n "$FOUND" ]; then
-        echo "[OK] A local chat-completions engine is already running on port ${FOUND}."
-        echo "     BMO-GHOST will use it (see data/config.yaml -> engine.url)."
-        echo "     Nothing was installed."
-        exit 0
-    fi
-    echo "[INFO] No engine found. Installing the local AI runtime (Ollama)..."
-    if ! command -v ollama >/dev/null 2>&1; then
-        curl -fsSL https://ollama.com/install.sh | sh || fail "Ollama installation failed."
-    fi
-    # ---- detect this machine's hardware components --------------------------
-    # RAM, GPU (NVIDIA VRAM / AMD VRAM / Apple Silicon) and CPU decide the
-    # right model. The model is then downloaded ONLINE with "ollama pull".
-    echo "[INFO] Detecting hardware components to pick the right model..."
+# --- hardware detection + model selection ---------------------------------
+# Shared by the "engine" command and by the automatic install step.
+# Detects the machine components (NVIDIA/AMD/Intel GPU + VRAM, Apple
+# Silicon, or CPU-only with RAM/cores) and picks the qwen2.5 model that
+# fits best. Sets: RAM_MB, CORES, GPU_BRAND, GPU_NAME, GPU_VRAM_MB,
+# APPLE_SILICON, MODEL, MODEL_REASON.
+detect_and_select_model() {
     RAM_MB="$(free -m 2>/dev/null | awk '/^Mem:/{print $2}' || echo 8192)"
     CORES="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
-    GPU_NAME=""
-    GPU_VRAM_MB=0
-    GPU_BRAND=""
+    GPU_NAME=""; GPU_VRAM_MB=0; GPU_BRAND=""; APPLE_SILICON=""
     # NVIDIA (nvidia-smi is the most reliable source of VRAM)
     if command -v nvidia-smi >/dev/null 2>&1; then
         GPU_NAME="$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1)"
         GPU_VRAM_MB="$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -1)"
         [ -n "$GPU_NAME" ] && GPU_BRAND="NVIDIA"
     fi
-    # AMD (rocm-smi)
+    # AMD (rocm-smi, then the amdgpu sysfs VRAM counter)
     if [ -z "$GPU_BRAND" ] && command -v rocm-smi >/dev/null 2>&1; then
         GPU_NAME="$(rocm-smi --showproductname 2>/dev/null | grep -i 'GPU\[0\]' | sed 's/.*: //')"
         GPU_VRAM_MB="$(rocm-smi --showmeminfo vram 2>/dev/null | grep -oE '[0-9]+' | head -1)"
         [ -n "$GPU_NAME" ] && GPU_BRAND="AMD"
     fi
-    # Fallback: lspci (NVIDIA / AMD / Intel discrete)
+    # Generic sysfs VRAM (works for amdgpu and Intel Xe drivers)
+    if [ -z "$GPU_BRAND" ] && [ -d /sys/class/drm ]; then
+        for f in /sys/class/drm/card*/device/mem_info_vram_total; do
+            [ -f "$f" ] || continue
+            VRAM_BYTES="$(cat "$f" 2>/dev/null)"
+            if [ -n "$VRAM_BYTES" ] && [ "$VRAM_BYTES" -gt 0 ] 2>/dev/null; then
+                GPU_VRAM_MB=$((VRAM_BYTES / 1024 / 1024))
+                GPU_NAME="$(lspci 2>/dev/null | grep -iE 'vga|3d' | head -1 | sed 's/^[^:]*: //')"
+                case "$GPU_NAME" in
+                    *[Aa][Mm][Dd]*|*[Aa][Tt][Ii]*) GPU_BRAND="AMD" ;;
+                    *[Ii]ntel*) GPU_BRAND="INTEL" ;;
+                esac
+                break
+            fi
+        done
+    fi
+    # lspci fallback for NVIDIA / AMD / Intel (dedicated and integrated)
     if [ -z "$GPU_BRAND" ] && command -v lspci >/dev/null 2>&1; then
-        GPU_NAME="$(lspci 2>/dev/null | grep -iE 'vga.*(nvidia|amd|ati)|3d.*(nvidia|amd|ati)' | head -1 | sed 's/^[^:]*: //')"
+        GPU_NAME="$(lspci 2>/dev/null | grep -iE 'vga|3d' | head -1 | sed 's/^[^:]*: //')"
         case "$GPU_NAME" in
             *[Nn]vidia*) GPU_BRAND="NVIDIA" ;;
             *[Aa][Mm][Dd]*|*[Aa][Tt][Ii]*) GPU_BRAND="AMD" ;;
+            *[Ii]ntel*) GPU_BRAND="INTEL" ;;
+        esac
+    fi
+    # Intel Arc dedicated GPUs: known VRAM by model name
+    if [ "$GPU_BRAND" = "INTEL" ] && [ "$GPU_VRAM_MB" -eq 0 ] 2>/dev/null; then
+        case "$GPU_NAME" in
+            *A770*) GPU_VRAM_MB=16384 ;;
+            *A750*|*A580*) GPU_VRAM_MB=8192 ;;
+            *A310*|*A380*) GPU_VRAM_MB=6144 ;;
         esac
     fi
     # Apple Silicon
-    APPLE_SILICON=""
     if [ "$(uname -s)" = "Darwin" ] && [ "$(uname -m)" = "arm64" ]; then
         APPLE_SILICON="$(sysctl -n hw.model 2>/dev/null || echo Apple-Silicon)"
     fi
     # ---- pick the model -----------------------------------------------------
     # A ~N-billion-parameter model needs roughly N GB of free VRAM/RAM.
-    # Rule of thumb used here (qwen2.5 family, GGUF quantized):
+    # Rule of thumb (qwen2.5 family, GGUF quantized):
     #   3b -> ~2-3 GB    7b -> ~5-6 GB    14b -> ~9-11 GB
     MODEL="qwen2.5:3b"
     MODEL_REASON="default (lowest requirement)"
-    if [ "$GPU_BRAND" = "NVIDIA" ] && [ "$GPU_VRAM_MB" -ge 16384 ]; then
+    if [ "$GPU_BRAND" = "NVIDIA" ] && [ "$GPU_VRAM_MB" -ge 16384 ] 2>/dev/null; then
         MODEL="qwen2.5:14b"; MODEL_REASON="NVIDIA GPU with ${GPU_VRAM_MB} MB VRAM"
-    elif [ "$GPU_BRAND" = "NVIDIA" ] && [ "$GPU_VRAM_MB" -ge 8192 ]; then
+    elif [ "$GPU_BRAND" = "NVIDIA" ] && [ "$GPU_VRAM_MB" -ge 8192 ] 2>/dev/null; then
         MODEL="qwen2.5:7b"; MODEL_REASON="NVIDIA GPU with ${GPU_VRAM_MB} MB VRAM"
-    elif [ "$GPU_BRAND" = "AMD" ] && [ "$GPU_VRAM_MB" -ge 16384 ]; then
+    elif [ "$GPU_BRAND" = "AMD" ] && [ "$GPU_VRAM_MB" -ge 16384 ] 2>/dev/null; then
         MODEL="qwen2.5:14b"; MODEL_REASON="AMD GPU with ${GPU_VRAM_MB} MB VRAM"
-    elif [ "$GPU_BRAND" = "AMD" ] && [ "$GPU_VRAM_MB" -ge 8192 ]; then
+    elif [ "$GPU_BRAND" = "AMD" ] && [ "$GPU_VRAM_MB" -ge 8192 ] 2>/dev/null; then
         MODEL="qwen2.5:7b"; MODEL_REASON="AMD GPU with ${GPU_VRAM_MB} MB VRAM"
+    elif [ "$GPU_BRAND" = "INTEL" ] && [ "$GPU_VRAM_MB" -ge 16384 ] 2>/dev/null; then
+        MODEL="qwen2.5:14b"; MODEL_REASON="Intel GPU with ${GPU_VRAM_MB} MB VRAM"
+    elif [ "$GPU_BRAND" = "INTEL" ] && [ "$GPU_VRAM_MB" -ge 8192 ] 2>/dev/null; then
+        MODEL="qwen2.5:7b"; MODEL_REASON="Intel GPU with ${GPU_VRAM_MB} MB VRAM"
     elif [ -n "$APPLE_SILICON" ]; then
         if [ "$RAM_MB" -ge 16384 ]; then MODEL="qwen2.5:7b"; else MODEL="qwen2.5:3b"; fi
         MODEL_REASON="Apple Silicon (${APPLE_SILICON})"
@@ -179,7 +189,31 @@ if [ "$CMD" = "engine" ]; then
         MODEL="$HB_MODEL"
         MODEL_REASON="forced by HB_MODEL"
     fi
-    # ---- summary + download (online) ---------------------------------------
+}
+
+# --- engine installation (shared by "engine" and automatic install) ------
+# Uses an already-running local engine if one exists; otherwise installs
+# Ollama and pulls the model chosen by detect_and_select_model (online).
+install_engine() {
+    echo "[INFO] Checking for an existing local engine..."
+    FOUND=""
+    for port in 8010 8011 11434; do
+        if curl -s --max-time 3 "http://127.0.0.1:${port}/health" >/dev/null 2>&1; then
+            FOUND="$port"
+            break
+        fi
+    done
+    if [ -n "$FOUND" ]; then
+        echo "[OK] A local chat-completions engine is already running on port ${FOUND}."
+        echo "     BMO-GHOST will use it (see data/config.yaml -> engine.url)."
+        echo "     Nothing was installed."
+        return 0
+    fi
+    echo "[INFO] No engine found. Installing the local AI runtime (Ollama)..."
+    if ! command -v ollama >/dev/null 2>&1; then
+        curl -fsSL https://ollama.com/install.sh | sh || return 1
+    fi
+    detect_and_select_model
     echo "[INFO] Hardware detected:"
     echo "       RAM  : ${RAM_MB} MB"
     echo "       CPU  : ${CORES} cores"
@@ -192,7 +226,7 @@ if [ "$CMD" = "engine" ]; then
     fi
     echo "[INFO] Selected model: ${MODEL}  (${MODEL_REASON})"
     echo "[INFO] Downloading ${MODEL} ONLINE (ollama pull) - this may take a while..."
-    ollama pull "$MODEL" || fail "Model pull failed."
+    ollama pull "$MODEL" || return 1
     if command -v systemctl >/dev/null 2>&1 && [ "$(id -u)" -eq 0 ]; then
         systemctl enable ollama >/dev/null 2>&1 || true
         systemctl start ollama >/dev/null 2>&1 || true
@@ -203,6 +237,11 @@ if [ "$CMD" = "engine" ]; then
         echo "[OK] data/config.yaml -> engine.url set to http://127.0.0.1:11434"
     fi
     echo "[OK] Local AI engine ready (${MODEL}). Start BMO-GHOST with: ./install.sh once"
+    return 0
+}
+
+if [ "$CMD" = "engine" ]; then
+    install_engine
     exit 0
 fi
 
@@ -294,25 +333,32 @@ mkdir -p "$DATA_DIR" "$UI_DIR/assets" "$CORE_DIR" \
     "$ROOT_DIR/plugins" "$ROOT_DIR/playbooks" "$ROOT_DIR/reports" "$ROOT_DIR/exports"
 touch "$DATA_DIR/.keep"
 
-# --- assistant engine check ----------------------------------------------
-ENGINE_OK=0
-for port in 8080 8010 8011; do
-    if curl -s --max-time 3 "http://127.0.0.1:${port}/health" >/dev/null 2>&1; then
-        info "Local assistant engine detected on port ${port}."
-        ENGINE_OK=1
-        break
+# --- assistant engine: auto-install only if the person has none ----------
+# If a local chat-completions engine is already present, BMO-GHOST uses it
+# and nothing is installed. Otherwise the install auto-installs Ollama and
+# pulls the model that best fits the detected hardware (online).
+# Set HB_SKIP_ENGINE=1 to skip this step entirely.
+if [ -z "${HB_SKIP_ENGINE:-}" ]; then
+    info "Checking for an existing local AI engine..."
+    ENGINE_FOUND=""
+    for port in 8010 8011 11434; do
+        if curl -s --max-time 3 "http://127.0.0.1:${port}/health" >/dev/null 2>&1; then
+            ENGINE_FOUND="$port"
+            break
+        fi
+    done
+    if [ -n "$ENGINE_FOUND" ]; then
+        info "Local AI engine detected on port ${ENGINE_FOUND} - BMO-GHOST will use it."
+    else
+        info "No local AI engine found. Auto-installing the best model for this hardware..."
+        if install_engine; then
+            info "[OK] AI engine ready - BMO-GHOST will use it."
+        else
+            info "[WARN] Engine auto-install did not complete; BMO-GHOST keeps working"
+            info "       without it: tools, memory, vault and reports. To retry later run:"
+            info "       ./install.sh engine"
+        fi
     fi
-done
-
-if [ "$ENGINE_OK" -eq 0 ]; then
-    info "No local assistant engine detected on 127.0.0.1:8080/8010/8011."
-    info "BMO-GHOST keeps working: core tools, memory, vault and reports"
-    info "do not require the engine. To auto-install one sized to your"
-    info "hardware run: ./install.sh engine   (installs Ollama + a model"
-    info "chosen by your RAM: qwen2.5:3b / 7b / 14b)."
-    info "Or point data/config.yaml -> engine.url at any local"
-    info "chat-completions API server. This is expected to consume"
-    info "significant CPU/RAM while a model is loaded."
 fi
 
 # --- database initialization ---------------------------------------------
@@ -408,12 +454,14 @@ cat <<'DONE'
      Open:                                       http://127.0.0.1:8080
 
      ABOUT THE AI:
-       BMO-GHOST does NOT install an AI by default. It reuses any local
-       chat-completions API already on your machine (Ollama, LM Studio,
-       llama.cpp, a custom proxy on ports 8010/8011/11434, ...).
-       To auto-install the engine + a model sized to your hardware:
-           ./install.sh engine
-       (it picks qwen2.5:3b/7b/14b based on your RAM).
+       If you already have a local chat-completions API (Ollama, LM Studio,
+       llama.cpp, a custom proxy on ports 8010/8011/11434, ...), BMO-GHOST
+       detects it and uses it - nothing is installed.
+       If you DON'T, the installer automatically installs Ollama and pulls
+       the model that best fits your hardware (GPU NVIDIA/AMD/Intel VRAM,
+       Apple Silicon, or CPU/RAM): qwen2.5:3b / 7b / 14b.
+       To force it later:  ./install.sh engine
+       To skip it:         HB_SKIP_ENGINE=1 ./install.sh
 
      Note: BMO-GHOST is LOCAL. The assistant engine runs on this
      machine and consumes significant CPU/RAM/disk resources.

@@ -218,6 +218,10 @@ aprox. N GB de VRAM/RAM libres (3b ~2-3 GB, 7b ~5-6 GB, 14b ~9-11 GB).
 | GPU NVIDIA 8-16 GB VRAM  | `qwen2.5:7b`  |
 | GPU AMD >= 16 GB VRAM    | `qwen2.5:14b` |
 | GPU AMD 8-16 GB VRAM     | `qwen2.5:7b`  |
+| Intel Arc A770 (16 GB)   | `qwen2.5:14b` |
+| Intel Arc A750/A580 (8 GB) | `qwen2.5:7b` |
+| Intel Arc A310/A380 (6 GB) | `qwen2.5:7b` |
+| GPU Intel integrada (Iris/UHD) | igual que solo CPU (RAM compartida) |
 | Apple Silicon, RAM >= 16 GB | `qwen2.5:7b` |
 | Apple Silicon, RAM < 16 GB  | `qwen2.5:3b` |
 | Solo CPU, RAM >= 32 GB y 8+ nucleos | `qwen2.5:14b` |
