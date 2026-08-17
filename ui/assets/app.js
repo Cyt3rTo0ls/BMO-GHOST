@@ -322,7 +322,19 @@ Local only. WARNING: authorized security testing only.
       tk_cat_misc: 'Misc',
       tk_run: 'RUN',
       tk_state_mode: 'Reasoning mode:',
-      tk_none: 'No tools match your search.'
+      tk_none: 'No tools match your search.',
+      score_label: 'Security Score',
+      score_report: 'CLIENT REPORT',
+      score_open: 'open',
+      score_fixing: 'fixing',
+      score_fixed: 'fixed',
+      score_verified: 'verified',
+      score_progress: 'progress',
+      score_report_done: 'Client report generated:',
+      vuln_mark_fixed: 'MARK FIXED',
+      vuln_mark_verified: 'VERIFY',
+      vuln_expl_flag: 'PUBLIC EXPLOIT',
+      vuln_status_updated: 'Remediation status updated.'
     },
     es: {
       st_project: 'PROYECTO: default',
@@ -634,7 +646,19 @@ Local only. WARNING: authorized security testing only.
       tk_cat_misc: 'Varias',
       tk_run: 'EJECUTAR',
       tk_state_mode: 'Modo de razonamiento:',
-      tk_none: 'Ninguna herramienta coincide con tu busqueda.'
+      tk_none: 'Ninguna herramienta coincide con tu busqueda.',
+      score_label: 'Puntuación de seguridad',
+      score_report: 'INFORME CLIENTE',
+      score_open: 'abiertas',
+      score_fixing: 'en curso',
+      score_fixed: 'arregladas',
+      score_verified: 'verificadas',
+      score_progress: 'progreso',
+      score_report_done: 'Informe de cliente generado:',
+      vuln_mark_fixed: 'MARCAR ARREGLADO',
+      vuln_mark_verified: 'VERIFICAR',
+      vuln_expl_flag: 'EXPLOIT PUBLICO',
+      vuln_status_updated: 'Estado de remediación actualizado.'
     }
   };
 
@@ -1116,11 +1140,15 @@ Local only. WARNING: authorized security testing only.
     visible.forEach(function (v) {
       const card = document.createElement('div');
       const sev = String(v.severity || 'LOW').toUpperCase();
-      card.className = 'vuln-card sev-' + sev;
+      const st = String(v.status || 'open');
+      card.className = 'vuln-card sev-' + sev + ' st-' + st;
+      const cvss = v.cvss ? 'CVSS ' + v.cvss : '';
+      const expl = v.exploit_public ? ' <span class="expl-flag" title="public exploit">' + t('vuln_expl_flag') + '</span>' : '';
       card.innerHTML =
         '<div class="top">' +
         '  <span class="sev-badge">' + sev + '</span>' +
-        '  <span class="cve">' + (v.cve_id || 'no-cve') + '</span>' +
+        '  <span class="cve">' + (v.cve_id || 'no-cve') + (cvss ? ' · ' + cvss : '') + '</span>' + expl +
+        '  <span class="st-badge st-' + st + '">' + st + '</span>' +
         '</div>' +
         '<div class="hostline">' +
         '  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="10" width="20" height="11" rx="2"/><path d="M6 10V7a6 6 0 0112 0v3"/></svg>' +
@@ -1131,6 +1159,8 @@ Local only. WARNING: authorized security testing only.
         '  <button class="card-btn danger" data-act="exploit">' + t('vuln_exploit') + '</button>' +
         '  <button class="card-btn" data-act="details">' + t('vuln_details') + '</button>' +
         '  <button class="card-btn" data-act="mitigate">' + t('vuln_mitigate') + '</button>' +
+        '  <button class="card-btn" data-act="fix" data-vid="' + v.id + '">' + t('vuln_mark_fixed') + '</button>' +
+        '  <button class="card-btn" data-act="verify" data-vid="' + v.id + '">' + t('vuln_mark_verified') + '</button>' +
         '</div>';
       list.appendChild(card);
     });
@@ -1144,6 +1174,54 @@ Local only. WARNING: authorized security testing only.
       renderVulnCards();
       renderMemory(m);
     } catch (e) { /* ignore */ }
+    loadScore();
+  }
+
+  async function loadScore() {
+    try {
+      const s = await api('/api/score');
+      if (!s.ok) return;
+      const sc = s.score || 0;
+      $('score-num').textContent = sc;
+      $('score-grade').textContent = s.grade + ' · ' + s.label;
+      $('score-bar-fill').style.width = sc + '%';
+      const ring = $('score-ring');
+      ring.style.borderColor = sc >= 75 ? 'var(--ok, #2ecc71)' : sc >= 50 ? '#f39c12' : '#e74c3c';
+      const st = s.stats || {};
+      $('score-stats').textContent =
+        t('score_open') + ': ' + (st.open || 0) + ' · ' +
+        t('score_fixing') + ': ' + (st.fixing || 0) + ' · ' +
+        t('score_fixed') + ': ' + (st.fixed || 0) + ' · ' +
+        t('score_verified') + ': ' + (st.verified || 0) + ' · ' +
+        t('score_progress') + ': ' + (st.progress || 0) + '%';
+    } catch (e) { /* ignore */ }
+  }
+
+  async function setVulnStatus(vid, status) {
+    const r = await api('/api/vuln/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: vid, status: status })
+    });
+    if (r.ok) {
+      toast(t('vuln_status_updated'), 'ok');
+      loadVulns();
+    } else {
+      toast((r.error || 'error'), 'err');
+    }
+  }
+
+  async function clientReport() {
+    const r = await api('/api/report/client', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ project: 'default' })
+    });
+    if (r.ok) {
+      toast(t('score_report_done') + ' ' + (r.path || ''), 'ok');
+    } else {
+      toast((r.error || 'error'), 'err');
+    }
   }
 
   function renderMemory(m) {
@@ -1446,12 +1524,21 @@ Local only. WARNING: authorized security testing only.
     document.getElementById('vuln-list').addEventListener('click', function (e) {
       const btn = e.target.closest('.card-btn');
       if (!btn) return;
+      if (btn.dataset.act === 'fix' && btn.dataset.vid) {
+        setVulnStatus(parseInt(btn.dataset.vid, 10), 'fixed');
+        return;
+      }
+      if (btn.dataset.act === 'verify' && btn.dataset.vid) {
+        setVulnStatus(parseInt(btn.dataset.vid, 10), 'verified');
+        return;
+      }
       const msg =
         btn.dataset.act === 'exploit' ? t('msg_exploit') :
         btn.dataset.act === 'mitigate' ? t('msg_mitigate') :
         t('msg_details');
       HBTerminal.print(msg, 'out-info');
     });
+    $('btn-report-client').addEventListener('click', clientReport);
 
     window.addEventListener('beforeunload', function () {
       if (sessionId && ws) {

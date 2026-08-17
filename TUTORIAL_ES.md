@@ -501,6 +501,25 @@ Notas:
 | Los informes requieren PRO | Informes, vault y memoria persistente son funciones PRO. Activa PRO. |
 | Alto consumo de CPU/RAM | Es lo esperado. El engine corre localmente y consume bastantes recursos mientras hay un modelo cargado. |
 
+### 10. Puntuacion de seguridad + flujo de remediacion
+
+Cada engagement recibe una puntuacion de seguridad en vivo de 0-100
+(nota A-F). Arregla hallazgos y veras como sube — el numero es el
+entregable medible para los clientes.
+
+```
+score                    # puntuacion de seguridad en vivo + progreso
+exploit CVE-2021-44228   # CVSS + busqueda de exploit publico (NVD)
+enrich                   # enriquece hallazgos abiertos con CVSS/exploit
+remediate fixed 12       # hallazgo #12 -> arreglado (open|fixing|fixed|verified)
+report client            # informe de remediacion para cliente (markdown)
+```
+
+La vista VULNERABILITIES muestra el anillo de puntuacion, CVSS por
+hallazgo + flags de exploit, insignias de estado y botones MARCAR
+ARREGLADO / VERIFICAR. En la prueba de UI, un solo fix subio la
+puntuacion de 94 a 96.
+
 ---
 
 Version en ingles: [TUTORIAL.md](TUTORIAL.md)

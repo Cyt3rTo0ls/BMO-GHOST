@@ -526,6 +526,23 @@ Notes:
 | Reports require PRO | Reports, vault and persistent memory are PRO features. Activate PRO. |
 | High CPU/RAM usage | Expected. The engine runs locally and consumes significant resources while a model is loaded. |
 
+### 10. Security score + remediation workflow
+
+Every engagement gets a live 0-100 security score (grade A-F). Fix findings
+and watch it rise — the number is the measurable deliverable for clients.
+
+```
+score                    # live security score + remediation progress
+exploit CVE-2021-44228   # CVSS + public-exploit lookup (NVD)
+enrich                   # enrich all open findings with CVSS/exploit flags
+remediate fixed 12       # finding #12 -> fixed (open|fixing|fixed|verified)
+report client            # one-click client remediation report (markdown)
+```
+
+The VULNERABILITIES view shows the score ring, per-finding CVSS + exploit
+flags, status badges and MARK FIXED / VERIFY buttons. In the UI test, one
+fix moved the score from 94 to 96.
+
 ---
 
 Spanish version: [TUTORIAL_ES.md](TUTORIAL_ES.md)

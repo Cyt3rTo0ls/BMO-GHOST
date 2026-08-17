@@ -470,6 +470,25 @@ TOOLKIT view (CLEAR HISTORY button):
 live verification command and only reports findings it can confirm, with a
 confidence percentage — no unverified claims.
 
+### Security score + remediation workflow (what clients pay for)
+
+BMO-GHOST scores every engagement 0-100 (grade A-F) and the number moves
+in real time as you fix findings — the measurable deliverable for a
+client report.
+
+```text
+> score                    # live 0-100 security score + progress
+> exploit CVE-2021-44228   # CVSS + public-exploit enrichment (NVD lookup)
+> enrich                   # enrich all open findings with CVSS + exploit flags
+> remediate fixed 12       # finding #12 -> fixed (also: open|fixing|verified)
+> report client            # generate the client remediation report (markdown)
+```
+
+The VULNERABILITIES view shows the score ring, per-finding CVSS and
+public-exploit flags, status badges (open/fixing/fixed/verified) and
+one-click MARK FIXED / VERIFY buttons. Fixing a critical finding visibly
+raises the score — demonstrated live in the UI (94 -> 96 after one fix).
+
 Memory panel tracks hosts, credentials, vulnerabilities and notes. The
 timeline panel records every event with timestamps.
 
