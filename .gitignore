@@ -64,3 +64,4 @@ data/engine_model.json
 data/iot_monitors.json
 data/honeytokens.json
 data/subwatch_*.json
+data/reasoning.mode
