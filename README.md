@@ -307,6 +307,40 @@ Authorized testing only - the operator is solely responsible for lawful use.
 > licgen verify BMO-XXXX-...       # validate a key without any server
 ```
 
+### PRO grey-tools kit 2 - online recon (no API key)
+
+```text
+> crtsh example.com            # subdomains from certificate transparency (crt.sh + CertSpotter fallback)
+> certinfo example.com         # live TLS cert: issuer, SANs, expiry, TLS version
+> webtitle https://example.com # status, final URL, title, server, tech hints
+> robots https://example.com   # robots.txt parser (hidden path recon)
+> cookies https://example.com  # cookie flag audit (HttpOnly/Secure/SameSite)
+> banner example.com 80        # TCP banner grab (version disclosure)
+> dnssec example.com           # DNSSEC signed? algorithms in use
+> dnsbrute example.com         # local subdomain brute (60+ names, invisible to web logs)
+> torcheck 8.8.8.8             # is the IP a Tor exit node?
+> asn 8.8.8.8                  # ASN / network ownership (bgpview + ip-api fallback)
+```
+
+### PRO grey-tools kit 3 - offline crypto / wordlist / intel
+
+```text
+> xor <hex|text> [key]         # XOR cipher; no key = single-byte brute force (English scoring)
+> basecrack <string>           # recursive base16/32/58/64/85 decoding
+> hashid <hash>                # identify hash type (MD5/NTLM/SHA*/bcrypt/phpass...)
+> entropy <hex|text>           # Shannon entropy (spot encrypted/obfuscated payloads)
+> jwt <token>                  # decode JWT + crack weak HS256 secrets
+> mimetype <hex|base64>        # magic-byte file type detection (offline)
+> leet <word>                  # leetspeak variants for cracking wordlists
+> caseperm <word>              # case permutations (bounded)
+> numgen <word>                # number-pattern variants (years/dates/sequences)
+> pwstrength <password>        # password strength scorer (zxcvbn-lite)
+> ioc <text>                   # extract IPs/domains/URLs/emails/hashes/paths from any text
+> defang <url>                 # hxxp:// + [.] for safe report sharing (and refang)
+> uuid [n]                     # UUID v4 generator + version/variant parser
+> macvendor <mac>              # MAC vendor lookup (built-in OUI table, offline)
+```
+
 ### Autonomous pentest / bug-bounty mode
 
 Ask for an engagement in plain language and the agent plans and executes it
