@@ -441,6 +441,15 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 10.5px; colo
 .tk-name { font-size: 13px; font-weight: 600; color: var(--fg); font-family: var(--mono); letter-spacing: .5px; }
 .tk-example { font-size: 11px; color: var(--fg-dim); font-family: var(--mono); word-break: break-all; flex: 1; }
 .tk-run { align-self: flex-start; font-size: 11px; }
+.tk-result {
+  margin-top: 6px; padding: 8px; border-radius: 6px; font-size: 10.5px;
+  font-family: var(--mono); white-space: pre-wrap; word-break: break-word;
+  max-height: 200px; overflow-y: auto; border: 1px solid var(--border);
+  background: var(--panel); color: var(--fg-dim);
+}
+.tk-result.running { color: var(--cyan); border-color: var(--cyan); }
+.tk-result.ok { color: var(--fg); border-color: var(--ok, #2ecc71); }
+.tk-result.err { color: #ff6b6b; border-color: #ff6b6b; }
 @media (max-width: 700px) { .tk-grid { grid-template-columns: 1fr; } }
 
 /* ================= timeline ================= */

@@ -296,7 +296,13 @@ Local only. WARNING: authorized security testing only.
         'Rogue AP config generator (hostapd + dnsmasq, WiFi lab)',
         'Ransomware SIMULATOR (sandbox-only, AES + restore)',
         'BeEF hook generator (browser lab)',
-        'Tunneling / pivoting builder (SSH -L/-R/-D, chisel, iodine)'
+        'Tunneling / pivoting builder (SSH -L/-R/-D, chisel, iodine)',
+        'RAT agent generator (Python / PowerShell polling agent, lab only)',
+        'Botnet lab builder (N agents + control panel, authorized lab)',
+        'C2 beacon with jitter + User-Agent rotation (evasion lab)',
+        'Downloader/loader generator (staged, HTA, VBA - AV lab)',
+        'C2 exfil receiver server (collects agent results)',
+        'Persistence hook snippets (registry, cron, systemd, launchd)'
       ],
       nav_toolkit: 'TOOLKIT',
       toolkit_title: 'PRO TOOLKIT',
@@ -602,7 +608,13 @@ Local only. WARNING: authorized security testing only.
         'Generador de configs de AP rogue (hostapd + dnsmasq, laboratorio WiFi)',
         'SIMULADOR de ransomware (solo sandbox, AES + restauracion)',
         'Generador de hook BeEF (laboratorio de navegadores)',
-        'Constructor de tuneles / pivoting (SSH -L/-R/-D, chisel, iodine)'
+        'Constructor de tuneles / pivoting (SSH -L/-R/-D, chisel, iodine)',
+        'Generador de agentes RAT (agente Python / PowerShell de polling, solo lab)',
+        'Constructor de botnet de laboratorio (N agentes + panel de control)',
+        'Beacon C2 con jitter + rotacion de User-Agents (lab de evasion)',
+        'Generador de descargadores/loaders (staged, HTA, VBA - lab AV)',
+        'Servidor receptor C2/exfil (recoge resultados de agentes)',
+        'Snippets de persistencia (registry, cron, systemd, launchd)'
       ],
       nav_toolkit: 'TOOLKIT',
       toolkit_title: 'TOOLKIT PRO',
@@ -691,6 +703,12 @@ Local only. WARNING: authorized security testing only.
     { c: 'offense', n: 'ransomlab', e: 'ransomlab /tmp/sandbox' },
     { c: 'offense', n: 'beefhook', e: 'beefhook http://your-beef:3000' },
     { c: 'offense', n: 'tunnel', e: 'tunnel ssh-d 10.0.0.1' },
+    { c: 'offense', n: 'rat', e: 'rat 10.0.0.5 4444 python' },
+    { c: 'offense', n: 'botnet', e: 'botnet 5 10.0.0.5 4444' },
+    { c: 'offense', n: 'beacongen', e: 'beacongen 10.0.0.5 443' },
+    { c: 'offense', n: 'loader', e: 'loader hta' },
+    { c: 'offense', n: 'c2server', e: 'c2server 8443' },
+    { c: 'offense', n: 'persisthook', e: 'persisthook cron' },
     // crypto / intel
     { c: 'crypto', n: 'xor', e: 'xor 48656c6c6f' },
     { c: 'crypto', n: 'basecrack', e: 'basecrack <b64>' },
@@ -802,17 +820,35 @@ Local only. WARNING: authorized security testing only.
       return;
     }
     $('tk-grid').innerHTML = list.map(function (tl) {
-      return '<div class="tk-card">' +
+      return '<div class="tk-card" data-tool="' + tl.n + '">' +
         '<div class="tk-name">' + tl.n + '</div>' +
         '<div class="tk-example">' + tl.e + '</div>' +
         '<button class="ghost tk-run" data-cmd="' + tl.e.replace(/"/g, '&quot;') + '">' + t('tk_run') + '</button>' +
+        '<div class="tk-result hidden"></div>' +
         '</div>';
     }).join('');
     document.querySelectorAll('.tk-run').forEach(function (b) {
       b.addEventListener('click', function () {
-        $('term-input').value = b.dataset.cmd;
-        sendChat(b.dataset.cmd);
-        HBTerminal.print('> ' + b.dataset.cmd, 'out-cmd');
+        const card = b.closest('.tk-card');
+        const out = card.querySelector('.tk-result');
+        out.classList.remove('hidden');
+        out.textContent = '> ' + b.dataset.cmd + ' ...';
+        out.className = 'tk-result running';
+        api('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId, message: b.dataset.cmd })
+        }).then(function (res) {
+          const body = res.output || res.error || '(no output)';
+          out.textContent = body.slice(0, 2500);
+          out.className = 'tk-result ' + (res.error ? 'err' : 'ok');
+          loadVulns(); loadMemory(); loadTimeline();
+          HBTerminal.print('> ' + b.dataset.cmd, 'out-cmd');
+          HBTerminal.print(body.slice(0, 3000), res.error ? 'out-err' : 'out-info');
+        }).catch(function (e) {
+          out.textContent = 'error: ' + e;
+          out.className = 'tk-result err';
+        });
       });
     });
   }

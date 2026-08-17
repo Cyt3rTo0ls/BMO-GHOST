@@ -366,6 +366,25 @@ written authorization to test.
 > tunnel ssh-d 10.0.0.1        # pivoting (ssh -L/-R/-D, chisel, iodine, socat)
 ```
 
+### PRO RAT / botnet lab (authorized testing only)
+
+Everything below only generates scripts and configs for your own lab
+(CTF boxes, malware-analysis sandbox, owned infra). Nothing attacks
+anything by itself; the operator is solely responsible for legal use.
+
+```text
+> rat 10.0.0.5 4444 python     # minimal polling RAT agent (python|powershell)
+> botnet 5 10.0.0.5 4444       # botnet lab: N agents + control panel + README
+> beacongen 10.0.0.5 443       # C2 beacon with jitter + User-Agent rotation
+> loader hta                   # downloader/loader (staged|hta|macro|vba)
+> c2server 8443                # lab C2/exfil receiver (collects agent results)
+> persisthook cron             # persistence snippets (registry|cron|systemd|launchd)
+```
+
+Proven end-to-end in this lab: generated the C2 receiver, generated the
+agent, the agent polled `/task`, ran `id`, and the result landed in
+`/tmp/bmo_c2_results.log`.
+
 ### Autonomous pentest / bug-bounty mode
 
 Ask for an engagement in plain language and the agent plans and executes it

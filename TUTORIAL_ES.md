@@ -387,6 +387,24 @@ beefhook http://tu-beef:3000    # generador de hooks BeEF (lab de navegadores)
 tunnel ssh-d 10.0.0.1           # pivoting (SSH -L/-R/-D, chisel, iodine, socat)
 ```
 
+### Laboratorio PRO RAT / botnet (solo pruebas autorizadas)
+
+Todo lo de abajo solo genera scripts/configs para tu propio laboratorio -
+nada ataca nada por si mismo. El operador asume toda la responsabilidad
+legal.
+
+```
+rat 10.0.0.5 4444 python     # agente RAT minimo de polling (python|powershell)
+botnet 5 10.0.0.5 4444       # botnet de laboratorio: N agentes + panel de control
+beacongen 10.0.0.5 443       # beacon C2 con jitter + rotacion de User-Agents
+loader hta                   # descargador/loader (staged|hta|macro|vba)
+c2server 8443                # receptor C2/exfil de laboratorio
+persisthook cron             # snippets de persistencia (registry|cron|systemd|launchd)
+```
+
+Probado de punta a punta: el receptor C2 generado sirvio una `/task`, el
+agente la ejecuto (`id`) y el resultado llego a `/tmp/bmo_c2_results.log`.
+
 > [!ADVERTENCIA]
 > Todas las herramientas ofensivas son solo para testing autorizado.
 > Usarlas contra terceros sin permiso es ilegal y es responsabilidad
