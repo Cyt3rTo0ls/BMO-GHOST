@@ -252,7 +252,7 @@ En lugar de escribir comandos crudos, puedes usar los ayudantes integrados:
 
 ## 9. Activacion PRO
 
-1. Envia **20 USDT** (pago unico, permanente) a la wallet TON:
+1. Envia **15 USDT** (pago unico, permanente) a la wallet TON:
    `UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9`
 2. Contacta con **@Cyt3rTo0ls** por Telegram.
 3. Envia una captura del pago.

@@ -316,7 +316,7 @@ timeline panel records every event with timestamps.
 
 ## PRO ACTIVATION
 
-1. Send **20 USDT** (one-time, permanent) to the TON wallet:
+1. Send **15 USDT** (one-time, permanent) to the TON wallet:
    `UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9`
 2. Contact **@Cyt3rTo0ls** on Telegram.
 3. Send a screenshot of the payment.
@@ -409,7 +409,7 @@ of any kind. You are responsible for using it legally.
 
 Telegram: **@Cyt3rTo0ls**
 Wallet (TON / USDT): `UQCznm2Z1o56J51EfNSnO922mzOQRhOF3m_o5T9Qx8WhK4w9`
-Price: **20 USDT** one-time, permanent.
+Price: **15 USDT** one-time, permanent.
 
 WARNING: This tool is intended for authorized security testing only.
 Unauthorized access to computer systems is illegal.
