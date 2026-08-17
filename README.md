@@ -198,13 +198,24 @@ To auto-install the AI engine **sized to your hardware**, run:
 ./install.sh engine
 ```
 
-It installs Ollama and pulls the model that fits your RAM:
+It detects your hardware components (NVIDIA GPU + VRAM, AMD GPU + VRAM,
+Apple Silicon, or CPU-only with RAM/cores) and downloads the model that fits
+best, based on the VRAM/RAM rule of thumb: a ~N-billion-parameter model needs
+roughly N GB of free VRAM/RAM (3b ~2-3 GB, 7b ~5-6 GB, 14b ~9-11 GB).
 
-| Your RAM | Model installed |
+| Detected hardware | Model installed |
 | --- | --- |
-| <= 8 GB  | `qwen2.5:3b`  (small, fits low-RAM laptops) |
-| 8-16 GB  | `qwen2.5:7b`  (balanced) |
-| 16 GB+   | `qwen2.5:14b` (more capable) |
+| NVIDIA GPU >= 16 GB VRAM  | `qwen2.5:14b` |
+| NVIDIA GPU 8-16 GB VRAM   | `qwen2.5:7b`  |
+| AMD GPU >= 16 GB VRAM     | `qwen2.5:14b` |
+| AMD GPU 8-16 GB VRAM      | `qwen2.5:7b`  |
+| Apple Silicon, RAM >= 16 GB | `qwen2.5:7b` |
+| Apple Silicon, RAM < 16 GB  | `qwen2.5:3b` |
+| CPU-only, RAM >= 32 GB & 8+ cores | `qwen2.5:14b` |
+| CPU-only, RAM 8-32 GB      | `qwen2.5:7b`  |
+| CPU-only, RAM < 8 GB       | `qwen2.5:3b`  |
+
+You can force a specific model with `HB_MODEL=qwen2.5:14b ./install.sh engine`.
 
 If an engine is already detected, `./install.sh engine` installs nothing and
 just reports which one BMO-GHOST will use. You can also point

@@ -114,16 +114,84 @@ if [ "$CMD" = "engine" ]; then
     if ! command -v ollama >/dev/null 2>&1; then
         curl -fsSL https://ollama.com/install.sh | sh || fail "Ollama installation failed."
     fi
-    # Pick the model based on this machine's RAM (components).
+    # ---- detect this machine's hardware components --------------------------
+    # RAM, GPU (NVIDIA VRAM / AMD VRAM / Apple Silicon) and CPU decide the
+    # right model. The model is then downloaded ONLINE with "ollama pull".
+    echo "[INFO] Detecting hardware components to pick the right model..."
     RAM_MB="$(free -m 2>/dev/null | awk '/^Mem:/{print $2}' || echo 8192)"
-    if [ "$RAM_MB" -lt 8192 ]; then
-        MODEL="qwen2.5:3b"          # low-RAM machines (<= 8 GB)
-    elif [ "$RAM_MB" -lt 16384 ]; then
-        MODEL="qwen2.5:7b"          # mid-range (8-16 GB)
-    else
-        MODEL="qwen2.5:14b"         # powerful machines (16 GB+)
+    CORES="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
+    GPU_NAME=""
+    GPU_VRAM_MB=0
+    GPU_BRAND=""
+    # NVIDIA (nvidia-smi is the most reliable source of VRAM)
+    if command -v nvidia-smi >/dev/null 2>&1; then
+        GPU_NAME="$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1)"
+        GPU_VRAM_MB="$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -1)"
+        [ -n "$GPU_NAME" ] && GPU_BRAND="NVIDIA"
     fi
-    echo "[INFO] Detected ${RAM_MB} MB RAM -> pulling ${MODEL} ..."
+    # AMD (rocm-smi)
+    if [ -z "$GPU_BRAND" ] && command -v rocm-smi >/dev/null 2>&1; then
+        GPU_NAME="$(rocm-smi --showproductname 2>/dev/null | grep -i 'GPU\[0\]' | sed 's/.*: //')"
+        GPU_VRAM_MB="$(rocm-smi --showmeminfo vram 2>/dev/null | grep -oE '[0-9]+' | head -1)"
+        [ -n "$GPU_NAME" ] && GPU_BRAND="AMD"
+    fi
+    # Fallback: lspci (NVIDIA / AMD / Intel discrete)
+    if [ -z "$GPU_BRAND" ] && command -v lspci >/dev/null 2>&1; then
+        GPU_NAME="$(lspci 2>/dev/null | grep -iE 'vga.*(nvidia|amd|ati)|3d.*(nvidia|amd|ati)' | head -1 | sed 's/^[^:]*: //')"
+        case "$GPU_NAME" in
+            *[Nn]vidia*) GPU_BRAND="NVIDIA" ;;
+            *[Aa][Mm][Dd]*|*[Aa][Tt][Ii]*) GPU_BRAND="AMD" ;;
+        esac
+    fi
+    # Apple Silicon
+    APPLE_SILICON=""
+    if [ "$(uname -s)" = "Darwin" ] && [ "$(uname -m)" = "arm64" ]; then
+        APPLE_SILICON="$(sysctl -n hw.model 2>/dev/null || echo Apple-Silicon)"
+    fi
+    # ---- pick the model -----------------------------------------------------
+    # A ~N-billion-parameter model needs roughly N GB of free VRAM/RAM.
+    # Rule of thumb used here (qwen2.5 family, GGUF quantized):
+    #   3b -> ~2-3 GB    7b -> ~5-6 GB    14b -> ~9-11 GB
+    MODEL="qwen2.5:3b"
+    MODEL_REASON="default (lowest requirement)"
+    if [ "$GPU_BRAND" = "NVIDIA" ] && [ "$GPU_VRAM_MB" -ge 16384 ]; then
+        MODEL="qwen2.5:14b"; MODEL_REASON="NVIDIA GPU with ${GPU_VRAM_MB} MB VRAM"
+    elif [ "$GPU_BRAND" = "NVIDIA" ] && [ "$GPU_VRAM_MB" -ge 8192 ]; then
+        MODEL="qwen2.5:7b"; MODEL_REASON="NVIDIA GPU with ${GPU_VRAM_MB} MB VRAM"
+    elif [ "$GPU_BRAND" = "AMD" ] && [ "$GPU_VRAM_MB" -ge 16384 ]; then
+        MODEL="qwen2.5:14b"; MODEL_REASON="AMD GPU with ${GPU_VRAM_MB} MB VRAM"
+    elif [ "$GPU_BRAND" = "AMD" ] && [ "$GPU_VRAM_MB" -ge 8192 ]; then
+        MODEL="qwen2.5:7b"; MODEL_REASON="AMD GPU with ${GPU_VRAM_MB} MB VRAM"
+    elif [ -n "$APPLE_SILICON" ]; then
+        if [ "$RAM_MB" -ge 16384 ]; then MODEL="qwen2.5:7b"; else MODEL="qwen2.5:3b"; fi
+        MODEL_REASON="Apple Silicon (${APPLE_SILICON})"
+    elif [ "$RAM_MB" -ge 32768 ] && [ "$CORES" -ge 8 ]; then
+        MODEL="qwen2.5:14b"; MODEL_REASON="CPU-only with ${RAM_MB} MB RAM / ${CORES} cores"
+    elif [ "$RAM_MB" -ge 16384 ]; then
+        MODEL="qwen2.5:7b"; MODEL_REASON="CPU-only with ${RAM_MB} MB RAM"
+    elif [ "$RAM_MB" -ge 8192 ]; then
+        MODEL="qwen2.5:7b"; MODEL_REASON="CPU-only with ${RAM_MB} MB RAM (7b fits, a bit slower)"
+    else
+        MODEL="qwen2.5:3b"; MODEL_REASON="low-RAM CPU-only machine (${RAM_MB} MB RAM)"
+    fi
+    # Allow an explicit override: HB_MODEL=qwen2.5:14b ./install.sh engine
+    if [ -n "${HB_MODEL:-}" ]; then
+        MODEL="$HB_MODEL"
+        MODEL_REASON="forced by HB_MODEL"
+    fi
+    # ---- summary + download (online) ---------------------------------------
+    echo "[INFO] Hardware detected:"
+    echo "       RAM  : ${RAM_MB} MB"
+    echo "       CPU  : ${CORES} cores"
+    if [ -n "$GPU_BRAND" ]; then
+        echo "       GPU  : ${GPU_BRAND} - ${GPU_NAME} (${GPU_VRAM_MB} MB VRAM)"
+    elif [ -n "$APPLE_SILICON" ]; then
+        echo "       GPU  : Apple Silicon (${APPLE_SILICON})"
+    else
+        echo "       GPU  : none detected (CPU-only)"
+    fi
+    echo "[INFO] Selected model: ${MODEL}  (${MODEL_REASON})"
+    echo "[INFO] Downloading ${MODEL} ONLINE (ollama pull) - this may take a while..."
     ollama pull "$MODEL" || fail "Model pull failed."
     if command -v systemctl >/dev/null 2>&1 && [ "$(id -u)" -eq 0 ]; then
         systemctl enable ollama >/dev/null 2>&1 || true

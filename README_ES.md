@@ -207,13 +207,24 @@ Para instalar el motor de IA automaticamente **segun tus componentes**, ejecuta:
 ./install.sh engine
 ```
 
-Instala Ollama y descarga el modelo que encaja con tu RAM:
+Detecta los componentes de tu hardware (GPU NVIDIA + VRAM, GPU AMD + VRAM,
+Apple Silicon, o solo CPU con RAM/nucleos) y descarga el modelo que mejor
+encaja, segun la regla: un modelo de ~N mil millones de parametros necesita
+aprox. N GB de VRAM/RAM libres (3b ~2-3 GB, 7b ~5-6 GB, 14b ~9-11 GB).
 
-| Tu RAM | Modelo instalado |
+| Hardware detectado | Modelo instalado |
 | --- | --- |
-| <= 8 GB  | `qwen2.5:3b`  (pequeno, cabe en portatiles con poca RAM) |
-| 8-16 GB  | `qwen2.5:7b`  (equilibrado) |
-| 16 GB+   | `qwen2.5:14b` (mas capaz) |
+| GPU NVIDIA >= 16 GB VRAM | `qwen2.5:14b` |
+| GPU NVIDIA 8-16 GB VRAM  | `qwen2.5:7b`  |
+| GPU AMD >= 16 GB VRAM    | `qwen2.5:14b` |
+| GPU AMD 8-16 GB VRAM     | `qwen2.5:7b`  |
+| Apple Silicon, RAM >= 16 GB | `qwen2.5:7b` |
+| Apple Silicon, RAM < 16 GB  | `qwen2.5:3b` |
+| Solo CPU, RAM >= 32 GB y 8+ nucleos | `qwen2.5:14b` |
+| Solo CPU, RAM 8-32 GB     | `qwen2.5:7b`  |
+| Solo CPU, RAM < 8 GB      | `qwen2.5:3b`  |
+
+Puedes forzar un modelo concreto con `HB_MODEL=qwen2.5:14b ./install.sh engine`.
 
 Si ya hay un engine detectado, `./install.sh engine` no instala nada y solo
 informa cual usara BMO-GHOST. Tambien puedes apuntar
